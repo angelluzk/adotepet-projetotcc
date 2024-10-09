@@ -1,0 +1,231 @@
+/* Importação da fonte */
+@import url('https://fonts.googleapis.com/css2?family=Candara&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Candara, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f2f2f2;
+    background-image: url('../img/fundo.png');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+.container {
+    display: flex;
+    width: 80%;
+    max-width: 1200px;
+    height: 70vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    flex-direction: row;
+}
+
+.wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 1200px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23E7F8F3" fill-opacity="1" d="M0,160L30,170.7C60,181,120,203,180,218.7C240,235,300,245,360,224C420,203,480,149,540,128C600,107,660,117,720,144C780,171,840,213,900,213.3C960,213,1020,171,1080,160C1140,149,1200,171,1260,181.3C1320,192,1380,192,1410,192L1440,192L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z"></path></svg>') no-repeat center bottom;
+    background-size: cover;
+    z-index: -1;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%); 
+}
+
+.left-side {
+    flex: 1;
+    background-color: #b3e1e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.image-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: auto;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+}
+
+.right-side {
+    flex: 1;
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login-box {
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-box h2 {
+    color: #21325E;
+    font-size: 40px; 
+    margin-bottom: 10px;
+}
+
+.login-box hr {
+    border: 0;
+    height: 3px; 
+    background: linear-gradient(to right, transparent, #7fb9ca, transparent);
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.login-box p {
+    color: #777;
+    font-size: 18px;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #21325E;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 10px 10px 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.checkbox-group label {
+    margin: 0;
+}
+
+.checkbox-group a {
+    color: #100e47;
+    text-decoration: none;
+    margin-left: auto;
+}
+
+.checkbox-group a:hover {
+    text-decoration: underline;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #21325E;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #1a2748;
+}
+
+/* Estilização do link "Voltar" */
+.link-voltar {
+    display: inline-flex;
+    align-items: center;
+    color: #100e48;
+    text-decoration: none;
+    font-size: 16px;
+    margin-top: -10px;
+    transition: color 0.3s ease;
+}
+
+.link-voltar i {
+    margin-right: 8px;
+}
+
+.register-link {
+    margin-top: 20px;
+    color: #777;
+    font-size: 16px;
+}
+
+.register-link a {
+    color: #21325E;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .left-side {
+        display: none;
+    }
+
+    .right-side {
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-box h2 {
+        font-size: 30px; 
+    }
+
+    .login-box p {
+        font-size: 16px;
+    }
+
+    .input-group input {
+        padding: 10px 10px 10px 30px;
+    }
+
+    button {
+        font-size: 16px;
+    }
+}

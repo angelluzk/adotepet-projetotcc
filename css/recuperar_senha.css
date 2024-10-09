@@ -1,0 +1,166 @@
+/* Importação da fonte */
+@import url('https://fonts.googleapis.com/css2?family=Candara&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Candara', Arial, sans-serif;
+    overflow-x: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    background-image: url('../img/fundo.png');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+.form-container {
+    max-width: 400px;
+    width: 90%;
+    margin: 20px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.form-container:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 1100px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23E7F8F3" fill-opacity="1" d="M0,160L30,170.7C60,181,120,203,180,218.7C240,235,300,245,360,224C420,203,480,149,540,128C600,107,660,117,720,144C780,171,840,213,900,213.3C960,213,1020,171,1080,160C1140,149,1200,171,1260,181.3C1320,192,1380,192,1410,192L1440,192L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z"></path></svg>') no-repeat center bottom;
+    background-size: cover;
+    z-index: -1;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%); 
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #100f47;
+    text-align: center;
+}
+
+p{
+    text-align: center;
+    margin-bottom: 20px;
+    color: #777;
+    font-size: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 20px;
+    color: #100f47;
+}
+
+input {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border 0.3s ease-in-out;
+}
+
+input:focus {
+    border-color: #8ef59a;
+    outline: none;
+}
+
+button {
+    width: auto;
+    padding: 15px 35px;
+    background-color: #100f47;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    margin: 10px auto;
+    margin-bottom: -10px;
+    display: block;
+}
+
+button:hover {
+    background-color: #7fb9ca;
+    transform: scale(1.05);
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.required {
+    color: red;
+}
+
+/* Estilização do link "Voltar" */
+.link-voltar {
+    display: inline-flex;
+    align-items: center;
+    color: #100e48;
+    text-decoration: none;
+    font-size: 16px;
+    margin-top: -10px;
+    transition: color 0.3s ease;
+}
+
+.link-voltar i {
+    margin-right: 8px;
+}
+
+.password-container {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 5px;
+    top: 40%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #100e48;
+}
+
+.toggle-password:hover {
+    color: #007bff;
+}
+
+/* Media Queries para responsividade */
+@media (max-width: 768px) {
+    .form-container {
+        margin: 20px;
+        padding: 30px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    input {
+        padding: 10px; 
+    }
+
+    button {
+        padding: 10px;
+    }
+}
