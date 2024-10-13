@@ -8,31 +8,31 @@ class Usuario {
         $this->conn = $db;
     }
 
-    public function create($data) {
-        $emailQuery = "SELECT id FROM usuarios WHERE email = ?";
-        $stmt = $this->conn->prepare($emailQuery);
-        $stmt->bind_param('s', $data['email']);
+    public function emailExists($email) {
+        $stmt = $this->conn->prepare("SELECT id FROM usuarios WHERE email = ?");
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
-    
-        if ($stmt->num_rows > 0) {
-            die("Erro: E-mail já cadastrado.");
-        }
-    
+        
+        return $stmt->num_rows > 0;
+    }
+
+    public function create($data) {
         $query = "INSERT INTO usuarios (nome, sobrenome, cpf, telefone, email, senha, perfil_id, data_nascimento) 
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
         
-        $stmt->bind_param('ssssssss', $data['nome'], $data['sobrenome'], $data['cpf'], $data['telefone'], $data['email'], $data['senha'], $data['perfil'], $data['data_nascimento']);
-
+        error_log("Dados do usuário: " . json_encode($data));
     
+        $stmt->bind_param('ssssssss', $data['nome'], $data['sobrenome'], $data['cpf'], $data['telefone'], $data['email'], $data['senha'], $data['perfil'], $data['data_nascimento']);
+        
         if (!$stmt->execute()) {
             error_log("Erro ao cadastrar usuário: " . $this->conn->error);
             die("Erro ao cadastrar usuário.");
         }
-    }    
+    }   
 
-    public function update($id, $data){
+    public function update($id, $data) {
         $query = "UPDATE usuarios SET nome = ?, sobrenome = ?, cpf = ?, telefone = ?, email = ?, senha = ?, perfil_id = ?, data_nascimento = ? WHERE id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param('ssssssisi', $data['nome'], $data['sobrenome'], $data['cpf'], $data['telefone'], $data['email'], $data['senha'], $data['perfil'], $data['data_nascimento'], $id);
@@ -52,8 +52,7 @@ class Usuario {
         }
     }
 
-    public function listar($searchTerm = '', $limit = 8, $offset = 0){
-
+    public function listar($searchTerm = '', $limit = 8, $offset = 0) {
         $likeTerm = '%' . $searchTerm . '%';
     
         $query = "SELECT u.*, p.nome as perfil_nome, CONCAT(u.nome, ' ', u.sobrenome) as nome_completo 
@@ -67,7 +66,6 @@ class Usuario {
     
         $stmt = $this->conn->prepare($query);
     
-        //Bind params: o termo de busca para id, nome completo e cpf, e dois inteiros (limit e offset)
         $stmt->bind_param('ssiii', $likeTerm, $likeTerm, $likeTerm, $limit, $offset);
 
         if (!$stmt->execute()) {
@@ -79,8 +77,7 @@ class Usuario {
         return $result->fetch_all(MYSQLI_ASSOC);
     }  
 
-    public function contarUsuarios($searchTerm = ''){
-
+    public function contarUsuarios($searchTerm = '') {
         $likeTerm = '%' . $searchTerm . '%';
     
         $query = "SELECT COUNT(*) as total 
@@ -91,9 +88,7 @@ class Usuario {
                     cpf LIKE ?";
     
         $stmt = $this->conn->prepare($query);
-    
         $stmt->bind_param('sss', $likeTerm, $likeTerm, $likeTerm);
-    
         $stmt->execute();
         
         $result = $stmt->get_result();
@@ -113,6 +108,6 @@ class Usuario {
 
         $result = $stmt->get_result();
         return $result->fetch_assoc();
-    }
+    }   
 }
 ?>

@@ -13,15 +13,18 @@ if (isset($_GET['id'])) {
 
 //Verifica se o formulário foi enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nome = $_POST['nome'];
     $especie_id = $_POST['especie'];
     $raca = $_POST['raca'];
     $cor = $_POST['cor'];
     $idade = $_POST['idade'];
     $descricao = $_POST['descricao'];
+    $porte = $_POST['porte'];
+    $sexo = $_POST['sexo'];
     $files = $_FILES['foto'];
 
     //Chama o método editarDoacao do controller
-    $result = $petController->editarDoacao($_GET['id'], $especie_id, $raca, $cor, $idade, $descricao, $files);
+    $result = $petController->editarDoacao($_GET['id'], $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $files);
 
     //Redireciona se a edição for bem-sucedida
     if ($result === "Doação editada com sucesso!") {
@@ -128,11 +131,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <option value="2" <?php echo isset($doacao['especie_id']) && $doacao['especie_id'] == 2 ? 'selected' : ''; ?>>Gato</option>
             </select>
 
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" value="<?php echo htmlspecialchars($doacao['nome']); ?>" required>
+
             <label for="raca">Raça:</label>
             <input type="text" name="raca" value="<?php echo htmlspecialchars($doacao['raca']); ?>" required>
 
             <label for="cor">Cor:</label>
             <input type="text" name="cor" value="<?php echo htmlspecialchars($doacao['cor']); ?>" required>
+
+            <label for="porte">Porte:</label>
+            <select name="porte" id="porte" required>
+                <option value="Pequeno" <?php echo isset($doacao['porte']) && $doacao['porte'] == 'Pequeno' ? 'selected' : ''; ?>>Pequeno</option>
+                <option value="Médio" <?php echo isset($doacao['porte']) && $doacao['porte'] == 'Médio' ? 'selected' : ''; ?>>Médio</option>
+                <option value="Grande" <?php echo isset($doacao['porte']) && $doacao['porte'] == 'Grande' ? 'selected' : ''; ?>>Grande</option>
+            </select>
+
+            <label for="sexo">Sexo:</label>
+            <select name="sexo" id="sexo" required>
+                <option value="Macho" <?php echo isset($doacao['sexo']) && $doacao['sexo'] == 'macho' ? 'selected' : ''; ?>>Macho</option>
+                <option value="Fêmea" <?php echo isset($doacao['sexo']) && $doacao['sexo'] == 'femea' ? 'selected' : ''; ?>>Fêmea</option>
+            </select>
 
             <label for="idade">Idade:</label>
             <input type="number" name="idade" value="<?php echo htmlspecialchars($doacao['idade']); ?>" required>
@@ -145,7 +164,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <button type="submit">Salvar</button>
             <a href="listar_doacoes.php">Voltar à lista</a>
-
         </form>
     </div>
 </body>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 09/10/2024 às 05:20
+-- Tempo de geração: 13/10/2024 às 19:10
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -32,19 +32,54 @@ CREATE TABLE `doacoes` (
   `pet_id` int(11) DEFAULT NULL,
   `usuario_id` int(11) DEFAULT NULL,
   `data` date DEFAULT NULL,
-  `criado_em` timestamp NOT NULL DEFAULT current_timestamp()
+  `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
+  `endereco_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Despejando dados para a tabela `doacoes`
 --
 
-INSERT INTO `doacoes` (`id`, `pet_id`, `usuario_id`, `data`, `criado_em`) VALUES
-(1, 1, 1, '2024-10-09', '2024-10-09 02:30:23'),
-(2, 2, 1, '2024-10-09', '2024-10-09 02:34:15'),
-(3, 3, 1, '2024-10-09', '2024-10-09 02:35:04'),
-(4, 4, 2, '2024-10-09', '2024-10-09 02:59:59'),
-(5, 5, 3, '2024-10-09', '2024-10-09 03:09:29');
+INSERT INTO `doacoes` (`id`, `pet_id`, `usuario_id`, `data`, `criado_em`, `endereco_id`) VALUES
+(1, 1, 1, '2024-10-09', '2024-10-09 02:30:23', NULL),
+(2, 2, 1, '2024-10-09', '2024-10-09 02:34:15', NULL),
+(3, 3, 1, '2024-10-09', '2024-10-09 02:35:04', NULL),
+(4, 4, 2, '2024-10-09', '2024-10-09 02:59:59', NULL),
+(5, 5, 3, '2024-10-09', '2024-10-09 03:09:29', NULL),
+(6, 6, 2, '2024-10-09', '2024-10-09 04:16:01', NULL),
+(7, 7, 3, '2024-10-09', '2024-10-09 04:17:31', NULL),
+(8, 8, 2, '2024-10-12', '2024-10-11 23:55:39', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `enderecos`
+--
+
+CREATE TABLE `enderecos` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `cep` varchar(8) NOT NULL,
+  `logradouro` varchar(255) NOT NULL,
+  `bairro` varchar(100) NOT NULL,
+  `localidade` varchar(100) DEFAULT NULL,
+  `uf` varchar(2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `enderecos`
+--
+
+INSERT INTO `enderecos` (`id`, `usuario_id`, `cep`, `logradouro`, `bairro`, `localidade`, `uf`) VALUES
+(2, 6, '72603-10', 'Quadra 113 Conjunto 2', 'Recanto das Emas', 'Brasília', 'DF'),
+(3, 8, '69082-71', 'Rua Capitão Enéas', 'Coroado', 'Manaus', 'AM'),
+(4, 9, '72410-23', 'Praça 3 Bloco A', 'Setor Sul (Gama)', 'Brasília', 'DF'),
+(5, 10, '57312-02', 'Rua José Valentim dos Santos', 'Santa Esmeralda', 'Arapiraca', 'AL'),
+(6, 11, '71697-04', 'Quadra 2 Conjunto 2', 'São Bartolomeu (São Sebastião)', 'Brasília', 'DF'),
+(7, 12, '71573-10', 'Quadra 31 Conjunto 23', 'Paranoá', 'Brasília', 'DF'),
+(8, 13, '01001-00', 'Praça da Sé', 'Sé', 'São Paulo', 'SP'),
+(9, 13, '01001-00', 'Praça da Sé', 'Sé', 'São Paulo', 'SP'),
+(11, 16, '88060-39', 'Servidão Luiz Manoel dos Santos', 'São João do Rio Vermelho', 'Florianópolis', 'SC');
 
 -- --------------------------------------------------------
 
@@ -87,7 +122,10 @@ INSERT INTO `fotos` (`id`, `nome`, `url`, `pet_id`) VALUES
 (4, 'husky siberiano.png', 'uploads/husky siberiano.png', 4),
 (5, 'Sphynx.png', 'uploads/Sphynx.png', 2),
 (7, 'salsichapreto.png', 'uploads/salsichapreto.png', 3),
-(8, 'Balinês - branco com preto.jpeg', 'uploads/Balinês - branco com preto.jpeg', 5);
+(8, 'Balinês - branco com preto.jpeg', 'uploads/Balinês - branco com preto.jpeg', 5),
+(9, 'garo Persa.jpg', 'uploads/garo Persa.jpg', 6),
+(10, 'pompom - gato laranja.jpg', 'uploads/pompom - gato laranja.jpg', 7),
+(11, 'Gato-Bengal.jpg', 'uploads/Gato-Bengal.jpg', 8);
 
 -- --------------------------------------------------------
 
@@ -116,8 +154,11 @@ INSERT INTO `perfis` (`id`, `nome`) VALUES
 
 CREATE TABLE `pets` (
   `id` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
   `especie_id` int(11) NOT NULL,
   `raca` varchar(100) NOT NULL,
+  `porte` varchar(50) NOT NULL,
+  `sexo` enum('Macho','Fêmea') NOT NULL,
   `cor` varchar(50) NOT NULL,
   `idade` int(11) NOT NULL,
   `descricao` text DEFAULT NULL,
@@ -129,12 +170,15 @@ CREATE TABLE `pets` (
 -- Despejando dados para a tabela `pets`
 --
 
-INSERT INTO `pets` (`id`, `especie_id`, `raca`, `cor`, `idade`, `descricao`, `foto`, `criado_em`) VALUES
-(1, 1, ' Golden retriever', 'Laranja', 5, 'Vacina, Vermifugado, Docil.', NULL, '2024-10-09 02:30:23'),
-(2, 2, 'Sphynx', 'Tricolor', 2, 'Vacinas em dia.', NULL, '2024-10-09 02:34:15'),
-(3, 1, ' Dachshund', 'Preto', 11, 'Vacinado', NULL, '2024-10-09 02:35:04'),
-(4, 1, 'Husky siberiano', 'Preto e Branco', 6, 'Vacinas todas em dia.', NULL, '2024-10-09 02:59:59'),
-(5, 2, 'Balinês', 'Branco com Preto', 6, 'Vacinado.', NULL, '2024-10-09 03:09:29');
+INSERT INTO `pets` (`id`, `nome`, `especie_id`, `raca`, `porte`, `sexo`, `cor`, `idade`, `descricao`, `foto`, `criado_em`) VALUES
+(1, 'Meg', 1, ' Golden retriever', 'Grande', 'Fêmea', 'Laranja', 5, 'Vacina, Vermifugado, Docil.', NULL, '2024-10-09 02:30:23'),
+(2, 'Lili', 2, 'Sphynx', 'Médio', 'Macho', 'Tricolor', 2, 'Vacinas em dia.', NULL, '2024-10-09 02:34:15'),
+(3, 'Baco', 1, ' Dachshund', 'Pequeno', 'Macho', 'Preto', 11, 'Vacinado', NULL, '2024-10-09 02:35:04'),
+(4, 'Luna', 1, 'Husky siberiano', 'Grande', 'Fêmea', 'Preto e Branco', 6, 'Vacinas todas em dia.', NULL, '2024-10-09 02:59:59'),
+(5, 'Marie', 2, 'Balinês', 'Pequeno', 'Fêmea', 'Branco com Preto', 6, 'Vacinado.', NULL, '2024-10-09 03:09:29'),
+(6, 'Jujuba', 2, 'Persa', 'Pequeno', 'Fêmea', 'laranja', 3, 'Vacinado', NULL, '2024-10-09 04:16:01'),
+(7, 'Sem nome definido', 2, 'Viralata', 'Pequeno', 'Macho', 'Laranja', 5, 'Vacinado', NULL, '2024-10-09 04:17:31'),
+(8, 'Paçoca', 2, 'Bengal', 'Médio', 'Macho', 'Rajado', 12, 'Vacinado, Dócil, Amigável ', NULL, '2024-10-11 23:55:39');
 
 -- --------------------------------------------------------
 
@@ -162,7 +206,18 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id`, `nome`, `sobrenome`, `cpf`, `telefone`, `email`, `senha`, `criado_em`, `perfil_id`, `data_nascimento`) VALUES
 (1, 'Carlos', 'Eduardo', '11111111111', '61985456789', 'carlos@gmail.com', '123456', '2024-10-09 02:28:31', 2, '1995-10-25'),
 (2, 'Janes', 'Cleston', '22222222222', '61896547896', 'janes@gmail.com', '$2y$10$LDh8b.SKT7JLEi/OcspqDuxTbqvykEdKj7IQ6oSxONKEJE6yZRBw2', '2024-10-09 02:32:06', 1, '1989-07-11'),
-(3, 'Angel', 'Luz', '33333333333', '61987456321', 'angel@gmail.com', '$2y$10$Ej5DBsXSA9CXiu8Rab3g3.G9w2t5pZMpTCUdgvvYqqTAWNFJXvWkK', '2024-10-09 03:05:55', 1, '1992-03-30');
+(3, 'Angel', 'Luz', '33333333333', '61987456321', 'angel@gmail.com', '$2y$10$Ej5DBsXSA9CXiu8Rab3g3.G9w2t5pZMpTCUdgvvYqqTAWNFJXvWkK', '2024-10-09 03:05:55', 1, '1992-03-30'),
+(4, 'Gustavo', 'Junior', '66666666666', '61896458745', 'gustavo@gmail.com', '123456', '2024-10-12 12:35:32', 1, '2000-12-05'),
+(5, 'Lucas', 'Santos', '44444444444', '61896452123', 'lucas@gmail.com', '123456', '2024-10-12 12:47:08', 2, '1982-10-25'),
+(6, 'André', 'Felipe', '55555555555', '61987456321', 'andre@gmail.com', '123456', '2024-10-12 15:22:05', 2, '1982-08-01'),
+(8, 'João', 'Robert', '00052314562', '6199913151', 'joao@gmail.com', '123456', '2024-10-12 17:58:14', 1, '1992-02-15'),
+(9, 'Maria', 'Luiza', '99999999999', '61999555441', 'marialuiza@gmail.com', '123456', '2024-10-12 18:12:42', 1, '1992-10-15'),
+(10, 'Aline', 'Lima', '96325874112', '61999666333', 'alinelima@gmail.com', '123456', '2024-10-12 18:35:32', 2, '2005-11-15'),
+(11, 'Luana', 'Silva', '78965412363', '61999888555', 'luana@gmail.com', '123456', '2024-10-12 22:01:46', 2, '2005-04-15'),
+(12, 'Abigail', 'Santos', '85645212365', '61999888777', 'abigail@gmail.com', '123456', '2024-10-13 00:25:26', 1, '2014-10-25'),
+(13, 'SDASDA', 'SDASDSAD', '123123123', '213123213', '123123@GMAIL.COM', '123456', '2024-10-13 00:45:39', 1, '0123-03-12'),
+(14, 'Felipe', 'Miguel', '95142356121', '61987456321', 'felipe@gmail.com', '123456', '2024-10-13 16:21:21', 2, '1985-12-05'),
+(16, 'sadasd34234', 'asdad23123', '76565656798', '61555444332', '23123666@gmail.com', '1234565', '2024-10-13 16:49:50', 1, '2000-02-12');
 
 --
 -- Índices para tabelas despejadas
@@ -174,7 +229,15 @@ INSERT INTO `usuarios` (`id`, `nome`, `sobrenome`, `cpf`, `telefone`, `email`, `
 ALTER TABLE `doacoes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pet_id` (`pet_id`),
-  ADD KEY `usuario_id` (`usuario_id`);
+  ADD KEY `usuario_id` (`usuario_id`),
+  ADD KEY `fk_doacao_endereco` (`endereco_id`);
+
+--
+-- Índices de tabela `enderecos`
+--
+ALTER TABLE `enderecos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_usuario_endereco` (`usuario_id`);
 
 --
 -- Índices de tabela `especie`
@@ -220,7 +283,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `doacoes`
 --
 ALTER TABLE `doacoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de tabela `enderecos`
+--
+ALTER TABLE `enderecos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de tabela `especie`
@@ -232,7 +301,7 @@ ALTER TABLE `especie`
 -- AUTO_INCREMENT de tabela `fotos`
 --
 ALTER TABLE `fotos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de tabela `perfis`
@@ -244,13 +313,13 @@ ALTER TABLE `perfis`
 -- AUTO_INCREMENT de tabela `pets`
 --
 ALTER TABLE `pets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Restrições para tabelas despejadas
@@ -261,7 +330,14 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `doacoes`
   ADD CONSTRAINT `doacoes_ibfk_1` FOREIGN KEY (`pet_id`) REFERENCES `pets` (`id`),
-  ADD CONSTRAINT `doacoes_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
+  ADD CONSTRAINT `doacoes_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`),
+  ADD CONSTRAINT `fk_doacao_endereco` FOREIGN KEY (`endereco_id`) REFERENCES `enderecos` (`id`);
+
+--
+-- Restrições para tabelas `enderecos`
+--
+ALTER TABLE `enderecos`
+  ADD CONSTRAINT `fk_usuario_endereco` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
 
 --
 -- Restrições para tabelas `fotos`

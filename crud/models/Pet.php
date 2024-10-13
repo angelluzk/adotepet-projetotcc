@@ -9,11 +9,12 @@ class Pet
         $this->conn = $db;
     }
 
-    public function insertPet($especie_id, $raca, $cor, $idade, $descricao)
+    public function insertPet($nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao)
 {
-    $sql_pet = "INSERT INTO pets (especie_id, raca, cor, idade, descricao) VALUES (?, ?, ?, ?, ?)";
+    $sql_pet = "INSERT INTO pets (nome, especie_id, raca, porte, sexo, cor, idade, descricao) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $this->conn->prepare($sql_pet);
-    $stmt->bind_param("issss", $especie_id, $raca, $cor, $idade, $descricao);
+    $stmt->bind_param("sissssss", $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao);
 
     if ($stmt->execute()) {
         return $stmt->insert_id;
@@ -21,15 +22,15 @@ class Pet
     return false;
 }
 
+public function editarPet($pet_id, $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao)
+{
+    $sql = "UPDATE pets SET nome = ?, especie_id = ?, raca = ?, porte = ?, sexo = ?, cor = ?, idade = ?, descricao = ? 
+            WHERE id = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("sissssssi", $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $pet_id);
 
-    public function editarPet($pet_id, $especie_id, $raca, $cor, $idade, $descricao)
-    {
-        $sql = "UPDATE pets SET especie_id = ?, raca = ?, cor = ?, idade = ?, descricao = ? WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("issssi", $especie_id, $raca, $cor, $idade, $descricao, $pet_id);
-
-        return $stmt->execute();
-    }
+    return $stmt->execute();
+}
 
     public function uploadFotos($pet_id, $fotos)
     {
@@ -80,45 +81,60 @@ class Pet
     }
 
     public function listarDoacoes($searchTerm = '', $limit = 8, $offset = 0) {
-        $sql = "SELECT d.id, p.id AS pet_id, p.raca, p.cor, p.idade, d.data, e.nome AS especie_nome, 
-                       u.nome AS usuario_nome, u.sobrenome AS usuario_sobrenome
+        $sql = "SELECT d.id, 
+                       p.id AS pet_id, 
+                       p.nome AS nome_pet, 
+                       p.raca, 
+                       p.porte, 
+                       p.sexo, 
+                       p.cor, 
+                       p.idade, 
+                       d.data, 
+                       e.nome AS especie_nome, 
+                       u.nome AS usuario_nome, 
+                       u.sobrenome AS usuario_sobrenome
                 FROM doacoes d 
                 JOIN pets p ON d.pet_id = p.id
                 JOIN especie e ON p.especie_id = e.id
                 JOIN usuarios u ON d.usuario_id = u.id
-                WHERE (p.raca LIKE ? OR p.cor LIKE ? OR p.id LIKE ? OR u.nome LIKE ? OR e.nome LIKE ?)
+                WHERE (p.raca LIKE ? OR p.cor LIKE ? OR p.id LIKE ? OR u.nome LIKE ? OR e.nome LIKE ? OR p.nome LIKE ?)
                 ORDER BY d.data DESC
                 LIMIT ? OFFSET ?";  
-            
+    
         $stmt = $this->conn->prepare($sql);
         
         $likeTerm = '%' . $searchTerm . '%';
-        $stmt->bind_param("sssssii", $likeTerm, $likeTerm, $likeTerm, $likeTerm, $likeTerm, $limit, $offset);
+        $stmt->bind_param("ssssssii", $likeTerm, $likeTerm, $likeTerm, $likeTerm, $likeTerm, $likeTerm, $limit, $offset);
         
         $stmt->execute();
         
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    }
+    }    
 
-    public function visualizarDoacao($doacao_id){
+    public function visualizarDoacao($doacao_id) {
         $sql = "SELECT d.id AS doacao_id, 
                        p.id AS pet_id, 
+                       p.nome, 
                        p.especie_id, 
                        p.raca, 
+                       p.porte, 
+                       p.sexo, 
                        p.cor, 
                        p.idade, 
                        p.descricao, 
                        d.data, 
                        u.nome AS usuario_nome, 
                        u.sobrenome AS usuario_sobrenome,
+                       e.nome AS especie_nome,
                        f.url AS foto_url
                 FROM doacoes d 
                 JOIN pets p ON d.pet_id = p.id 
                 JOIN usuarios u ON d.usuario_id = u.id 
                 LEFT JOIN fotos f ON p.id = f.pet_id 
+                LEFT JOIN especie e ON p.especie_id = e.id
                 WHERE d.id = ? 
                 LIMIT 1";
-    
+        
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $doacao_id);
         $stmt->execute();
@@ -130,7 +146,7 @@ class Pet
         } else {
             return null;
         }
-    }
+    }    
 
     public function removerFotosPet($pet_id)
     {

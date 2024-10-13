@@ -1,13 +1,11 @@
 <?php
 session_start();
 
-// Verifica se o usuário está logado
 $isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
-// Recupera a mensagem de erro, se existir
 $errorMessage = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
 if ($errorMessage) {
-    unset($_SESSION['error_message']); // Remove a mensagem após exibi-la
+    unset($_SESSION['error_message']);
 }
 ?>
 

@@ -7,18 +7,18 @@ class DataBase {
     public $conn;
 
     public function __construct() {
-        $this->conn = new mysqli(hostname: $this->host, username: $this->user, password: $this->password, database: $this->dbname);
+        $this->conn = new mysqli($this->host, $this->user, $this->password,  $this->dbname);
 
         if ($this->conn->connect_error) {
             die("Falha na conexão com o banco de dados: " . $this->conn->connect_error);
         }
     }
 
-    public function getConnection(): mysqli {
+    public function getConnection(){
         return $this->conn;
     }
 
-    public function closeConnection(): void {
+    public function closeConnection(){
         if ($this->conn) {
             $this->conn->close();
         }

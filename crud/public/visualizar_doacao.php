@@ -33,7 +33,6 @@ if (isset($_GET['id'])) {
             justify-content: center;
             align-items: center;
             height: 100vh;
-
         }
 
         .container {
@@ -119,8 +118,11 @@ if (isset($_GET['id'])) {
             <div class="text-info">
                 <p><strong>Nome do Protetor:</strong>
                     <?= htmlspecialchars($doacao['usuario_nome'] . ' ' . $doacao['usuario_sobrenome']) ?></p>
-                <p><strong>Espécie:</strong> <?= $doacao['especie_id'] == 1 ? 'Cachorro' : 'Gato' ?></p>
+                <p><strong>Espécie:</strong> <?= htmlspecialchars($doacao['especie_nome']) ?></p>
+                <p><strong>Nome do Pet:</strong> <?= htmlspecialchars($doacao['nome']) ?></p>
                 <p><strong>Raça:</strong> <?= htmlspecialchars($doacao['raca']) ?></p>
+                <p><strong>Porte:</strong> <?= htmlspecialchars($doacao['porte']) ?></p>
+                <p><strong>Sexo:</strong> <?= htmlspecialchars($doacao['sexo']) ?></p>
                 <p><strong>Cor:</strong> <?= htmlspecialchars($doacao['cor']) ?></p>
                 <p><strong>Idade:</strong> <?= htmlspecialchars($doacao['idade']) ?> anos</p>
                 <p><strong>Descrição:</strong> <?= htmlspecialchars($doacao['descricao']) ?></p>

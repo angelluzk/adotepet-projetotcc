@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
     $_SESSION['error_message'] = "Você precisa estar logado para cadastrar um pet.";
     header('Location: ../../login.html');
     exit();
@@ -11,6 +11,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,8 +20,9 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <link href="https://fonts.googleapis.com/css2?family=Candara&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
-<div class="wave"></div>
+    <div class="wave"></div>
     <div class="container">
         <div class="header">
             <img src="../../img/logo.png" alt="Logo" class="logo">
@@ -33,48 +35,87 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         </p>
         <form action="../../crud/public/cadastrar_doacoes.php" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="especie"> Espécie:<span class="required">*</span></label>
+                <label for="nome"> Nome do Pet:<span class="required">*</span></label>
                 <div class="input-icon">
+                    <i class="fas fa-paw"></i>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+            </div>
+
+            <div class="input-row">
+        <div class="form-group">
+            <label for="especie"> Espécie:<span class="required">*</span></label>
+            <div class="input-icon">
                 <i class="fas fa-paw"></i>
                 <select name="especie" id="especie" required>
                     <option value="">Selecione</option>
                     <option value="1">Cachorro</option>
                     <option value="2">Gato</option>
                 </select>
-                </div>
             </div>
-            
-            <div class="form-group">
-                <label for="raca"> Raça:<span class="required">*</span></label>
-                <div class="input-icon">
+        </div>
+
+        <div class="form-group">
+            <label for="raca"> Raça:<span class="required">*</span></label>
+            <div class="input-icon">
                 <i class="fas fa-dog"></i>
                 <input type="text" id="raca" name="raca" required>
-                </div>
             </div>
-            
-            <div class="form-group">
-                <label for="cor"> Cor:<span class="required">*</span></label>
-                <div class="input-icon">
+        </div>
+    </div>
+
+    <div class="input-row">
+        <div class="form-group">
+            <label for="porte"> Porte:<span class="required">*</span></label>
+            <div class="input-icon">
+                <i class="fas fa-paw"></i>
+                <select name="porte" id="porte" required>
+                    <option value="">Selecione</option>
+                    <option value="Pequeno">Pequeno</option>
+                    <option value="Médio">Médio</option>
+                    <option value="Grande">Grande</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sexo"> Sexo:<span class="required">*</span></label>
+            <div class="input-icon">
+                <i class="fas fa-venus-mars"></i>
+                <select name="sexo" id="sexo" required>
+                    <option value="">Selecione</option>
+                    <option value="Macho">Macho</option>
+                    <option value="Fêmea">Fêmea</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-row">
+        <div class="form-group">
+            <label for="cor"> Cor:<span class="required">*</span></label>
+            <div class="input-icon">
                 <i class="fas fa-paint-brush"></i>
                 <input type="text" id="cor" name="cor" required>
-                </div>
             </div>
-            
-            <div class="form-group">
-                <label for="idade"> Idade:<span class="required">*</span></label>
-                <div class="input-icon">
+        </div>
+
+        <div class="form-group">
+            <label for="idade"> Idade:<span class="required">*</span></label>
+            <div class="input-icon">
                 <i class="fas fa-clock"></i>
                 <input type="number" id="idade" name="idade" required>
-                </div>
             </div>
-            
+        </div>
+    </div>
+
             <div class="form-group">
                 <label for="descricao"> Descrição:<span class="required">*</span></label>
                 <div class="input-icon">
-                <textarea id="descricao" name="descricao" rows="4" required></textarea>
+                    <textarea id="descricao" name="descricao" rows="4" required></textarea>
                 </div>
             </div>
-            
+
             <div class="form-group upload-section">
                 <label for="foto"><i class="fas fa-image"></i> Fotos do Pet:<span class="required">*</span></label>
                 <div class="upload-input">
@@ -88,17 +129,18 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 </div>
             </div>
 
-             <div class="btn-group">
-             <button type="submit" class="btn cadastrar"><i class="fas fa-paper-plane"></i> Cadastrar</button>
-             </div>
+            <div class="btn-group">
+                <button type="submit" class="btn cadastrar"><i class="fas fa-paper-plane"></i> Cadastrar</button>
+            </div>
         </form>
         <p class="termos">
-            Ao preencher o formulário você concorda com nossos <a href="#">Termos de uso</a> e nossa <a href="#">Política de Privacidade</a>.
+            Ao preencher o formulário você concorda com nossos <a href="#">Termos de uso</a> e nossa <a
+                href="#">Política de Privacidade</a>.
         </p>
     </div>
 
     <script>
-        document.getElementById('foto').addEventListener('change', function() {
+        document.getElementById('foto').addEventListener('change', function () {
             const fileList = document.getElementById('file-list');
             fileList.innerHTML = '';
             const files = Array.from(this.files);
@@ -110,4 +152,5 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         });
     </script>
 </body>
+
 </html>

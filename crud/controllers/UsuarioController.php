@@ -31,5 +31,8 @@ class UsuarioController {
     public function contarUsuarios($searchTerm = ''){
         return $this->usuario->contarUsuarios($searchTerm);
     }
+    public function emailExists($email) {
+        return $this->usuario->emailExists($email);
+    }
 }
 ?>

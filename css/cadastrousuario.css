@@ -195,6 +195,15 @@ select option {
     color: #100e48;
 }
 
+/* CSS para esconder etapas não ativas */
+.form-step {
+    display: none;
+}
+
+.form-step-active {
+    display: block;
+}
+
 /* Media Queries para Responsividade */
 @media (max-width: 768px) {
     .input-row {

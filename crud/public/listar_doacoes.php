@@ -16,7 +16,6 @@
             <div class="navbar">
                 <div class="logo">
                     <img src="../../img/logo.png" alt="Logo">
-                    <!--<h1>Adote Pet</h1>-->
                 </div>
                 <ul>
                     <li><a href="../../crud/views/painel_admin.php">
@@ -62,6 +61,7 @@
                 </ul>
             </div>
         </nav>
+        
         <section class="main">
             <div class="main-top">
                 <p>Painel Administrativo</p>
@@ -81,11 +81,14 @@
                     <thead>
                         <tr>
                             <th>ID do Pet</th>
+                            <th>Nome do Pet</th> <!-- Nome do pet adicionado -->
                             <th>Nome Protetor</th>
                             <th>Espécie</th>
                             <th>Raça</th>
                             <th>Cor</th>
                             <th>Idade</th>
+                            <th>Porte</th> <!-- Porte adicionado -->
+                            <th>Sexo</th> <!-- Sexo adicionado -->
                             <th>Data</th>
                             <th>Ações</th>
                         </tr>
@@ -113,11 +116,14 @@
                             foreach ($doacoes as $doacao) : ?>
                                 <tr>
                                     <td><?= htmlspecialchars($doacao['pet_id']) ?></td>
+                                    <td><?= htmlspecialchars($doacao['nome_pet']) ?></td> <!-- Nome do pet exibido -->
                                     <td><?= htmlspecialchars($doacao['usuario_nome'] . ' ' . $doacao['usuario_sobrenome']) ?></td>
                                     <td><?= htmlspecialchars($doacao['especie_nome']) ?></td>
                                     <td><?= htmlspecialchars($doacao['raca']) ?></td>
                                     <td><?= htmlspecialchars($doacao['cor']) ?></td>
                                     <td><?= htmlspecialchars($doacao['idade']) ?> anos</td>
+                                    <td><?= htmlspecialchars($doacao['porte']) ?></td> <!-- Porte exibido -->
+                                    <td><?= htmlspecialchars($doacao['sexo']) ?></td> <!-- Sexo exibido -->
                                     <td><?= (new DateTime($doacao['data']))->format('d/m/Y') ?></td>
                                     <td>
                                         <a href="../public/visualizar_doacao.php?id=<?= $doacao['id'] ?>" class="btn-acoes">Visualizar</a>
@@ -127,7 +133,7 @@
                                 </tr>
                             <?php endforeach;
                         } else {
-                            echo "<tr><td colspan='6'>Nenhuma doação encontrada.</td></tr>";
+                            echo "<tr><td colspan='11'>Nenhuma doação encontrada.</td></tr>";
                         }
                         ?>
                     </tbody>

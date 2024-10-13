@@ -12,10 +12,9 @@ if (isset($_GET['id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Garantir que a data de nascimento esteja no formato YYYY-MM-DD, se não estiver vazia
+    //Garantir que a data de nascimento esteja no formato YYYY-MM-DD, se não estiver vazia
     $data_nascimento = !empty($_POST['data_nascimento']) ? date('Y-m-d', strtotime($_POST['data_nascimento'])) : null;
 
-    // Chamar a função update
     $usuarioController->update($_POST['id'], array_merge($_POST, ['data_nascimento' => $data_nascimento]));
     header("Location: listar_usuarios.php");
     exit();
@@ -107,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <h1>Editar Usuário</h1>
-        <form action="" method="post">
+        <form action="" method="POST">
             <input type="hidden" name="id" value="<?php echo $usuario['id']; ?>">
             <label>Nome: <input type="text" name="nome" value="<?php echo htmlspecialchars($usuario['nome']); ?>" required></label>
             <label>Sobrenome: <input type="text" name="sobrenome" value="<?php echo htmlspecialchars($usuario['sobrenome']); ?>" required></label>

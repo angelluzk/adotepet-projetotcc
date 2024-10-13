@@ -84,7 +84,7 @@ h2 {
     display: flex;
     justify-content: space-between;
     gap: 5px;
-    margin-bottom: -10px;
+    margin-bottom: 20px;
 }
 
 .input-group label {
@@ -135,6 +135,7 @@ input::placeholder {
 }
 
 .form-group {
+    flex: 1;
     margin-bottom: 15px;
 }
 
@@ -149,6 +150,10 @@ input::placeholder {
     display: block;
     color: #777;
     margin-top: 5px;
+}
+
+.form-group:last-child {
+    margin-right: 0;
 }
 
 .required {

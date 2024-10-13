@@ -6,7 +6,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
 
-    // Validação básica
     if (empty($email) || empty($senha)) {
         echo "Por favor, preencha todos os campos.";
         exit();
@@ -15,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $db = new DataBase();
     $conn = $db->getConnection();
 
-    // Prepara a consulta SQL
     $sql = "SELECT id, senha, perfil_id FROM usuarios WHERE email = ?";
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -27,18 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // Verifica se o usuário foi encontrado
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
         
-        // Verifica a senha
         if (password_verify($senha, $user['senha'])) {
-            // Salva os dados do usuário na sessão
             $_SESSION['usuario_id'] = $user['id'];
             $_SESSION['perfil_id'] = $user['perfil_id'];
             $_SESSION['logged_in'] = true;
 
-            // Redireciona conforme o perfil do usuário
             if ($user['perfil_id'] == 1) {
                 header("Location: crud/views/painel_admin.php");
             } elseif ($user['perfil_id'] == 2) {
