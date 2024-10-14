@@ -17,11 +17,21 @@ class UsuarioController {
     }
 
     public function update($id, $data){
-        $this->usuario->update($id, $data);
+        return $this->usuario->update($id, $data);
     }
 
-    public function read($id){
-        return $this->usuario->read($id);
+    public function updateEndereco($usuario_id, $data) {
+        return $this->usuario->updateEndereco($usuario_id, $data);
+    }
+
+    public function read($id) {
+        $usuario = $this->usuario->read($id);
+        $endereco = $this->usuario->buscarEnderecoPorUsuarioId($id);
+        
+        return [
+            'usuario' => $usuario,
+            'endereco' => $endereco
+        ];
     }
 
     public function create($data){
@@ -31,6 +41,7 @@ class UsuarioController {
     public function contarUsuarios($searchTerm = ''){
         return $this->usuario->contarUsuarios($searchTerm);
     }
+    
     public function emailExists($email) {
         return $this->usuario->emailExists($email);
     }

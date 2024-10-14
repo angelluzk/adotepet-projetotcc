@@ -3,6 +3,7 @@ require_once '../config/DataBase.php';
 
 class Usuario {
     private $conn;
+    private $table_name = 'usuarios';
 
     public function __construct($db) {
         $this->conn = $db;
@@ -33,20 +34,44 @@ class Usuario {
     }   
 
     public function update($id, $data) {
-        $query = "UPDATE usuarios SET nome = ?, sobrenome = ?, cpf = ?, telefone = ?, email = ?, senha = ?, perfil_id = ?, data_nascimento = ? WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('ssssssisi', $data['nome'], $data['sobrenome'], $data['cpf'], $data['telefone'], $data['email'], $data['senha'], $data['perfil'], $data['data_nascimento'], $id);
-    
-        if (!$stmt->execute()) {
-            die("Erro ao atualizar usuário: " . $this->conn->error);
+        if (is_null($data['senha']) || empty($data['senha'])) {
+            $query = "UPDATE " . $this->table_name . " SET nome = ?, sobrenome = ?, cpf = ?, telefone = ?, email = ?, perfil_id = ?, data_nascimento = ? WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param('ssssssii', $data['nome'], $data['sobrenome'], $data['cpf'], $data['telefone'], $data['email'], $data['perfil'], $data['data_nascimento'], $id);
+        } else {
+            $query = "UPDATE " . $this->table_name . " SET nome = ?, sobrenome = ?, cpf = ?, telefone = ?, email = ?, senha = ?, perfil_id = ?, data_nascimento = ? WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param('ssssssisi', $data['nome'], $data['sobrenome'], $data['cpf'], $data['telefone'], $data['email'], $data['senha'], $data['perfil'], $data['data_nascimento'], $id);
         }
+
+        if (!$stmt) {
+            return ["success" => false, "message" => "Erro na preparação da consulta: " . $this->conn->error];
+        }
+
+        if (!$stmt->execute()) {
+            return ["success" => false, "message" => "Erro ao atualizar usuário: " . $stmt->error];
+        }
+
+        return ["success" => true];
+    }
+
+    public function updateEndereco($usuario_id, $data) {
+        $query = "UPDATE enderecos SET cep = ?, logradouro = ?, bairro = ?, localidade = ?, uf = ? WHERE usuario_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('sssssi', $data['cep'], $data['logradouro'], $data['bairro'], $data['localidade'], $data['uf'], $usuario_id);
+        return $stmt->execute();
     }
 
     public function delete($id) {
+        $query = "DELETE FROM enderecos WHERE usuario_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+    
         $query = "DELETE FROM usuarios WHERE id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param('i', $id);
-
+    
         if (!$stmt->execute()) {
             die("Erro ao deletar usuário: " . $this->conn->error);
         }
@@ -97,6 +122,16 @@ class Usuario {
         return (int) $row['total'];
     }  
 
+    public function buscarEnderecoPorUsuarioId($usuario_id) {
+        $query = "SELECT * FROM enderecos WHERE usuario_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('i', $usuario_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
+    }
+
     public function read($id) {
         $query = "SELECT u.*, p.nome as perfil_nome FROM usuarios u JOIN perfis p ON u.perfil_id = p.id WHERE u.id = ?";
         $stmt = $this->conn->prepare($query);
@@ -108,6 +143,6 @@ class Usuario {
 
         $result = $stmt->get_result();
         return $result->fetch_assoc();
-    }   
+    }     
 }
 ?>

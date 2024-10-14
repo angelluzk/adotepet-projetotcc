@@ -2,14 +2,13 @@
 require_once '../config/DataBase.php';
 require_once '../controllers/UsuarioController.php';
 
-$db = (new DataBase())->getConnection();
-$usuarioController = new UsuarioController($db);
+$db = new DataBase();
+$usuarioController = new UsuarioController($db->getConnection());
 
-if (isset($_GET['id'])) {
-    $usuario = $usuarioController->read($_GET['id']);
-} else {
-    die("ID do usuário não fornecido.");
-}
+$usuario_id = $_GET['id'] ?? 0;
+$data = $usuarioController->read($usuario_id);
+$usuario = $data['usuario'];
+$endereco = $data['endereco'];
 ?>
 
 <!DOCTYPE html>
@@ -81,6 +80,12 @@ if (isset($_GET['id'])) {
         <p><strong>Telefone:</strong> <?php echo htmlspecialchars($usuario['telefone']); ?></p>
         <p><strong>Email:</strong> <?php echo htmlspecialchars($usuario['email']); ?></p>
         <p><strong>Perfil:</strong> <?php echo $usuario['perfil_id'] == 1 ? 'Funcionário' : 'Usuário Comum'; ?></p>
+        <h2>Endereço</h2>
+        <p><strong>CEP:</strong> <?php echo htmlspecialchars($endereco['cep']); ?></p>
+        <p><strong>Logradouro:</strong> <?php echo htmlspecialchars($endereco['logradouro']); ?></p>
+        <p><strong>Bairro:</strong> <?php echo htmlspecialchars($endereco['bairro']); ?></p>
+        <p><strong>Localidade:</strong> <?php echo htmlspecialchars($endereco['localidade']); ?></p>
+        <p><strong>UF:</strong> <?php echo htmlspecialchars($endereco['uf']); ?></p>
 
         <a href="listar_usuarios.php">Voltar</a>
     </div>
