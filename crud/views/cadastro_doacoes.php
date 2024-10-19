@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
     $_SESSION['error_message'] = "Você precisa estar logado para cadastrar um pet.";
     header('Location: ../../login.html');

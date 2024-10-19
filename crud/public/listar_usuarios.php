@@ -95,11 +95,12 @@
 
                         $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
                         $limit = 8;
-                        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                         $offset = ($page - 1) * $limit;
 
-                        $usuarios = $usuarioController->listarUsuarios($searchTerm, $limit, $offset);
-                        $totalUsuarios = $usuarioController->contarUsuarios($searchTerm);
+                        $resultado = $usuarioController->listar($searchTerm, $limit, $offset);
+                        $usuarios = $resultado['usuarios'];
+                        $totalUsuarios = $resultado['total'];
                         $totalPages = ceil($totalUsuarios / $limit);
 
                         if ($usuarios) {
@@ -107,20 +108,16 @@
                                 <tr>
                                     <td><?= htmlspecialchars($usuario['id']) ?></td>
                                     <td><?= htmlspecialchars($usuario['nome_completo']) ?></td>
-                                    <td><?= htmlspecialchars((new DateTime($usuario['data_nascimento']))->format('d/m/Y')) ?>
-                                    </td>
+                                    <td><?= htmlspecialchars((new DateTime($usuario['data_nascimento']))->format('d/m/Y')) ?></td>
                                     <td><?= htmlspecialchars(formatCPF($usuario['cpf'])) ?></td>
                                     <td><?= htmlspecialchars(formatTelefone($usuario['telefone'])) ?></td>
                                     <td><?= htmlspecialchars($usuario['email']) ?></td>
                                     <td><?= (new DateTime($usuario['criado_em']))->format('d/m/Y') ?></td>
                                     <td><?= htmlspecialchars($usuario['perfil_nome']) ?></td>
                                     <td>
-                                        <a href="../public/visualizar_usuario.php?id=<?= $usuario['id'] ?>"
-                                            class="btn-acoes">Visualizar</a>
-                                        <a href="../public/editar_usuario.php?id=<?= $usuario['id'] ?>"
-                                            class="btn-acoes">Editar</a>
-                                        <a href="../public/deletar_usuario.php?id=<?= $usuario['id'] ?>" class="btn-acoes"
-                                            onclick="return confirm('Tem certeza que deseja deletar este usuário?');">Deletar</a>
+                                        <a href="../public/visualizar_usuario.php?id=<?= $usuario['id'] ?>" class="btn-acoes">Visualizar</a>
+                                        <a href="../public/editar_usuario.php?id=<?= $usuario['id'] ?>" class="btn-acoes">Editar</a>
+                                        <a href="../public/deletar_usuario.php?id=<?= $usuario['id'] ?>" class="btn-acoes" onclick="return confirm('Tem certeza que deseja deletar este usuário?');">Deletar</a>
                                     </td>
                                 </tr>
                             <?php endforeach;
@@ -133,8 +130,7 @@
 
                 <div class="pagination">
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <a href="?page=<?= $i ?>&search=<?= urlencode($searchTerm) ?>"
-                            class="<?= ($i == $page) ? 'active' : '' ?>"><?= $i ?></a>
+                        <a href="?page=<?= $i ?>&search=<?= urlencode($searchTerm) ?>" class="<?= ($i == $page) ? 'active' : '' ?>"><?= $i ?></a>
                     <?php endfor; ?>
                 </div>
             </div>

@@ -41,19 +41,19 @@ class PetController {
     }
 
     public function editarDoacao($doacao_id, $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $fotos){
-        //1.Obter o pet_id da doação
+        //Obter o pet_id da doação
         $doacao = $this->petModel->visualizarDoacao($doacao_id);
         if (!$doacao) {
             return "Doação não encontrada.";
         }
         $pet_id = $doacao['pet_id'];
     
-        //2.Atualizar os dados do pet
+        //Atualizar os dados do pet
         if (!$this->petModel->editarPet($pet_id, $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao)) {
             return "Erro ao atualizar o pet.";
         }
     
-        //3.Se houver novas fotos, remover as antigas e fazer o upload das novas
+        //Se houver novas fotos, remover as antigas e fazer o upload das novas
         if (!empty($fotos['name'][0])) {
             //Remover fotos antigas
             if (!$this->petModel->removerFotosPet($pet_id)) {

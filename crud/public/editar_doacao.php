@@ -11,7 +11,6 @@ if (isset($_GET['id'])) {
     die("ID da doação não fornecido.");
 }
 
-//Verifica se o formulário foi enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nome = $_POST['nome'];
     $especie_id = $_POST['especie'];
@@ -23,10 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sexo = $_POST['sexo'];
     $files = $_FILES['foto'];
 
-    //Chama o método editarDoacao do controller
     $result = $petController->editarDoacao($_GET['id'], $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $files);
 
-    //Redireciona se a edição for bem-sucedida
     if ($result === "Doação editada com sucesso!") {
         header("Location: listar_doacoes.php");
         exit();

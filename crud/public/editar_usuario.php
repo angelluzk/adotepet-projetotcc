@@ -1,17 +1,27 @@
 <?php
 require_once '../config/DataBase.php';
 require_once '../controllers/UsuarioController.php';
+require_once '../controllers/EnderecoController.php';
 
 $db = new DataBase();
-$usuarioController = new UsuarioController($db->getConnection());
+$db = $db->getConnection();
+$usuarioController = new UsuarioController($db);
 
 $usuario_id = $_GET['id'] ?? 0;
-$data = $usuarioController->read($usuario_id);
-$usuario = $data['usuario'];
-$endereco = $data['endereco'];
+
+try {
+    $data = $usuarioController->read($usuario_id);
+    if (!$data) {
+        throw new Exception("Usuário não encontrado.");
+    }
+    $usuario = $data['usuario'];
+    $endereco = $data['endereco'];
+} catch (Exception $e) {
+    echo "<p style='color: red;'>Erro: " . $e->getMessage() . "</p>";
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Dados do usuário
     $usuarioData = [
         'nome' => $_POST['nome'],
         'sobrenome' => $_POST['sobrenome'],
@@ -23,10 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'data_nascimento' => $_POST['data_nascimento']
     ];
 
-    // Atualizar o usuário
-    $result = $usuarioController->update($usuario_id, $usuarioData);
-    if ($result['success']) {
-        // Dados do endereço
+    try {
+        $usuarioController->update($usuario_id, $usuarioData);
+
         $enderecoData = [
             'cep' => $_POST['cep'],
             'logradouro' => $_POST['logradouro'],
@@ -35,15 +44,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'uf' => $_POST['uf']
         ];
 
-        // Atualizar o endereço
-        $resultEndereco = $usuarioController->updateEndereco($usuario_id, $enderecoData);
-        if ($resultEndereco) {
-            echo "<p style='color: green;'>Usuário e endereço atualizados com sucesso!</p>";
+        if (!empty($endereco)) {
+            $usuarioController->updateEndereco($usuario_id, $enderecoData);
         } else {
-            echo "<p style='color: red;'>Erro ao atualizar endereço: " . $resultEndereco['message'] . "</p>";
+            $usuarioController->createEndereco($enderecoData, $usuario_id);
         }
-    } else {
-        echo "<p style='color: red;'>Erro ao atualizar usuário: " . $result['message'] . "</p>";
+
+        echo "<p style='color: green;'>Usuário e endereço atualizados com sucesso!</p>";
+    } catch (Exception $e) {
+        echo "<p style='color: red;'>Erro ao atualizar: " . $e->getMessage() . "</p>";
     }
 }
 ?>
@@ -84,8 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .input-group {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Dois campos lado a lado */
-            gap: 10px; /* Espaçamento entre os campos */
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
 
         input,
@@ -104,12 +113,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #fff;
             border: none;
             border-radius: 5px;
-            padding: 8px 12px; /* Ajustar o padding do botão */
+            padding: 8px 12px;
             cursor: pointer;
             font-size: 16px;
-            width: auto; /* Botão com largura automática */
+            width: auto;
             display: block;
-            margin: 20px auto 0; /* Centralizar o botão */
+            margin: 20px auto 0;
         }
 
         button:hover {

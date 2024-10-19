@@ -4,7 +4,6 @@ session_start();
 require_once '../config/DataBase.php';
 require_once '../controllers/PetController.php';
 
-//Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
     header('Location: ../../login.html');
     exit;
@@ -27,12 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $descricao = $_POST['descricao'];
     $usuario_id = $_SESSION['usuario_id'];
 
-    //Verifica se o campo de fotos foi enviado
     $fotos = isset($_FILES['foto']) ? $_FILES['foto'] : null; 
 
     $petController = new PetController($conn);
 
-    //Chama o método para cadastrar a doação
     $mensagem = $petController->cadastrarDoacao($nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $fotos, $usuario_id);
 
     echo "<script>alert('$mensagem');</script>";

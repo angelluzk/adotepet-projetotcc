@@ -16,7 +16,7 @@
         <div class="header">
             <img src="../../img/logo.png" alt="Logo" class="logo">
         </div>
-        <a href="../../index.php" class="link-voltar"><i class="fas fa-arrow-left"></i> Voltar</a>
+        <a href="javascript:void(0);" id="btnVoltar" class="link-voltar"><i class="fas fa-arrow-left"></i> Voltar</a>
         <h2>Crie seu Cadastro no Adote Pet</h2>
         <p class="descricao">
             É necessário preencher corretamente o formulário abaixo com os respectivos dados cadastrais.

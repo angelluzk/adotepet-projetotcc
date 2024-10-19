@@ -6,35 +6,31 @@ require_once '../controllers/EnderecoController.php';
 $database = new DataBase();
 $db = $database->conn;
 
-// Verifica se a conexão foi bem-sucedida
 if ($db->connect_error) {
     die("Conexão falhou: " . $db->connect_error);
 }
 
-// Instancia o UsuarioController
 $usuarioController = new UsuarioController($db);
 if (!$usuarioController) {
     die('Erro ao criar o UsuarioController.'); 
 }
 
-// Instancia o EnderecoController
 $enderecoController = new EnderecoController($db);
 if (!$enderecoController) {
     die('Erro ao criar o EnderecoController.'); 
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Captura os dados do formulário
     $nome = $_POST['nome'] ?? '';
     $sobrenome = $_POST['sobrenome'] ?? '';
     $cpf = $_POST['cpf'] ?? '';
     $telefone = $_POST['telefone'] ?? '';
     $email = $_POST['email'] ?? '';
     $senha = $_POST['senha'] ?? '';
+    $confirmar_senha = $_POST['confirmar-senha'] ?? '';
     $perfil = $_POST['perfil'] ?? '';
     $data_nascimento = $_POST['data_nascimento'] ?? '';
 
-    // Dados do endereço
     $cep = $_POST['cep'] ?? '';
     $logradouro = $_POST['logradouro'] ?? '';
     $bairro = $_POST['bairro'] ?? '';
@@ -42,19 +38,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $uf = $_POST['uf'] ?? '';
 
     try {
-        // Verifica se o e-mail já está cadastrado
+        if ($senha !== $confirmar_senha) {
+            throw new Exception("As senhas não correspondem.");
+        }
+
         if ($usuarioController->emailExists($email)) {
             throw new Exception("E-mail já cadastrado.");
         }
 
-        // Criação do usuário
+        $senha_criptografada = password_hash($senha, PASSWORD_BCRYPT);
+
         $usuarioController->create([
             'nome' => $nome,
             'sobrenome' => $sobrenome,
             'cpf' => $cpf,
             'telefone' => $telefone,
             'email' => $email,
-            'senha' => $senha,
+            'senha' => $senha_criptografada,
             'perfil' => $perfil,
             'data_nascimento' => $data_nascimento,
         ]);
@@ -62,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $usuario_id = $db->insert_id;
 
         if ($usuario_id > 0) {
-            //Cria o novo endereço
             $enderecoController->create([
                 'cep' => $cep,
                 'logradouro' => $logradouro,
@@ -71,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'uf' => $uf
             ], $usuario_id);
 
-            //Redireciona para a página index.php em caso de sucesso
             header('Location: ../../index.php');
             exit();
         } else {
@@ -79,8 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } catch (Exception $e) {
         error_log('Erro: ' . $e->getMessage());
-        
-        //Retorna uma resposta JSON apenas se houver um erro
         echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
         exit();
     }

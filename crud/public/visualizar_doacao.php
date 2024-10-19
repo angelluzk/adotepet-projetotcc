@@ -7,7 +7,7 @@ $petController = new PetController($db);
 
 if (isset($_GET['id'])) {
     $doacao = $petController->visualizarDoacao($_GET['id']);
-    
+
     if (isset($doacao['error'])) {
         die($doacao['error']);
     }
