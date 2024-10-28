@@ -1,50 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login - Adote Pet</title>
-        <link rel="stylesheet" href="css/login.css">
-        <link href="https://fonts.googleapis.com/css2?family=Candara&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    </head>
 
-    <body>
-        <div class="wave"></div>
-        <div class="container">
-            <div class="left-side">               
-                <div class="image-container">
-                    <img src="img/gato-cachorro.png" alt="Gato e Cachorro">
-                </div>
-            </div>
-            
-            <div class="right-side">
-                <div class="login-box">
-                    <p><a href="index.php" class="link-voltar"><i class="fas fa-arrow-left"></i> Voltar</a></p>
-                    <h2>Faça seu login</h2>
-                    <hr>
-                    <p>Para divulgar ou adotar um animalzinho, você precisa ter um cadastro!</p>
-                    <form action="login.php" method="post">
-                        <div class="input-group">
-                            <i class="fas fa-envelope"></i>
-                            <input type="email" id="email" placeholder="E-mail" name="email" required>
-                        </div>
-                        <div class="input-group">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="senha" placeholder="Senha" name="senha" required>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="manter-logado" name="manter-logado">
-                            <label for="manter-logado">Mantenha-me logado</label>
-                            <a href="crud/views/verificar_nome.php">Esqueceu a senha?</a>
-                        </div>
-                        <button type="submit">ENTRAR</button>                       
-                    </form>
-                    <p class="register-link">Não tem uma conta? <a href="crud/views/cadastro_usuario.php">Cadastre-se</a></p>
-                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Adote Pet</title>
+
+    <link rel="icon" href="img/favicon.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="css/login.css">
+
+</head>
+
+<body>
+    <div class="wave"></div>
+    <div class="container">
+        <div class="left-side">
+            <div class="image-container">
+                <img src="img/gato-cachorro.png" alt="Gato e Cachorro">
             </div>
         </div>
-    </body>
+
+        <div class="right-side">
+            <div class="login-box">
+                <p><a href="index.php" class="link-voltar"><i class="fas fa-arrow-left"></i> Voltar</a></p>
+                <h2>Entre no Nosso Site</h2>
+                <hr>
+                <p>Para divulgar ou adotar um animalzinho, você precisa ter um cadastro!</p>
+                <form action="login.php" method="post">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="E-mail" name="email" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="senha" placeholder="Senha" name="senha" required>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="manter-logado" name="manter-logado">
+                        <label for="manter-logado">Mantenha-me logado</label>
+                        <a href="crud/views/verificar_nome.php">Esqueceu a senha?</a>
+                    </div>
+                    <button type="submit">ENTRAR</button>
+                </form>
+                <p class="register-link">Não tem uma conta? <a href="crud/views/cadastro_usuario.php">Cadastre-se</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
 
 </html>

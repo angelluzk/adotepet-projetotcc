@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro Usuário - Adote Pet</title>
-    <link rel="stylesheet" href="../../css/cadastrousuario.css">
-    <link href="https://fonts.googleapis.com/css2?family=Candara&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../../css/cadastrousuario.css">
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-<div class="wave"></div>
+    <div class="wave"></div>
     <div class="container">
         <div class="header">
             <img src="../../img/logo.png" alt="Logo" class="logo">
@@ -89,14 +98,16 @@
                         <label for="senha">Senha <span class="required">*</span></label>
                         <div class="input-icon">
                             <i class="fas fa-lock"></i>
-                            <input type="password" id="senha" name="senha" placeholder="Mínimo de 6 caracteres" required>
+                            <input type="password" id="senha" name="senha" placeholder="Mínimo de 6 caracteres"
+                                required>
                         </div>
                     </div>
                     <div class="input-group">
                         <label for="confirmar-senha">Confirmar Senha <span class="required">*</span></label>
                         <div class="input-icon">
                             <i class="fas fa-lock"></i>
-                            <input type="password" id="confirmar-senha" name="confirmar-senha" placeholder="Confirmar Senha" required>
+                            <input type="password" id="confirmar-senha" name="confirmar-senha"
+                                placeholder="Confirmar Senha" required>
                         </div>
                     </div>
                 </div>
@@ -119,21 +130,24 @@
                     <label for="logradouro">Logradouro <span class="required">*</span></label>
                     <div class="input-icon">
                         <i class="fas fa-road"></i>
-                        <input type="text" id="logradouro" name="logradouro" placeholder="Logradouro" autocomplete="address-line1" required>
+                        <input type="text" id="logradouro" name="logradouro" placeholder="Logradouro"
+                            autocomplete="address-line1" required>
                     </div>
                 </div>
                 <div class="input-group">
                     <label for="bairro">Bairro <span class="required">*</span></label>
                     <div class="input-icon">
                         <i class="fas fa-map"></i>
-                        <input type="text" id="bairro" name="bairro" placeholder="Bairro" autocomplete="address-level2" required>
+                        <input type="text" id="bairro" name="bairro" placeholder="Bairro" autocomplete="address-level2"
+                            required>
                     </div>
                 </div>
                 <div class="input-group">
                     <label for="localidade">Localidade <span class="required">*</span></label>
                     <div class="input-icon">
                         <i class="fas fa-city"></i>
-                        <input type="text" id="localidade" name="localidade" placeholder="Localidade" autocomplete="address-level1" required>
+                        <input type="text" id="localidade" name="localidade" placeholder="Localidade"
+                            autocomplete="address-level1" required>
                     </div>
                 </div>
                 <div class="input-group">
@@ -149,12 +163,14 @@
             </div>
         </form>
         <p class="termos">
-            Ao preencher o formulário você concorda com nossos <a href="#">Termos de uso</a> e nossa <a href="#">Política de Privacidade</a>.
+            Ao preencher o formulário você concorda com nossos <a href="#">Termos de uso</a> e nossa <a
+                href="#">Política de Privacidade</a>.
         </p>
     </div>
-    
+
     <script src="../../javascript/buscar_endereco.js"></script>
     <script src="../../javascript/formulario.js"></script>
-    
+
 </body>
+
 </html>

@@ -1,10 +1,10 @@
 /* Importação da fonte */
-@import url('https://fonts.googleapis.com/css2?family=Candara&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Candara', Arial, sans-serif;
+    font-family: "Poppins", sans-serif;
     overflow-x: hidden;
     background-color: rgba(0, 0, 0, 0.2);
     background-image: url('../img/fundo.png');
@@ -52,7 +52,6 @@ header:hover {
 
 .logo span {
     font-size: 30px;
-    font-weight: bold;
     color: #100f47;
     display: flex;
     align-items: center;
@@ -80,7 +79,6 @@ nav a {
     text-decoration: none;
     color: #100f47;
     font-size: 18px;
-    font-weight: bold;
     position: relative;
     transition: color 0.3s ease-in-out;
 }
@@ -473,112 +471,94 @@ footer {
     background-color: #f44336;
 }
 
-
-/* Media Queries para responsividade */
+/* Responsividade */
 @media (max-width: 1200px) {
-    .header-content {
-        flex-direction: column;
-        align-items: center;
+    .header-content, .footer-container {
         padding: 0 10px;
     }
-
     .logo {
-        margin: 0;
+        margin-right: 50px;
     }
-
-    .logo img {
-        height: 60px;
-    }
-
-    .logo span {
-        font-size: 24px;
-    }
-
     nav ul {
-        flex-direction: column;
         gap: 10px;
-        text-align: center;
-        margin: 0;
-        padding: 0;
     }
-
-    nav a {
-        font-size: 16px;
+    .adoption-cards {
+        flex-wrap: wrap;
+        justify-content: space-around;
     }
-
+    .adoption-card {
+        width: 48%;
+        margin-bottom: 20px;
+    }
     .hero-content h1 {
         font-size: 2rem;
     }
-
     .hero-content p {
         font-size: 1.2rem;
     }
+}
 
-    .adoption-cards {
+@media (max-width: 992px) {
+    .header-content, .footer-container {
         flex-direction: column;
         align-items: center;
     }
-
+    .logo {
+        margin: 0;
+    }
+    nav ul {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+    .hero-content p {
+        font-size: 1rem;
+    }
     .adoption-card {
-        width: 90%;
-        max-width: 300px;
+        width: 100%;
     }
 }
 
 @media (max-width: 768px) {
-    .header-content {
-        padding: 0 10px;
+    header, footer, .adoption-section, .hero-content {
+        padding: 10px;
     }
-
-    .logo img {
-        height: 50px;
+    .adoption-card img {
+        height: 200px;
     }
-
-    .logo span {
-        font-size: 20px;
+    .footer-section {
+        padding: 15px;
+        margin-bottom: 10px;
     }
-
-    nav ul {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    nav a {
-        font-size: 14px;
-    }
-
-    .hero-content h1 {
-        font-size: 1.5rem;
-    }
-
-    .hero-content p {
-        font-size: 1rem;
-    }
-
     .hero-buttons img {
-        max-width: 120px;
-    }
-
-    .adoption-card {
         width: 100%;
-        max-width: 90%;
+        max-width: 250px;
     }
-
-    .footer-container {
-        flex-direction: column;
+    .view-more-button {
+        padding: 8px 16px;
     }
 }
 
-@media (max-width: 480px) {
-    .hero-content h1 {
-        font-size: 1.2rem;
+@media (max-width: 576px) {
+    .logo span {
+        font-size: 1.5rem;
     }
-
+    nav a {
+        font-size: 1rem;
+    }
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
     .hero-content p {
         font-size: 0.9rem;
     }
-
-    .adoption-card img {
-        height: 150px;
+    .adoption-cards {
+        flex-direction: column;
     }
 }

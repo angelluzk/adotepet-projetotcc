@@ -1,5 +1,5 @@
 /* Importando fontes do Google */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* Reset básico */
 * {
@@ -106,7 +106,7 @@ nav i {
 
 /* Seção principal */
 .main {
-    width: calc(100% - 280px);
+    flex: 1;
     padding: 20px;
     overflow-y: auto;
 }
@@ -142,6 +142,7 @@ nav i {
 .list-container form {
     display: flex;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .list-container input[type="text"] {
@@ -151,6 +152,7 @@ nav i {
     border-radius: 5px;
     margin-right: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
 }
 
 .list-container button {
@@ -163,6 +165,7 @@ nav i {
     transition: background 0.3s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-left: 10px;
+    min-width: 100px;
 }
 
 .list-container button:hover {
@@ -257,4 +260,95 @@ tbody tr:nth-child(even) {
 .pagination .active {
     background: #7fb9ca; 
     pointer-events: none; 
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    nav {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main {
+        width: 100%;
+    }
+
+    .list-container input[type="text"], .list-container button {
+        min-width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .btn-container {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        width: 100%;
+        position: relative;
+    }
+
+    .logo img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .logo h1 {
+        font-size: 18px;
+    }
+
+    .list-container h2 {
+        font-size: 18px;
+    }
+
+    .list-container input[type="text"], .list-container button {
+        min-width: 100%;
+    }
+
+    .btn-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .logo h1 {
+        font-size: 16px;
+    }
+
+    .list-container h2 {
+        font-size: 16px;
+    }
+
+    .list-container input[type="text"], .list-container button {
+        min-width: 100%;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+
+    .btn-container {
+        flex-direction: column;
+    }
+
+    .pagination a {
+        padding: 8px 10px;
+    }
 }

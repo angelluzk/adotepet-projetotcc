@@ -1,8 +1,14 @@
 /* Importação da fonte */
-@import url('https://fonts.googleapis.com/css2?family=Candara&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 body {
-    font-family: Candara, sans-serif;
+    font-family: "Poppins", sans-serif;
     background-color: #fff;
     color: #100e48;
     margin: 0;
@@ -90,7 +96,6 @@ h2 {
 .input-group label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
     color: #100e48;
 }
 
@@ -141,9 +146,8 @@ input::placeholder {
 
 .form-group label {
     display: block;
-    font-weight: bold;
     margin-bottom: 5px;
-    color: #333;
+    color: #100e48;
 }
 
 .form-group small {
@@ -196,7 +200,7 @@ input::placeholder {
 
 .upload-section h4 {
     margin-top: 10px;
-    color: #333;
+    color: #100e48;
 }
 
 .upload-input {
@@ -284,23 +288,39 @@ select option {
     color: #100e48;
 }
 
-/* Media Queries para Responsividade */
-@media (max-width: 768px) {
+/* Responsividade*/
+@media (max-width: 1024px) {
     .input-row {
         flex-direction: column;
-    }
-    
-    .input-group {
-        margin-bottom: 15px;
     }
 
     .container {
         padding: 20px;
-        max-width: 90%;
+        width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .link-voltar {
+        font-size: 18px;
     }
 
     h2 {
         font-size: 22px;
+    }
+
+    .descricao {
+        font-size: 13px;
+    }
+
+    .input-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-group {
+        display: block;
+        text-align: center;
     }
 
     .btn {
@@ -309,17 +329,46 @@ select option {
 }
 
 @media (max-width: 480px) {
+    .header .logo {
+        width: 140px;
+    }
+
     .link-voltar {
         font-size: 16px;
-        margin-bottom: 10px;
     }
 
     h2 {
         font-size: 20px;
     }
 
+    .descricao {
+        font-size: 12px;
+    }
+
+    .upload-section {
+        padding: 15px;
+    }
+
+    .upload-input button {
+        font-size: 14px;
+    }
+
+    .termos {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 360px) {
     .btn {
-        padding: 12px;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .upload-section {
+        padding: 10px;
+    }
+
+    .uploaded-files h4 {
         font-size: 14px;
     }
 }

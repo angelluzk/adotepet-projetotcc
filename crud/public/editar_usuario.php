@@ -59,13 +59,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Usuário</title>
+
+    <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
-            font-family: 'Candara', sans-serif;
+            font-family: "Poppins", sans-serif;
             background-color: #f4f4f4;
             color: #100e48;
             margin: 0;
@@ -147,47 +156,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body>
-<div class="container">
-    <h1>Editar Usuário</h1>
-    <form action="" method="POST">
-        <input type="hidden" name="id" value="<?php echo $usuario['id']; ?>">
-        <div class="input-group">
-            <label>Nome: <input type="text" name="nome" value="<?php echo htmlspecialchars($usuario['nome']); ?>" required></label>
-            <label>Sobrenome: <input type="text" name="sobrenome" value="<?php echo htmlspecialchars($usuario['sobrenome']); ?>" required></label>
-        </div>
-        <div class="input-group">
-            <label>Data de Nascimento: <input type="date" name="data_nascimento" value="<?php echo $usuario['data_nascimento']; ?>" required></label>
-            <label>CPF: <input type="text" name="cpf" value="<?php echo htmlspecialchars($usuario['cpf']); ?>" required></label>
-        </div>
-        <div class="input-group">
-            <label>Telefone: <input type="text" name="telefone" value="<?php echo htmlspecialchars($usuario['telefone']); ?>" required></label>
-            <label>Email: <input type="email" name="email" value="<?php echo htmlspecialchars($usuario['email']); ?>" required></label>
-        </div>
-        <label>Senha: <input type="password" name="senha" placeholder="Nova Senha (opcional)"></label>
-        <label>Perfil:
-            <select name="perfil">
-                <option value="1" <?php echo $usuario['perfil_id'] == 1 ? 'selected' : ''; ?>>Funcionário</option>
-                <option value="2" <?php echo $usuario['perfil_id'] == 2 ? 'selected' : ''; ?>>Usuário Comum</option>
-            </select>
-        </label>
-        <h2>Endereço</h2>
-        <div class="input-group">
-            <label>CEP: <input type="text" name="cep" id="cep" value="<?php echo htmlspecialchars($endereco['cep'] ?? ''); ?>" required></label>
-            <label>Logradouro: <input type="text" name="logradouro" id="logradouro" value="<?php echo htmlspecialchars($endereco['logradouro'] ?? ''); ?>" required></label>
-        </div>
-        <div class="input-group">
-            <label>Bairro: <input type="text" name="bairro" id="bairro" value="<?php echo htmlspecialchars($endereco['bairro'] ?? ''); ?>" required></label>
-            <label>Localidade: <input type="text" name="localidade" id="localidade" value="<?php echo htmlspecialchars($endereco['localidade'] ?? ''); ?>" required></label>
-        </div>
-        <div class="input-group">
-            <label>UF: <input type="text" name="uf" id="uf" value="<?php echo htmlspecialchars($endereco['uf'] ?? ''); ?>" required></label>
-        </div>
-        <button type="submit">Salvar</button>
-        <a href="listar_usuarios.php">Voltar à lista</a>
-    </form>
-</div>
 
-<script src="../../javascript/buscar_endereco.js"></script>
+<body>
+    <div class="container">
+        <h1>Editar Usuário</h1>
+        <form action="" method="POST">
+            <input type="hidden" name="id" value="<?php echo $usuario['id']; ?>">
+            <div class="input-group">
+                <label>Nome: <input type="text" name="nome" value="<?php echo htmlspecialchars($usuario['nome']); ?>"
+                        required></label>
+                <label>Sobrenome: <input type="text" name="sobrenome"
+                        value="<?php echo htmlspecialchars($usuario['sobrenome']); ?>" required></label>
+            </div>
+            <div class="input-group">
+                <label>Data de Nascimento: <input type="date" name="data_nascimento"
+                        value="<?php echo $usuario['data_nascimento']; ?>" required></label>
+                <label>CPF: <input type="text" name="cpf" value="<?php echo htmlspecialchars($usuario['cpf']); ?>"
+                        required></label>
+            </div>
+            <div class="input-group">
+                <label>Telefone: <input type="text" name="telefone"
+                        value="<?php echo htmlspecialchars($usuario['telefone']); ?>" required></label>
+                <label>Email: <input type="email" name="email"
+                        value="<?php echo htmlspecialchars($usuario['email']); ?>" required></label>
+            </div>
+            <label>Senha: <input type="password" name="senha" placeholder="Nova Senha (opcional)"></label>
+            <label>Perfil:
+                <select name="perfil">
+                    <option value="1" <?php echo $usuario['perfil_id'] == 1 ? 'selected' : ''; ?>>Funcionário</option>
+                    <option value="2" <?php echo $usuario['perfil_id'] == 2 ? 'selected' : ''; ?>>Usuário Comum</option>
+                </select>
+            </label>
+            <h2>Endereço</h2>
+            <div class="input-group">
+                <label>CEP: <input type="text" name="cep" id="cep"
+                        value="<?php echo htmlspecialchars($endereco['cep'] ?? ''); ?>" required></label>
+                <label>Logradouro: <input type="text" name="logradouro" id="logradouro"
+                        value="<?php echo htmlspecialchars($endereco['logradouro'] ?? ''); ?>" required></label>
+            </div>
+            <div class="input-group">
+                <label>Bairro: <input type="text" name="bairro" id="bairro"
+                        value="<?php echo htmlspecialchars($endereco['bairro'] ?? ''); ?>" required></label>
+                <label>Localidade: <input type="text" name="localidade" id="localidade"
+                        value="<?php echo htmlspecialchars($endereco['localidade'] ?? ''); ?>" required></label>
+            </div>
+            <div class="input-group">
+                <label>UF: <input type="text" name="uf" id="uf"
+                        value="<?php echo htmlspecialchars($endereco['uf'] ?? ''); ?>" required></label>
+            </div>
+            <button type="submit">Salvar</button>
+            <a href="listar_usuarios.php">Voltar à lista</a>
+        </form>
+    </div>
+
+    <script src="../../javascript/buscar_endereco.js"></script>
 </body>
+
 </html>

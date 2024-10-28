@@ -1,11 +1,11 @@
 /* Importação da fonte */
-@import url('https://fonts.googleapis.com/css2?family=Candara&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Candara, sans-serif;
+    font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -127,8 +127,9 @@ body {
 .checkbox-group {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
-    font-size: 18px;
+    color: #777;
+    margin-bottom: 14px;
+    font-size: 17px;
 }
 
 .checkbox-group input[type="checkbox"] {
@@ -189,14 +190,13 @@ button:hover {
 .register-link a {
     color: #21325E;
     text-decoration: none;
-    font-weight: bold;
 }
 
 .register-link a:hover {
     text-decoration: underline;
 }
 
-/* Media Queries para Responsividade */
+/* Responsividade */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;

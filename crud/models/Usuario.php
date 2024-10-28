@@ -41,28 +41,21 @@ class Usuario {
     public function update($id, $data) {
         $this->validateUserData($data);
     
-        // Inicia a query de atualização
         $query = "UPDATE " . $this->table_name . " SET nome = ?, sobrenome = ?, cpf = ?, telefone = ?, email = ?, perfil_id = ?, data_nascimento = ?";
     
-        // Verifica se a senha foi fornecida e adiciona a coluna na query, se necessário
         if (!empty($data['senha'])) {
-            // Criptografa a senha
             $data['senha'] = password_hash($data['senha'], PASSWORD_DEFAULT);
             $query .= ", senha = ?";
         }
     
-        // Adiciona a condição WHERE para a atualização
         $query .= " WHERE id = ?";
     
-        // Prepara a instrução SQL
         $stmt = $this->conn->prepare($query);
         if (!$stmt) {
             throw new Exception("Erro ao preparar a consulta: " . $this->conn->error);
         }
     
-        // Define os parâmetros com ou sem senha
         if (!empty($data['senha'])) {
-            // Com senha
             $stmt->bind_param(
                 'ssssssssi',
                 $data['nome'],
@@ -76,7 +69,6 @@ class Usuario {
                 $id
             );
         } else {
-            // Sem senha
             $stmt->bind_param(
                 'sssssssi',
                 $data['nome'],
@@ -90,12 +82,10 @@ class Usuario {
             );
         }
     
-        // Executa a instrução
         if (!$stmt->execute()) {
             throw new Exception("Erro ao atualizar usuário: " . $stmt->error);
         }
     
-        // Fecha o statement
         $stmt->close();
     }
 
@@ -114,7 +104,6 @@ class Usuario {
     }
 
     public function addEnderecoIfNotExists($usuario_id, $data) {
-        // Verifica se o usuário já possui um endereço
         $query = "SELECT COUNT(*) as total FROM enderecos WHERE usuario_id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param('i', $usuario_id);
@@ -123,7 +112,6 @@ class Usuario {
         $row = $result->fetch_assoc();
         
         if ((int)$row['total'] === 0) {
-            // O usuário não possui um endereço, então vamos adicioná-lo
             $this->validateAddressData($data);
             $query = "INSERT INTO enderecos (usuario_id, cep, logradouro, bairro, localidade, uf) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($query);

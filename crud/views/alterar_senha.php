@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alterar Senha</title>
+
+    <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <link rel="stylesheet" href="../../css/recuperar_senha.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
+
 <body>
+    <div class="wave"></div>
     <div class="form-container">
         <h1>Alterar Senha</h1>
         <p>Por favor, insira sua nova senha abaixo.</p>
@@ -25,7 +37,9 @@
             </div>
 
             <button type="submit">Alterar Senha</button>
-            <?php if(isset($error)) { echo "<p class='error'>$error</p>"; } ?>
+            <?php if (isset($error)) {
+                echo "<p class='error'>$error</p>";
+            } ?>
         </form>
     </div>
 
@@ -46,4 +60,5 @@
         }
     </script>
 </body>
+
 </html>
