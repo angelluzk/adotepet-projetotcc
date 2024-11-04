@@ -32,13 +32,13 @@
             Os campos com <span class="required">*</span> são de preenchimento obrigatório.
         </p>
         <form id="formCadastro" action="../../crud/public/cadastrar_usuario.php" method="POST">
-            <!-- Etapa 1: Dados Pessoais -->
+
             <div class="form-step form-step-active">
                 <div class="input-group">
-                    <label for="perfil">Perfil <span class="required">*</span></label>
+                    <label for="perfil_id">Perfil <span class="required">*</span></label>
                     <div class="input-icon">
                         <i class="fas fa-user-tag"></i>
-                        <select id="perfil" name="perfil" required>
+                        <select id="perfil_id" name="perfil_id" required>
                             <option value="1">Funcionário</option>
                             <option value="2">Usuário Comum</option>
                         </select>
@@ -117,46 +117,64 @@
                 </div>
             </div>
 
-            <!-- Etapa 2: Endereço -->
             <div class="form-step">
-                <div class="input-group">
-                    <label for="cep">CEP <span class="required">*</span></label>
-                    <div class="input-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <input type="text" id="cep" name="cep" placeholder="CEP" autocomplete="postal-code" required>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="cep">CEP <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="cep" name="cep" placeholder="CEP" autocomplete="postal-code"
+                                required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="logradouro">Logradouro <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-road"></i>
+                            <input type="text" id="logradouro" name="logradouro" placeholder="Logradouro"
+                                autocomplete="address-line1" required>
+                        </div>
                     </div>
                 </div>
-                <div class="input-group">
-                    <label for="logradouro">Logradouro <span class="required">*</span></label>
-                    <div class="input-icon">
-                        <i class="fas fa-road"></i>
-                        <input type="text" id="logradouro" name="logradouro" placeholder="Logradouro"
-                            autocomplete="address-line1" required>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="bairro">Bairro <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-map"></i>
+                            <input type="text" id="bairro" name="bairro" placeholder="Bairro"
+                                autocomplete="address-level2" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="localidade">Localidade <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-city"></i>
+                            <input type="text" id="localidade" name="localidade" placeholder="Localidade"
+                                autocomplete="address-level1" required>
+                        </div>
                     </div>
                 </div>
-                <div class="input-group">
-                    <label for="bairro">Bairro <span class="required">*</span></label>
-                    <div class="input-icon">
-                        <i class="fas fa-map"></i>
-                        <input type="text" id="bairro" name="bairro" placeholder="Bairro" autocomplete="address-level2"
-                            required>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="estado">Estado <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="estado" name="estado" placeholder="Estado"
+                                autocomplete="address-level1" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="uf">UF <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-flag"></i>
+                            <input type="text" id="uf" name="uf" placeholder="UF" autocomplete="address-level1"
+                                required>
+                        </div>
                     </div>
                 </div>
-                <div class="input-group">
-                    <label for="localidade">Localidade <span class="required">*</span></label>
-                    <div class="input-icon">
-                        <i class="fas fa-city"></i>
-                        <input type="text" id="localidade" name="localidade" placeholder="Localidade"
-                            autocomplete="address-level1" required>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label for="uf">UF <span class="required">*</span></label>
-                    <div class="input-icon">
-                        <i class="fas fa-flag"></i>
-                        <input type="text" id="uf" name="uf" placeholder="UF" autocomplete="address-level1" required>
-                    </div>
-                </div>
+
                 <div class="btn-group">
                     <button type="submit" class="btn cadastrar"><i class="fas fa-paper-plane"></i> Cadastrar</button>
                 </div>

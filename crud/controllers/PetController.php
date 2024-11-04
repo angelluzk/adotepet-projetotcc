@@ -8,7 +8,11 @@ class PetController {
         $this->petModel = new Pet( $db);
     }
 
-    public function cadastrarDoacao($nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $fotos, $usuario_id){
+    public function cadastrarDoacao($nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $fotos, $usuario_id, $endereco_id) {
+        if (!$endereco_id) {
+            return "Endereço do usuário não encontrado.";
+        }
+    
         $pet_id = $this->petModel->insertPet($nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao);
         if (!$pet_id) {
             return "Erro ao cadastrar o pet.";
@@ -19,10 +23,9 @@ class PetController {
         }
     
         $data_doacao = date('Y-m-d H:i:s');
-        if (!$this->petModel->insertDoacao($pet_id, $usuario_id, $data_doacao)) {
+        if (!$this->petModel->insertDoacao($pet_id, $usuario_id, $data_doacao, $endereco_id)) {
             return "Erro ao cadastrar a doação.";
-        }
-    
+        }   
         return "Doação cadastrada com sucesso!";
     }
 
@@ -36,36 +39,30 @@ class PetController {
         if (!$doacao) {
             return ["error" => "Doação não encontrada."];
         }
-        
         return $doacao;
     }
 
     public function editarDoacao($doacao_id, $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $fotos){
-        //Obter o pet_id da doação
+
         $doacao = $this->petModel->visualizarDoacao($doacao_id);
         if (!$doacao) {
             return "Doação não encontrada.";
         }
         $pet_id = $doacao['pet_id'];
     
-        //Atualizar os dados do pet
         if (!$this->petModel->editarPet($pet_id, $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao)) {
             return "Erro ao atualizar o pet.";
         }
     
-        //Se houver novas fotos, remover as antigas e fazer o upload das novas
         if (!empty($fotos['name'][0])) {
-            //Remover fotos antigas
             if (!$this->petModel->removerFotosPet($pet_id)) {
                 return "Erro ao remover fotos antigas.";
             }
     
-            //Fazer upload das novas fotos
             if (!$this->petModel->uploadFotos($pet_id, $fotos)) {
                 return "Erro ao fazer upload das novas fotos.";
             }
         }
-    
         return "Doação editada com sucesso!";
     }    
 

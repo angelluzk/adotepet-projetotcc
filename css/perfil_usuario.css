@@ -499,7 +499,6 @@ h3 {
     box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
 }
 
-/* Campos específicos como email e telefone */
 .input-half {
     flex: 1 1 calc(50% - 20px);
     min-width: 120px;
@@ -557,4 +556,121 @@ h3 {
     margin-bottom: 15px;
     border-bottom: 2px solid var(--secondary-color);
     padding-bottom: 5px;
+}
+
+/* Estilos do rodapé */
+footer {
+    background-color: #100f47;
+    color: white;
+    padding: 40px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+    position: relative;
+}
+
+.socials a {
+    color: #7fb9ca;
+    font-size: 1.3rem;
+    margin-right: 15px;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.socials a:last-child {
+    margin-right: 0;
+}
+
+.socials a:hover {
+    transform: scale(1.2);
+    color: #00c7c7;
+}
+
+.footer-social {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.footer-social a {
+    color: #00FFFF;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+    transform: scale(1.2);
+    color: #00c7c7;
+}
+
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-section {
+    flex: 1;
+    margin-right: 20px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.footer-section h2 {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #7fb9ca;
+    padding-bottom: 10px;
+}
+
+.footer-section p, .footer-section ul {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #cccccc;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: #8ef59a;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.footer-section ul li a:hover {
+    color: #7fb9ca;
+}
+
+.footer-section .social-icons a {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    color: #8ef59a;
+    transition: color 0.3s ease-in-out;
+}
+
+.footer-section .social-icons a:hover {
+    color: #7fb9ca;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 10px;
+    background-color: #0e0d3a;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #cccccc;
 }

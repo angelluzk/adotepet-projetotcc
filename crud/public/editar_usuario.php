@@ -4,10 +4,10 @@ require_once '../controllers/UsuarioController.php';
 require_once '../controllers/EnderecoController.php';
 
 $db = new DataBase();
-$db = $db->getConnection();
-$usuarioController = new UsuarioController($db);
+$conn = $db->getConnection();
+$usuarioController = new UsuarioController($conn);
 
-$usuario_id = $_GET['id'] ?? 0;
+$usuario_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 try {
     $data = $usuarioController->read($usuario_id);
@@ -23,25 +23,33 @@ try {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuarioData = [
-        'nome' => $_POST['nome'],
-        'sobrenome' => $_POST['sobrenome'],
-        'cpf' => $_POST['cpf'],
-        'telefone' => $_POST['telefone'],
-        'email' => $_POST['email'],
-        'senha' => !empty($_POST['senha']) ? $_POST['senha'] : null,
-        'perfil' => $_POST['perfil'],
+        'nome' => trim($_POST['nome']),
+        'sobrenome' => trim($_POST['sobrenome']),
+        'cpf' => trim($_POST['cpf']),
+        'telefone' => trim($_POST['telefone']),
+        'email' => trim($_POST['email']),
+        'senha' => trim($_POST['senha']),
+        'perfil_id' => (int)$_POST['perfil_id'],
         'data_nascimento' => $_POST['data_nascimento']
     ];
+
+    foreach ($usuarioData as $key => $value) {
+        if (empty($value) && $key !== 'senha') {
+            echo "<p style='color: red;'>Erro: O campo $key não pode estar vazio.</p>";
+            exit;
+        }
+    }
 
     try {
         $usuarioController->update($usuario_id, $usuarioData);
 
         $enderecoData = [
-            'cep' => $_POST['cep'],
-            'logradouro' => $_POST['logradouro'],
-            'bairro' => $_POST['bairro'],
-            'localidade' => $_POST['localidade'],
-            'uf' => $_POST['uf']
+            'cep' => trim($_POST['cep']),
+            'logradouro' => trim($_POST['logradouro']),
+            'bairro' => trim($_POST['bairro']),
+            'localidade' => trim($_POST['localidade']),
+            'uf' => trim($_POST['uf']),
+            'estado' => trim($_POST['estado'])
         ];
 
         if (!empty($endereco)) {
@@ -182,11 +190,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <label>Senha: <input type="password" name="senha" placeholder="Nova Senha (opcional)"></label>
             <label>Perfil:
-                <select name="perfil">
+                <select name="perfil_id">
                     <option value="1" <?php echo $usuario['perfil_id'] == 1 ? 'selected' : ''; ?>>Funcionário</option>
                     <option value="2" <?php echo $usuario['perfil_id'] == 2 ? 'selected' : ''; ?>>Usuário Comum</option>
                 </select>
             </label>
+
             <h2>Endereço</h2>
             <div class="input-group">
                 <label>CEP: <input type="text" name="cep" id="cep"
@@ -203,6 +212,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="input-group">
                 <label>UF: <input type="text" name="uf" id="uf"
                         value="<?php echo htmlspecialchars($endereco['uf'] ?? ''); ?>" required></label>
+                <label>Estado: <input type="text" name="estado" id="estado"
+                        value="<?php echo htmlspecialchars($endereco['estado'] ?? ''); ?>" required></label>
             </div>
             <button type="submit">Salvar</button>
             <a href="listar_usuarios.php">Voltar à lista</a>

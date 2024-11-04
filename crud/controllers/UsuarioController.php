@@ -18,17 +18,28 @@ class UsuarioController {
         return $this->usuario->emailExists($email);
     }
 
+    public function usuarioExists($usuario_id) {
+        return $this->usuario->usuarioExists($usuario_id);
+    }
+
     public function create($data) {
         try {
             if ($this->usuario->emailExists($data['email'])) {
                 throw new Exception("E-mail já cadastrado.");
             }
-
+    
+            error_log("Dados do usuário: " . json_encode($data));
+    
             $this->usuario->create($data);
+    
+            if (isset($data['endereco'])) {
+                $this->createEndereco($data['endereco'], $this->usuario->getLastInsertId());
+            }
+    
             return "Usuário criado com sucesso.";
         } catch (Exception $e) {
             error_log('Erro ao criar usuário: ' . $e->getMessage());
-            throw new Exception("Falha ao criar o usuário.");
+            throw new Exception("Falha ao criar o usuário: " . $e->getMessage());
         }
     }
 
@@ -99,7 +110,6 @@ class UsuarioController {
             } catch (Exception $e) {
                 $endereco = null;
             }
-
             return [
                 'usuario' => $usuario,
                 'endereco' => $endereco

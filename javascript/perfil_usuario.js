@@ -3,7 +3,7 @@ function toggleMenu() {
     dropdownMenu.classList.toggle('show');
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (!event.target.closest('.profile-section')) {
         const menu = document.getElementById('dropdown-menu');
         if (menu.style.display === 'block') {

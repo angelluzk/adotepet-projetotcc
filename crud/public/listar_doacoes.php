@@ -88,7 +88,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>ID do Pet</th>
+                            <th>ID</th>
                             <th>Nome do Pet</th>
                             <th>Nome Protetor</th>
                             <th>Espécie</th>

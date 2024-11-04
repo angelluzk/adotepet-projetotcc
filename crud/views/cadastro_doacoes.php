@@ -55,7 +55,7 @@ if (!isset($_SESSION['usuario_id'])) {
             <div class="input-icon">
                 <i class="fas fa-paw"></i>
                 <select name="especie" id="especie" required>
-                    <option value="">Selecione</option>
+                    <option value="" disabled selected>Selecione</option>
                     <option value="1">Cachorro</option>
                     <option value="2">Gato</option>
                 </select>
@@ -77,7 +77,7 @@ if (!isset($_SESSION['usuario_id'])) {
             <div class="input-icon">
                 <i class="fas fa-paw"></i>
                 <select name="porte" id="porte" required>
-                    <option value="">Selecione</option>
+                    <option value="" disabled selected>Selecione</option>
                     <option value="Pequeno">Pequeno</option>
                     <option value="Médio">Médio</option>
                     <option value="Grande">Grande</option>
@@ -90,7 +90,7 @@ if (!isset($_SESSION['usuario_id'])) {
             <div class="input-icon">
                 <i class="fas fa-venus-mars"></i>
                 <select name="sexo" id="sexo" required>
-                    <option value="">Selecione</option>
+                    <option value="" disabled selected>Selecione</option>
                     <option value="Macho">Macho</option>
                     <option value="Fêmea">Fêmea</option>
                 </select>

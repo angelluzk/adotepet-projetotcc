@@ -59,7 +59,7 @@ if ($errorMessage) {
                     <a href="<?= $isLoggedIn ? 'crud/views/cadastro_doacoes.php' : 'login.html' ?>" class="hero-button">
                         <img src="img/botaov4.png" alt="Divulgue o Pet">
                     </a>
-                    <a href="#" class="hero-button">
+                    <a href="crud/views/pets_adocao.php" class="hero-button">
                         <img src="img/botaov5.png" alt="Adote um Pet">
                     </a>
                 </div>

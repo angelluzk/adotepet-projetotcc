@@ -1,135 +1,163 @@
 <?php
 require_once '../config/DataBase.php';
 
-class Usuario {
+class Usuario
+{
     private $conn;
     private $table_name = 'usuarios';
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
-    public function emailExists($email) {
+    public function emailExists($email)
+    {
         $stmt = $this->conn->prepare("SELECT id FROM usuarios WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
-        
+
         return $stmt->num_rows > 0;
     }
 
-    public function create($data) {
+    public function usuarioExists($usuario_id)
+    {
+        $stmt = $this->conn->prepare("SELECT id FROM usuarios WHERE id = ?");
+        $stmt->bind_param("i", $usuario_id);
+        $stmt->execute();
+        $stmt->store_result();
+
+        return $stmt->num_rows > 0;
+    }
+
+    public function getLastInsertId()
+    {
+        return $this->conn->insert_id;
+    }
+
+    public function create($data)
+    {
         $this->validateUserData($data);
 
-        $query = "INSERT INTO usuarios (nome, sobrenome, cpf, telefone, email, senha, perfil_id, data_nascimento) 
+        $query = "INSERT INTO " . $this->table_name . " (nome, sobrenome, cpf, telefone, email, senha, perfil_id, data_nascimento) 
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
-        
+
         if (!$stmt) {
             throw new Exception("Erro ao preparar a consulta: " . $this->conn->error);
         }
 
-        $stmt->bind_param('ssssssss', $data['nome'], $data['sobrenome'], $data['cpf'], $data['telefone'], $data['email'], $data['senha'], $data['perfil'], $data['data_nascimento']);
-        
+        $senhaHash = password_hash($data['senha'], PASSWORD_DEFAULT);
+
+        $stmt->bind_param('ssssssss', $data['nome'], $data['sobrenome'], $data['cpf'], $data['telefone'], $data['email'], $senhaHash, $data['perfil_id'], $data['data_nascimento']);
+
         if (!$stmt->execute()) {
             throw new Exception("Erro ao cadastrar usuário: " . $stmt->error);
         }
 
+        $usuario_id = $this->conn->insert_id;
         $stmt->close();
+        return $usuario_id;
     }
+    public function update($id, $data)
+    {
+        $sql = "UPDATE " . $this->table_name . " SET 
+                nome = ?, 
+                sobrenome = ?, 
+                cpf = ?, 
+                telefone = ?, 
+                email = ?, 
+                perfil_id = ?, 
+                data_nascimento = ? 
+                WHERE id = ?";
 
-    public function update($id, $data) {
-        $this->validateUserData($data);
-    
-        $query = "UPDATE " . $this->table_name . " SET nome = ?, sobrenome = ?, cpf = ?, telefone = ?, email = ?, perfil_id = ?, data_nascimento = ?";
-    
         if (!empty($data['senha'])) {
-            $data['senha'] = password_hash($data['senha'], PASSWORD_DEFAULT);
-            $query .= ", senha = ?";
+            $sql = "UPDATE " . $this->table_name . " SET 
+                    nome = ?, 
+                    sobrenome = ?, 
+                    cpf = ?, 
+                    telefone = ?, 
+                    email = ?, 
+                    senha = ?, 
+                    perfil_id = ?, 
+                    data_nascimento = ? 
+                    WHERE id = ?";
         }
-    
-        $query .= " WHERE id = ?";
-    
-        $stmt = $this->conn->prepare($query);
+
+        $stmt = $this->conn->prepare($sql);
+
         if (!$stmt) {
             throw new Exception("Erro ao preparar a consulta: " . $this->conn->error);
         }
-    
+
+
         if (!empty($data['senha'])) {
-            $stmt->bind_param(
-                'ssssssssi',
-                $data['nome'],
-                $data['sobrenome'],
-                $data['cpf'],
-                $data['telefone'],
-                $data['email'],
-                $data['perfil'],
-                $data['data_nascimento'],
-                $data['senha'],
-                $id
-            );
+            $senhaHash = password_hash($data['senha'], PASSWORD_DEFAULT);
+
+            $stmt->bind_param('ssssssssi', $data['nome'], $data['sobrenome'], $data['cpf'], $data['telefone'], $data['email'], $senhaHash, $data['perfil_id'], $data['data_nascimento'], $id);
         } else {
-            $stmt->bind_param(
-                'sssssssi',
-                $data['nome'],
-                $data['sobrenome'],
-                $data['cpf'],
-                $data['telefone'],
-                $data['email'],
-                $data['perfil'],
-                $data['data_nascimento'],
-                $id
-            );
+            $stmt->bind_param('sssssssi', $data['nome'], $data['sobrenome'], $data['cpf'], $data['telefone'], $data['email'], $data['perfil_id'], $data['data_nascimento'], $id);
         }
-    
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao atualizar usuário: " . $stmt->error);
-        }
-    
-        $stmt->close();
-    }
-
-    public function updateEndereco($usuario_id, $data) {
-        $this->validateAddressData($data);
-
-        $query = "UPDATE enderecos SET cep = ?, logradouro = ?, bairro = ?, localidade = ?, uf = ? WHERE usuario_id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('sssssi', $data['cep'], $data['logradouro'], $data['bairro'], $data['localidade'], $data['uf'], $usuario_id);
 
         if (!$stmt->execute()) {
-            throw new Exception("Erro ao atualizar endereço: " . $stmt->error);
+            throw new Exception("Erro ao atualizar o usuário: " . $stmt->error);
         }
 
         $stmt->close();
     }
 
-    public function addEnderecoIfNotExists($usuario_id, $data) {
-        $query = "SELECT COUNT(*) as total FROM enderecos WHERE usuario_id = ?";
+    public function updateEndereco($usuarioId, $data)
+    {
+        $sql = "UPDATE enderecos SET 
+                    cep = ?, 
+                    logradouro = ?, 
+                    bairro = ?, 
+                    localidade = ?, 
+                    uf = ?, 
+                    estado = ? 
+                WHERE usuario_id = ?";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param('ssssssi', $data['cep'], $data['logradouro'], $data['bairro'], $data['localidade'], $data['uf'], $data['estado'], $usuarioId);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Falha ao atualizar o endereço.");
+        }
+    }
+
+    public function addEnderecoIfNotExists($usuario_id, $data)
+    {
+        $query = "SELECT COUNT(*) as total FROM usuarios WHERE id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param('i', $usuario_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
-        
-        if ((int)$row['total'] === 0) {
-            $this->validateAddressData($data);
-            $query = "INSERT INTO enderecos (usuario_id, cep, logradouro, bairro, localidade, uf) VALUES (?, ?, ?, ?, ?, ?)";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bind_param('isssss', $usuario_id, $data['cep'], $data['logradouro'], $data['bairro'], $data['localidade'], $data['uf']);
-            
-            if (!$stmt->execute()) {
-                throw new Exception("Erro ao adicionar endereço: " . $stmt->error);
-            }
-    
-            $stmt->close();
+
+        if ((int) $row['total'] === 0) {
+            throw new Exception("Usuário com ID $usuario_id não encontrado.");
         }
+
+        $this->validateAddressData($data);
+        $query = "INSERT INTO enderecos (usuario_id, cep, logradouro, bairro, localidade, uf, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('issssss', $usuario_id, $data['cep'], $data['logradouro'], $data['bairro'], $data['localidade'], $data['uf'], $data['estado']);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Erro ao adicionar endereço: " . $stmt->error);
+        }
+
+        $stmt->close();
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $query = "DELETE FROM enderecos WHERE usuario_id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param('i', $id);
         $stmt->execute();
+        $stmt->close();
 
         $query = "DELETE FROM usuarios WHERE id = ?";
         $stmt = $this->conn->prepare($query);
@@ -142,7 +170,8 @@ class Usuario {
         $stmt->close();
     }
 
-    public function listar($searchTerm = '', $limit = 8, $offset = 0) {
+    public function listar($searchTerm = '', $limit = 8, $offset = 0)
+    {
         $likeTerm = '%' . $searchTerm . '%';
 
         $query = "SELECT u.*, p.nome as perfil_nome, CONCAT(u.nome, ' ', u.sobrenome) as nome_completo 
@@ -155,7 +184,7 @@ class Usuario {
                   LIMIT ? OFFSET ?";
 
         $stmt = $this->conn->prepare($query);
-        
+
         if (!$stmt) {
             throw new Exception("Erro ao preparar a consulta: " . $this->conn->error);
         }
@@ -169,11 +198,12 @@ class Usuario {
         $result = $stmt->get_result();
         $usuarios = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
-        
+
         return $usuarios;
     }
 
-    public function contarUsuarios($searchTerm = '') {
+    public function contarUsuarios($searchTerm = '')
+    {
         $likeTerm = '%' . $searchTerm . '%';
 
         $query = "SELECT COUNT(*) as total 
@@ -182,18 +212,19 @@ class Usuario {
                     id LIKE ? OR 
                     CONCAT(nome, ' ', sobrenome) LIKE ? OR 
                     cpf LIKE ?";
-        
+
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param('sss', $likeTerm, $likeTerm, $likeTerm);
         $stmt->execute();
-        
+
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
 
         return (int) $row['total'];
     }
 
-    public function buscarEnderecoPorUsuarioId($usuario_id) {
+    public function buscarEnderecoPorUsuarioId($usuario_id)
+    {
         $query = "SELECT * FROM enderecos WHERE usuario_id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param('i', $usuario_id);
@@ -209,59 +240,51 @@ class Usuario {
         return $endereco;
     }
 
-    public function read($id) {
-        $query = "SELECT * FROM usuarios WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
+    public function read($id)
+    {
+        $sql = "SELECT * FROM " . $this->table_name . " WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        if ($stmt) {
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
             return $result->fetch_assoc();
-        } else {
-            throw new Exception("Erro na consulta: " . $this->conn->error);
+        }
+        return null;
+    }
+
+    private function validateUserData($data)
+    {
+        if (empty($data['nome']) || empty($data['sobrenome']) || empty($data['cpf']) || empty($data['telefone']) || empty($data['email']) || empty($data['senha']) || empty($data['perfil_id']) || empty($data['data_nascimento'])) {
+            throw new Exception("Todos os campos devem ser preenchidos.");
+        }
+
+        if ($this->emailExists($data['email'])) {
+            throw new Exception("O email já está cadastrado.");
         }
     }
 
-    private function validateUserData($data) {
-        if (empty($data['nome']) || strlen($data['nome']) < 3) {
-            throw new Exception("Nome inválido. Deve conter ao menos 3 caracteres.");
-        }
-        if (empty($data['sobrenome']) || strlen($data['sobrenome']) < 3) {
-            throw new Exception("Sobrenome inválido. Deve conter ao menos 3 caracteres.");
-        }
-        if (empty($data['cpf']) || !preg_match('/^\d{11}$/', $data['cpf'])) {
-            throw new Exception("CPF inválido. Deve conter 11 dígitos numéricos.");
-        }
-        if (empty($data['telefone']) || !preg_match('/^\d{10,11}$/', $data['telefone'])) {
-            throw new Exception("Telefone inválido. Deve conter 10 ou 11 dígitos numéricos.");
-        }
-        if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            throw new Exception("Email inválido.");
-        }
-        if (empty($data['data_nascimento']) || !DateTime::createFromFormat('Y-m-d', $data['data_nascimento'])) {
-            throw new Exception("Data de nascimento inválida. Formato deve ser YYYY-MM-DD.");
-        }
-        if (empty($data['perfil'])) {
-            throw new Exception("Perfil é obrigatório.");
-        }
-    }
-
-    private function validateAddressData($data) {
-        if (empty($data['cep']) || !preg_match('/^\d{8}$/', $data['cep'])) {
+    private function validateAddressData($data)
+    {
+        if (!preg_match('/^\d{8}$/', $data['cep'])) {
             throw new Exception("CEP inválido. Deve conter 8 dígitos numéricos.");
         }
-        if (empty($data['logradouro']) || strlen($data['logradouro']) < 3) {
+
+        if (strlen($data['logradouro']) < 3) {
             throw new Exception("Logradouro inválido. Deve conter ao menos 3 caracteres.");
         }
-        if (empty($data['bairro']) || strlen($data['bairro']) < 3) {
+        if (strlen($data['bairro']) < 3) {
             throw new Exception("Bairro inválido. Deve conter ao menos 3 caracteres.");
         }
-        if (empty($data['localidade']) || strlen($data['localidade']) < 3) {
+        if (strlen($data['localidade']) < 3) {
             throw new Exception("Localidade inválida. Deve conter ao menos 3 caracteres.");
         }
-        if (empty($data['uf']) || strlen($data['uf']) !== 2) {
+        if (strlen($data['uf']) !== 2) {
             throw new Exception("UF inválido. Deve conter 2 caracteres.");
+        }
+        if (strlen($data['estado']) < 3) {
+            throw new Exception("Estado inválido. Deve conter ao menos 3 caracteres.");
         }
     }
 }

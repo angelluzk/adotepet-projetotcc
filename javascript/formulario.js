@@ -17,11 +17,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function isFormValid(step) {
+        const inputs = formSteps[step].querySelectorAll("input[required], select[required]");
+        for (let input of inputs) {
+            if (!input.value.trim()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     btnProximo.addEventListener("click", () => {
         const senha = document.getElementById("senha").value;
         const confirmarSenha = document.getElementById("confirmar-senha").value;
 
         if (currentStep === 0) {
+            if (!isFormValid(currentStep)) {
+                alert("Por favor, preencha todos os campos obrigatórios.");
+                return;
+            }
+
             if (senha !== confirmarSenha) {
                 alert("As senhas não correspondem.");
                 return;

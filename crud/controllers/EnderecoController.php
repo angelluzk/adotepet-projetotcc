@@ -12,10 +12,11 @@ class EnderecoController {
 
     public function create($data, $usuario_id) {
         try {
+            error_log("Dados do endereço: " . json_encode($data) . " | Usuário ID: " . $usuario_id);
             return $this->endereco->create($data, $usuario_id);
         } catch (Exception $e) {
             error_log('Erro ao criar o endereço: ' . $e->getMessage());
-            throw new Exception("Falha ao criar o endereço.");
+            throw new Exception("Falha ao criar o endereço: " . $e->getMessage());
         }
     }
 
@@ -45,6 +46,15 @@ class EnderecoController {
         } catch (Exception $e) {
             error_log('Erro ao deletar endereço: ' . $e->getMessage());
             throw new Exception("Falha ao deletar o endereço.");
+        }
+    }
+
+    public function getEnderecoByUsuarioId($usuario_id) {
+        try {
+            return $this->endereco->buscarEnderecoPorUsuarioId($usuario_id);
+        } catch (Exception $e) {
+            error_log('Erro ao buscar endereço por usuário ID: ' . $e->getMessage());
+            throw new Exception("Falha ao buscar o endereço do usuário.");
         }
     }
 }

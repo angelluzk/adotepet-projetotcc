@@ -406,7 +406,8 @@ footer {
     border-radius: 10px;
 }
 
-.footer-section h3 {
+.footer-section h2 {
+    color: white;
     margin-bottom: 20px;
     font-size: 1.2rem;
     border-bottom: 2px solid #7fb9ca;
@@ -463,6 +464,7 @@ footer {
     color: #cccccc;
 }
 
+/* Mensagem de Alerta */
 .alert {
     padding: 10px;
     margin: 20px 0;
