@@ -34,31 +34,34 @@ class Pet
     }
 
     public function uploadFotos($pet_id, $fotos)
-{
-    if (empty($fotos) || count($fotos['name']) === 0) {
-        return true; 
-    }
+    {
+        if (empty($fotos) || count($fotos['name']) === 0) {
+            return true;
+        }
 
-    $target_dir = "../../uploads/";
-    $uploadedFiles = [];
+        $target_dir = "../../uploads/";
+        $uploadedFiles = [];
 
-    for ($i = 0; $i < count($fotos['name']); $i++) {
-        if ($fotos['error'][$i] === UPLOAD_ERR_OK) {
-            $target_file = $target_dir . basename($fotos['name'][$i]);
-            $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        for ($i = 0; $i < count($fotos['name']); $i++) {
+            if ($fotos['error'][$i] === UPLOAD_ERR_OK) {
+                $target_file = $target_dir . basename($fotos['name'][$i]);
+                $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
 
-            if (in_array($file_type, ['jpg', 'jpeg', 'png', 'gif'])) {
+                if (in_array($file_type, ['jpg', 'jpeg', 'png', 'gif'])) {
 
-                if (move_uploaded_file($fotos['tmp_name'][$i], $target_file)) {
-                    
-                    $sql_foto = "INSERT INTO fotos (nome, url, pet_id) VALUES (?, ?, ?)";
-                    $stmt = $this->conn->prepare($sql_foto);
-                    $url = 'uploads/' . basename($fotos['name'][$i]);
-                    $stmt->bind_param("ssi", $fotos['name'][$i], $url, $pet_id);
+                    if (move_uploaded_file($fotos['tmp_name'][$i], $target_file)) {
 
-                    if ($stmt->execute()) {
-                        $uploadedFiles[] = $stmt->insert_id;
+                        $sql_foto = "INSERT INTO fotos (nome, url, pet_id) VALUES (?, ?, ?)";
+                        $stmt = $this->conn->prepare($sql_foto);
+                        $url = 'uploads/' . basename($fotos['name'][$i]);
+                        $stmt->bind_param("ssi", $fotos['name'][$i], $url, $pet_id);
+
+                        if ($stmt->execute()) {
+                            $uploadedFiles[] = $stmt->insert_id;
+                        } else {
+                            return false;
+                        }
                     } else {
                         return false;
                     }
@@ -68,13 +71,10 @@ class Pet
             } else {
                 return false;
             }
-        } else {
-            return false;
         }
-    }
 
-    return count($uploadedFiles) > 0;
-}
+        return count($uploadedFiles) > 0;
+    }
 
     public function insertDoacao($pet_id, $usuario_id, $data_doacao, $endereco_id)
     {
@@ -156,36 +156,55 @@ class Pet
 
     public function removerFotosPet($pet_id)
     {
+        $sql_select_fotos = "SELECT url FROM fotos WHERE pet_id = ?";
+        $stmt = $this->conn->prepare($sql_select_fotos);
+        $stmt->bind_param("i", $pet_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            $file_path = "../../" . $row['url'];
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }
+        }
+
         $sql_delete_fotos = "DELETE FROM fotos WHERE pet_id = ?";
         $stmt = $this->conn->prepare($sql_delete_fotos);
         $stmt->bind_param("i", $pet_id);
         return $stmt->execute();
     }
 
-    public function deletarDoacao($id)
+    public function deletarPet($pet_id)
     {
-        $sql_get_pet_id = "SELECT pet_id FROM doacoes WHERE id = ?";
-        $stmt = $this->conn->prepare($sql_get_pet_id);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $doacao = $result->fetch_assoc();
-        $pet_id = $doacao['pet_id'];
+        $this->conn->begin_transaction();
 
-        if (!$pet_id) {
+        try {
+            if (!$this->removerFotosPet($pet_id)) {
+                throw new Exception("Erro ao deletar fotos do pet.");
+            }
+
+            $sql_delete_doacoes = "DELETE FROM doacoes WHERE pet_id = ?";
+            $stmt = $this->conn->prepare($sql_delete_doacoes);
+            $stmt->bind_param("i", $pet_id);
+            if (!$stmt->execute()) {
+                throw new Exception("Erro ao deletar doações do pet.");
+            }
+
+            $sql_delete_pet = "DELETE FROM pets WHERE id = ?";
+            $stmt = $this->conn->prepare($sql_delete_pet);
+            $stmt->bind_param("i", $pet_id);
+            if (!$stmt->execute()) {
+                throw new Exception("Erro ao deletar o pet.");
+            }
+
+            $this->conn->commit();
+            return true;
+
+        } catch (Exception $e) {
+            $this->conn->rollback();
             return false;
         }
-
-        $sql_delete_doacao = "DELETE FROM doacoes WHERE id = ?";
-        $stmt = $this->conn->prepare($sql_delete_doacao);
-        $stmt->bind_param("i", $id);
-
-        if ($stmt->execute()) {
-            $this->removerFotosPet($pet_id);
-            return true;
-        }
-
-        return false;
     }
 
     public function contarDoacoes($searchTerm = '')

@@ -6,10 +6,13 @@ $db = (new DataBase())->getConnection();
 $petController = new PetController($db);
 
 if (isset($_GET['id'])) {
-    $petController->deletarDoacao($_GET['id']);
-    header("Location: listar_doacoes.php");
+    if ($petController->deletarPet($_GET['id'])) {
+        header("Location: listar_doacoes.php");
+    } else {
+        echo "Erro ao deletar o pet.";
+    }
     exit();
 } else {
-    die("ID da doação não fornecido.");
+    die("ID do pet não fornecido.");
 }
 ?>

@@ -66,9 +66,9 @@ class PetController {
         return "Doação editada com sucesso!";
     }    
 
-    public function deletarDoacao($id){
-        return $this->petModel->deletarDoacao($id);
-    }
+    public function deletarPet($pet_id){
+        return $this->petModel->deletarPet($pet_id);
+    }    
 
     public function contarDoacoes($searchTerm = ''){
         return $this->petModel->contarDoacoes($searchTerm);

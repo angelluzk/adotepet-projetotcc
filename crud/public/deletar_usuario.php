@@ -9,9 +9,14 @@ $controller = new UsuarioController($db);
 
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
-    $controller->delete($id);
-    header("Location: listar_usuarios.php");
-    exit();
+
+    try {
+        $controller->delete($id);
+        header("Location: listar_usuarios.php");
+        exit();
+    } catch (Exception $e) {
+        echo json_encode(["message" => "Erro ao deletar usuário: " . $e->getMessage()]);
+    }
 } else {
     echo json_encode(["message" => "ID do usuário não fornecido."]);
 }

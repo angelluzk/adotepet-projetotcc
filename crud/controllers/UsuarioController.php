@@ -80,11 +80,11 @@ class UsuarioController {
 
     public function delete($id) {
         try {
-            $this->endereco->deleteEnderecoPorUsuarioId($id); 
             $this->usuario->delete($id);
+            return "Usuário deletado com sucesso.";
         } catch (Exception $e) {
             error_log('Erro ao deletar usuário: ' . $e->getMessage());
-            throw new Exception("Falha ao deletar o usuário.");
+            throw new Exception("Falha ao deletar o usuário: " . $e->getMessage());
         }
     }
 

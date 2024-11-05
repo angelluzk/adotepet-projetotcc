@@ -153,21 +153,91 @@ class Usuario
 
     public function delete($id)
     {
-        $query = "DELETE FROM enderecos WHERE usuario_id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('i', $id);
-        $stmt->execute();
-        $stmt->close();
+        $this->conn->begin_transaction();
 
-        $query = "DELETE FROM usuarios WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('i', $id);
+        try {
+            $queryCheckUser = "SELECT id FROM usuarios WHERE id = ?";
+            $stmtCheckUser = $this->conn->prepare($queryCheckUser);
+            $stmtCheckUser->bind_param('i', $id);
+            $stmtCheckUser->execute();
+            $resultCheckUser = $stmtCheckUser->get_result();
 
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao deletar usuário: " . $this->conn->error);
+            if ($resultCheckUser->num_rows === 0) {
+                throw new Exception("Usuário com ID $id não encontrado.");
+            }
+            $stmtCheckUser->close();
+
+            $queryPets = "SELECT pet_id FROM doacoes WHERE usuario_id = ?";
+            $stmtPets = $this->conn->prepare($queryPets);
+            $stmtPets->bind_param('i', $id);
+            $stmtPets->execute();
+            $resultPets = $stmtPets->get_result();
+
+            $petIds = [];
+            while ($pet = $resultPets->fetch_assoc()) {
+                $petIds[] = $pet['pet_id'];
+            }
+            $stmtPets->close();
+
+            if (!empty($petIds)) {
+                $placeholders = implode(',', array_fill(0, count($petIds), '?'));
+                $queryFotos = "SELECT url FROM fotos WHERE pet_id IN ($placeholders)";
+                $stmtFotos = $this->conn->prepare($queryFotos);
+                $stmtFotos->bind_param(str_repeat('i', count($petIds)), ...$petIds);
+                $stmtFotos->execute();
+                $resultFotos = $stmtFotos->get_result();
+
+                while ($foto = $resultFotos->fetch_assoc()) {
+                    $fotoUrl = $foto['url'];
+
+                    $queryDeleteFotos = "DELETE FROM fotos WHERE pet_id = ?";
+                    $stmtDeleteFotos = $this->conn->prepare($queryDeleteFotos);
+                    $stmtDeleteFotos->bind_param('i', $pet['pet_id']);
+                    $stmtDeleteFotos->execute();
+                    $stmtDeleteFotos->close();
+
+                    $fotoPath = '../../uploads/' . $fotoUrl;
+                    if (file_exists($fotoPath)) {
+                        unlink($fotoPath);
+                    }
+                }
+                $stmtFotos->close();
+            }
+
+            $queryDoacoes = "DELETE FROM doacoes WHERE usuario_id = ?";
+            $stmtDoacoes = $this->conn->prepare($queryDoacoes);
+            $stmtDoacoes->bind_param('i', $id);
+            if (!$stmtDoacoes->execute()) {
+                throw new Exception("Erro ao deletar doações: " . $stmtDoacoes->error);
+            }
+            $stmtDoacoes->close();
+
+            if (!empty($petIds)) {
+                $placeholdersPets = implode(',', array_fill(0, count($petIds), '?'));
+                $queryDeletePets = "DELETE FROM pets WHERE id IN ($placeholdersPets)";
+                $stmtDeletePets = $this->conn->prepare($queryDeletePets);
+                $stmtDeletePets->bind_param(str_repeat('i', count($petIds)), ...$petIds);
+                if (!$stmtDeletePets->execute()) {
+                    throw new Exception("Erro ao deletar pets: " . $stmtDeletePets->error);
+                }
+                $stmtDeletePets->close();
+            }
+
+            $queryDeleteUsuario = "DELETE FROM usuarios WHERE id = ?";
+            $stmtDeleteUsuario = $this->conn->prepare($queryDeleteUsuario);
+            $stmtDeleteUsuario->bind_param('i', $id);
+            if (!$stmtDeleteUsuario->execute()) {
+                throw new Exception("Erro ao deletar usuário: " . $stmtDeleteUsuario->error);
+            }
+            $stmtDeleteUsuario->close();
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            error_log("Erro na deleção: " . $e->getMessage());
+            throw $e;
         }
-
-        $stmt->close();
     }
 
     public function listar($searchTerm = '', $limit = 8, $offset = 0)

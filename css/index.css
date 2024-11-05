@@ -112,9 +112,11 @@ nav a:hover::after {
 .btn-cadastrar {
     background-color: #100f47;
     color: white;
-    padding: 10px 20px;
+    font-size: 15px;
+    padding: 10px 15px;
     border-radius: 5px;
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    flex-wrap: wrap;
 }
 
 .btn-cadastrar:hover {
