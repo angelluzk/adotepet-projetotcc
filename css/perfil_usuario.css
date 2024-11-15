@@ -1,6 +1,13 @@
 /* Importação da fonte */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 /* Paleta de cores atualizada */
 :root {
     --primary-color: #4A90E2;
@@ -13,10 +20,10 @@
 
 /* Estilos do container geral */
 body {
-    font-family: "Poppins", sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
     margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    overflow-x: hidden;
     background-image: url('../img/fundo.png');
     background-size: cover;
     background-position: center center;
@@ -34,118 +41,35 @@ body {
     background-size: cover;
     z-index: -1;
     margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%); 
+    margin-right: calc(-50vw + 50%);
 }
 
-/* Container principal */
-.profile-container {
-    display: flex;
-    min-height: 100vh;
-    width: 100%;
-}
-
-/* Estilos da barra lateral */
-.sidebar {
-    width: 250px;
-    background-color: #100f47;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    color: white;
-}
-
-.profile-info {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-    border: 3px solid #50E3C2;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.profile-info h2 {
-    font-size: 1.5rem;
-    color: #7fb9ca;
-}
-
-.email {
-    font-size: 0.9rem;
-    color: #ccc;
-}
-
-.profile-menu {
-    width: 100%;
-}
-
-.profile-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-}
-
-.profile-menu ul li {
-    margin: 10px 0;
-    display: block;
-}
-
-.profile-menu ul li a {
-    color: #8ef59a;
-    text-decoration: none;
-    padding: 10px;
-    display: block;
-    transition: background-color 0.3s;
-}
-
-/* Ativa a seção no menu lateral */
-.profile-menu ul li a.active {
-    background-color: #7fb9ca;
-    color: white;
-}
-
-/* Efeito hover nos links do menu lateral */
-.profile-menu ul li a:hover {
-    color: #8ef59a;
-}
-
-/* Seções principais */
-.profile-content {
-    flex: 1;
-    padding: 40px;
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-.profile-content .content-section {
-    display: none;
-}
-
-.profile-content .content-section.active {
-    display: block;
-}
-
-/* Estilos do cabeçalho */
-.header-content {
+/* Estilos do Header */
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: var(--header-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
+header:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Logo */
 .logo {
     display: flex;
     align-items: center;
-    margin-right: auto;
+    transition: transform 0.3s ease-in-out;
+    margin: 0 35px;
+}
+
+.logo:hover {
+    transform: scale(1.05);
 }
 
 .logo img {
@@ -170,53 +94,46 @@ body {
     font-size: 30px;
 }
 
-.highlight {
-    color: var(--primary-color);
-}
-
-/* Menu de navegação */
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 1px;
-}
-
-nav ul li a {
-    color: #100f47;
-    padding-right: 18px;
-    text-decoration: none;
+.btn-cadastrar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #100f47 !important;
+    color: white !important;
     font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    display: inline-block;
+    flex-wrap: wrap;
+    margin-left: 15px;
 }
 
-/* Seção de perfil */
+.btn-cadastrar:hover {
+    background-color: #7fb9ca;
+    transform: scale(1.05);
+}
+
+/* Estilos para a seção de perfil */
 .profile-section {
     position: relative;
+    list-style: none;
 }
 
-.profile-info .profile-pic {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-    border: 3px solid #7fb9ca;
-    background-color: var(--background-color);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-
+/* Imagem do perfil */
 .profile-perfil img {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
     border: 3px solid #7fb9ca;
-    background-color: var(--background-color);
+    background-color: #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-left: 10px;
 }
 
-/* Estilos do menu dropdown */
+/* Menu dropdown */
 .dropdown-menu {
     display: flex;
     flex-direction: column;
@@ -247,6 +164,220 @@ nav ul li a {
 
 .dropdown-menu a:hover {
     background-color: var(--secondary-color);
+}
+
+.profile-section:hover .dropdown-menu {
+    display: flex;
+}
+
+.dropdown-menu a {
+    transition: background-color 0.3s;
+}
+
+/* Menu de Navegação */
+nav {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 0 35px;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    gap: 10px;
+}
+
+.nav-list li.nav-item {
+    margin-left: 15px;
+    font-size: 18px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    height: auto;
+}
+
+.nav-list li.nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #7fb9ca;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-list li.nav-item:hover::after {
+    transform: scaleX(1);
+}
+
+.nav-list a {
+    color: #100f47;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    transition: color 0.3s;
+}
+
+.nav-list a:hover {
+    color: #7fb9ca;
+}
+
+/* Estilo do Menu Mobile */
+.mobile-menu {
+    display: none;
+    cursor: pointer;
+    z-index: 1000;
+    position: relative;
+}
+
+.mobile-menu div {
+    width: 32px;
+    height: 2px;
+    background: #100f47;
+    margin: 8px;
+    transition: 0.3s;
+}
+
+/* Estilos da barra lateral */
+.profile-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #100f47;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: white;
+}
+
+.profile-info {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 3px solid #50E3C2;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-info h2 {
+    font-size: 1.5rem;
+    color: #7fb9ca;
+}
+
+.email {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.profile-menu {
+    width: 100%;
+}
+
+.profile-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-menu ul li {
+    margin: 10px 0;
+    display: block;
+}
+
+.profile-menu ul li a {
+    color: #8ef59a;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.profile-menu ul li a.active {
+    background-color: #7fb9ca;
+    color: white;
+}
+
+.profile-menu ul li a:hover {
+    color: #8ef59a;
+}
+
+.profile-content {
+    flex: 1;
+    padding: 40px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.profile-content .content-section {
+    display: none;
+}
+
+.profile-content .content-section.active {
+    display: block;
+}
+
+.alert-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.error-message {
+    margin: 0;
+    font-size: 16px;
+}
+
+.edit-profile-form {
+    position: relative;
+}
+
+#edit-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#edit-btn {
+    background-color: #100f47;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);    
+}
+
+#edit-btn:hover {
+    background-color: #357ABD;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Estilos Gerais */
@@ -348,14 +479,18 @@ h3 {
     height: auto;
 }
 
-.donation-cards, .adopted-cards, .favorites-cards {
+.donation-cards,
+.adopted-cards,
+.favorites-cards {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
 }
 
 /* Estilos dos cards */
-.donation-card, .adopted-card, .favorite-card {
+.donation-card,
+.adopted-card,
+.favorite-card {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
@@ -367,12 +502,16 @@ h3 {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.donation-card:hover, .adopted-card:hover, .favorite-card:hover {
+.donation-card:hover,
+.adopted-card:hover,
+.favorite-card:hover {
     transform: scale(1.03);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-.donation-card img, .adopted-card img, .favorite-card img {
+.donation-card img,
+.adopted-card img,
+.favorite-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
@@ -404,7 +543,9 @@ h3 {
     justify-content: center;
 }
 
-.edit-btn, .delete-btn, .save-btn {
+.edit-btn,
+.delete-btn,
+.save-btn {
     padding: 8px 12px;
     border-radius: 5px;
     border: none;
@@ -563,7 +704,7 @@ footer {
     background-color: #100f47;
     color: white;
     padding: 40px 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     position: relative;
 }
 
@@ -625,7 +766,8 @@ footer {
     padding-bottom: 10px;
 }
 
-.footer-section p, .footer-section ul {
+.footer-section p,
+.footer-section ul {
     font-size: 0.9rem;
     line-height: 1.6;
     color: #cccccc;
@@ -673,4 +815,129 @@ footer {
     margin: 0;
     font-size: 0.9rem;
     color: #cccccc;
+}
+
+/* Responsividade */
+@media (max-width: 999px) {
+    .nav-list {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 70%;
+        height: 100vh;
+        background: #9e9e9e;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 999;
+    }
+
+    .nav-list li {
+        margin: 20px 0;
+    }
+
+    .nav-list a {
+        color: #fff;
+        font-size: 20px;
+    }
+
+    .mobile-menu {
+        display: block;
+    }
+
+    .nav-list.active {
+        transform: translateX(0);
+    }
+}
+
+/* Responsividade para telas pequenas (celulares) */
+@media (max-width: 600px) {
+
+    /* Estilo do Header em telas menores */
+    header {
+        padding: 20px 0px;
+    }
+
+    .logo img {
+        height: 80px;
+        margin-right: 10px;
+    }
+
+    .logo span {
+        font-size: 24px;
+        margin-right: -20px;
+    }
+
+    /* Menu de navegação em telas pequenas */
+    .nav-list {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 50%;
+        height: 100vh;
+        background: #9e9e9e;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 999;
+    }
+
+    .nav-list li {
+        margin: 15px 0;
+    }
+
+    .nav-list a {
+        color: #fff;
+        font-size: 18px;
+    }
+
+    /* Botão de menu (hambúrguer) */
+    .mobile-menu {
+        display: block;
+        z-index: 1000;
+    }
+
+    .nav-list.active {
+        transform: translateX(0);
+    }
+
+    .mobile-menu.active .line1 {
+        transform: rotate(-45deg) translate(-8px, 8px);
+    }
+
+    .mobile-menu.active .line2 {
+        opacity: 0;
+    }
+
+    .mobile-menu.active .line3 {
+        transform: rotate(45deg) translate(-5px, -7px);
+    }
+}
+
+@keyframes navLinkFade {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.mobile-menu.active .line1 {
+    transform: rotate(-45deg) translate(-8px, 8px);
+}
+
+.mobile-menu.active .line2 {
+    opacity: 0;
+}
+
+.mobile-menu.active .line3 {
+    transform: rotate(45deg) translate(-5px, -7px);
 }

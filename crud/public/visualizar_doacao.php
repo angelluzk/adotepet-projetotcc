@@ -152,7 +152,7 @@ if (isset($_GET['id'])) {
         </div>
 
         <div class="btn-group">
-            <a href="listar_doacoes.php" class="btn voltar">Voltar à lista</a>
+            <a href="../../crud/views/painel_admin.php" class="btn voltar">Voltar à lista</a>
         </div>
     </div>
 </body>

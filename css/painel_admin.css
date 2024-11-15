@@ -14,105 +14,295 @@
 }
 
 body {
-    background: #fff;
-    color: #333;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
+    margin: 0;
 }
 
 /* Container principal */
 .container {
+    flex: 1;
     display: flex;
+    flex-direction: column;
     width: 100%;
-    height: 100vh;
-    max-width: 1900px;
-    margin: auto;
+    max-width: 100vw;
+    margin: 0 auto;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    overflow: hidden;
 }
 
-/* Navegação */
-nav {
-    position: sticky;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 220px;
-    height: 100%;
-    background: #fff;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.navbar {
-    width: 100%;
-    margin: 0 auto;
-}
-
-.logo {
-    margin: 1rem 0;
-    padding-left: 2rem;
-    padding-bottom: 0rem;
+/* Estilos do Header */
+header {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+header:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+    margin: 0 35px;
+}
+
+.logo:hover {
+    transform: scale(1.05);
 }
 
 .logo img {
-    width: 150px;
-    height: 150px;
-    border-radius: 10%;
+    height: 90px;
+    margin-right: 10px;
 }
 
-.logo h1 {
+.logo span {
+    font-size: 30px;
     color: #100f47;
-    margin-left: 0;
-    text-transform: uppercase;
+    display: flex;
+    align-items: center;
 }
 
-/* Estilo do menu */
-ul {
-    margin: 0 auto;
-    padding: 0;
+.logo .highlight {
+    color: #7fb9ca;
 }
 
-li {
-    padding: 0rem 0;
+.logo i.fas.fa-paw {
+    color: #7fb9ca;
+    margin: 0 5px;
+    font-size: 30px;
 }
 
-li a {
-    font-size: 16px;
-    color: rgb(85, 83, 83);
+.btn-cadastrar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #100f47 !important;
+    color: white !important;
+    font-size: 18px;
     padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    display: inline-block;
+    flex-wrap: wrap;
+    margin-left: 15px;
+}
+
+.btn-cadastrar:hover {
+    background-color: #7fb9ca;
+    transform: scale(1.05);
+}
+
+/* Estilos para a seção de perfil */
+.profile-section {
+    position: relative;
+    list-style: none;
+}
+
+/* Imagem do perfil */
+.profile-perfil img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 3px solid #7fb9ca;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-left: 10px;
+}
+
+/* Menu dropdown */
+.dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dropdown-menu.show {
+    display: flex;
+    opacity: 1;
+}
+
+.dropdown-menu a {
+    padding: 10px 20px;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    text-align: left;
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--secondary-color);
+}
+
+.profile-section:hover .dropdown-menu {
+    display: flex;
+}
+
+.dropdown-menu a {
+    transition: background-color 0.3s;
+}
+
+/* Menu de Navegação */
+nav {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 0 35px;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    gap: 10px;
+}
+
+.nav-list li.nav-item {
+    margin-left: 15px;
+    font-size: 18px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    height: auto;
+}
+
+.nav-list li.nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #7fb9ca;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-list li.nav-item:hover::after {
+    transform: scaleX(1);
+}
+
+.nav-list a {
+    color: #100f47;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    transition: color 0.3s;
+}
+
+.nav-list a:hover {
+    color: #7fb9ca;
+}
+
+/* Estilo do Menu Mobile */
+.mobile-menu {
+    display: none;
+    cursor: pointer;
+    z-index: 1000;
+    position: relative;
+}
+
+.mobile-menu div {
+    width: 32px;
+    height: 2px;
+    background: #100f47;
+    margin: 8px;
+    transition: 0.3s;
+}
+
+.admin-container {
+    width: 100%;
+}
+
+/* Navegação lateral da área administrativa */
+.admin-barra-nav {
+    width: 270px;
+    background-color: #100f47;
+    display: block;
+    flex-direction: column;
+    padding-top: 70px;
+    position: fixed;
+    top:120px;
+    left: 0;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    white-space: nowrap;
+}
+
+.admin-barra-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-barra-nav li {
+    margin: 10px 0;
+    display: block;
+}
+
+.admin-barra-nav li a {
+    font-size: 16px;
+    color: #ffffff;
+    padding: 5px 10px;
     border-radius: 5px;
     display: flex;
     align-items: center;
     transition: background 0.3s, color 0.3s;
+    gap: 5px;
 }
 
-li a:hover {
-    background: rgba(255, 255, 255, 0.8);
+.admin-barra-nav li a:hover {
+    background: #7fb9ca;
     color: #100f47;
 }
 
-nav i {
-    color: #100f47;
+.admin-barra-nav i {
+    color: #ffffff;
     width: 30px;
     font-size: 18px;
     text-align: center;
 }
 
-.logout {
+.admin-logout {
     position: absolute;
-    bottom: 20px;
-    left: 0;
+    bottom: 90px;
 }
 
-/* Seção principal */
-.main {
+/* Seção principal da área administrativa */
+.admin-main {
     flex: 1;
+    margin-left: 250px;
     padding: 20px;
     overflow-y: auto;
 }
 
-/* Cabeçalho da seção */
-.main-top {
+/* Cabeçalho da seção principal da área administrativa */
+.admin-main-top {
     width: 100%;
     background: #fff;
     padding: 15px;
@@ -121,234 +311,328 @@ nav i {
     letter-spacing: 1px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     text-transform: uppercase;
+    margin-top: -15px;
+    margin-bottom: -15px;
 }
 
-/* Container da lista */
-.list-container {
-    margin-top: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 15px;
-}
-
-/* Título da lista */
-.list-container h2 {
-    color: #100f47;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-}
-
-/* Estilo do formulário de busca */
-.list-container form {
-    display: flex;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
-.list-container input[type="text"] {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    min-width: 150px;
-}
-
-.list-container button {
-    padding: 10px 15px;
-    background-color: #100f47;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-left: 10px;
-    min-width: 100px;
-}
-
-.list-container button:hover {
-    background-color: #7fb9ca;
-}
-
-/* Tabela */
+/* Estilos gerais para a tabela */
 table {
-    width: 100%;
+    width: calc(90% - 270px);
+    margin-left: 355px;
     border-collapse: collapse;
-    margin-top: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px; 
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-thead {
-    background: #100f47;
-    color: #fff;
-    white-space: nowrap;
-}
-
-th, td {
-    padding: 12px;
-    text-align: center;
-    border: 1px solid #ccc;
-    white-space: nowrap;
-}
-
-tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-/* Estilo para o contêiner de botões de ações */
-.btn-container {
-    display: flex; 
-    justify-content: flex-start;
-    gap: 10px; 
-}
-
-/* Botões de ações */
-.btn-acoes {
-    background-color: #100f47; 
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px; 
-    transition: background 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-right: 5px;
-}
-
-.btn-acoes:hover {
-    background-color: #7fb9ca;
-}
-
-/* Botão de cadastrar */
-.btn-cadastrar {
+/* Cabeçalhos da tabela */
+table th {
     background-color: #100f47;
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 5px;
-    display: inline-block;
-    margin-bottom: 20px;
-    transition: background 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: white;
+    padding: 10px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 500;
+    border-bottom: 1px solid #ddd;
 }
 
-.btn-cadastrar:hover {
-    background-color: #7fb9ca;
+/* Estilo das células da tabela */
+table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: #555;
+    font-size: 14px;
+}
+
+/* Estilo da última célula (ações) */
+table td:last-child {
+    display: flex;
+    gap: 5px;
+}
+
+/* Efeito hover nas linhas da tabela */
+table tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Efeito de foco nas células */
+table td:focus,
+table th:focus {
+    outline: 2px solid #7fb9ca;
 }
 
 /* Paginação */
 .pagination {
     display: flex;
+    align-items: center;
     justify-content: center;
     margin-top: 20px;
+    margin-left: 200px;
 }
 
 .pagination a {
+    color: #100f47;
     padding: 10px 15px;
+    font-size: 16px;
     margin: 0 5px;
-    background: #100f47;
-    color: #fff;
-    border-radius: 5px; 
-    transition: background 0.3s; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
 }
 
 .pagination a:hover {
-    background: #8ef59a;
+    background-color: #7fb9ca;
+    color: white;
 }
 
-.pagination .active {
-    background: #7fb9ca; 
-    pointer-events: none; 
+.pagination a.active {
+    background-color: #100f47;
+    color: white;
+}
+
+/* Formulário de busca */
+.form-container {
+    margin-left: 270px;
+    padding: 20px;
+    max-width: calc(100% - 270px);
+    box-sizing: border-box;
+}
+
+.form-container h2 {
+    margin-left: 25px;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    font-size: 24px;
+    color: #333;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+form input[type="text"] {
+    padding: 8px;
+    font-size: 14px;
+    width: 450px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 5px;
+    gap: 20px;
+}
+
+.form-buttons form {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-grow: 1;
+    max-width: 600px;
+}
+
+.form-buttons input[type="text"] {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-buttons button {
+    padding: 8px 15px;
+    border: none;
+    background-color: #100f47;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.form-buttons button:hover {
+    background-color: #7fb9ca;
+}
+
+/* Estilo do botão de ação */
+.btn-acoes {
+    display: inline-flex;
+    align-items: center;
+    background-color: #100f47;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-acoes:hover {
+    background-color: #7fb9ca;
+    transform: scale(1.05);
+}
+
+/* Estilos para o botão Cadastrar*/
+.btn-cadastrar-list {
+    padding: 8px 15px;
+    border: none;
+    background-color: #100f47;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.btn-cadastrar-list:hover {
+    background-color: #7fb9ca;
+}
+
+/* Estilo para os ícones de ação */
+.btn-icone {
+    color: #100f47;
+    font-size: 18px;
+    margin: 0 5px;
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-icone:hover {
+    background-color: #f0f0f0;
+    color: #7fb9ca;
+}
+
+.btn-icone i {
+    vertical-align: middle;
 }
 
 /* Responsividade */
-@media (max-width: 1200px) {
-    .container {
+@media (max-width: 999px) {
+    .nav-list {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 70%;
+        height: 100vh;
+        background: #9e9e9e;
         flex-direction: column;
-        height: auto;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 999;
     }
 
-    nav {
-        width: 100%;
-        height: auto;
-        position: relative;
+    .nav-list li {
+        margin: 20px 0;
     }
 
-    .main {
-        width: 100%;
+    .nav-list a {
+        color: #fff;
+        font-size: 20px;
     }
 
-    .list-container input[type="text"], .list-container button {
-        min-width: 100%;
-        margin-right: 0;
-        margin-bottom: 10px;
+    .mobile-menu {
+        display: block;
     }
 
-    .btn-container {
-        flex-wrap: wrap;
+    .nav-list.active {
+        transform: translateX(0);
     }
 }
 
-@media (max-width: 768px) {
-    nav {
-        width: 100%;
-        position: relative;
+/* Responsividade para telas pequenas (celulares) */
+@media (max-width: 600px) {
+    /* Estilo do Header em telas menores */
+    header {
+        padding: 20px 0px;
     }
 
     .logo img {
-        width: 100px;
-        height: 100px;
-    }
-
-    .logo h1 {
-        font-size: 18px;
-    }
-
-    .list-container h2 {
-        font-size: 18px;
-    }
-
-    .list-container input[type="text"], .list-container button {
-        min-width: 100%;
-    }
-
-    .btn-container {
-        flex-direction: column;
-    }
-}
-
-@media (max-width: 480px) {
-    .logo img {
-        width: 80px;
         height: 80px;
+        margin-right: 10px;
     }
 
-    .logo h1 {
-        font-size: 16px;
+    .logo span {
+        font-size: 24px;
+        margin-right: -20px;
     }
 
-    .list-container h2 {
-        font-size: 16px;
-    }
-
-    .list-container input[type="text"], .list-container button {
-        min-width: 100%;
-    }
-
-    table {
-        font-size: 12px;
-    }
-
-    th, td {
-        padding: 8px;
-    }
-
-    .btn-container {
+    /* Menu de navegação em telas pequenas */
+    .nav-list {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 50%;
+        height: 100vh;
+        background: #9e9e9e;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 999;
     }
 
-    .pagination a {
-        padding: 8px 10px;
+    .nav-list li {
+        margin: 15px 0;
+    }
+
+    .nav-list a {
+        color: #fff;
+        font-size: 18px;
+    }
+
+    /* Botão de menu (hambúrguer) */
+    .mobile-menu {
+        display: block;
+        z-index: 1000;
+    }
+
+    .nav-list.active {
+        transform: translateX(0);
+    }
+
+    .mobile-menu.active .line1 {
+        transform: rotate(-45deg) translate(-8px, 8px);
+    }
+
+    .mobile-menu.active .line2 {
+        opacity: 0;
+    }
+
+    .mobile-menu.active .line3 {
+        transform: rotate(45deg) translate(-5px, -7px);
     }
 }
+
+@keyframes navLinkFade {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.mobile-menu.active .line1 {
+    transform: rotate(-45deg) translate(-8px, 8px);
+  }
+  
+  .mobile-menu.active .line2 {
+    opacity: 0;
+  }
+  
+  .mobile-menu.active .line3 {
+    transform: rotate(45deg) translate(-5px, -7px);
+  }

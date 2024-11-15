@@ -101,7 +101,7 @@ $endereco = $data['endereco'];
         <p><strong>Estado:</strong> <?php echo htmlspecialchars($endereco['estado']); ?></p>
         <p><strong>UF:</strong> <?php echo htmlspecialchars($endereco['uf']); ?></p>
 
-        <a href="listar_usuarios.php">Voltar</a>
+        <a href="../../crud/views/painel_admin.php">Voltar</a>
     </div>
 </body>
 

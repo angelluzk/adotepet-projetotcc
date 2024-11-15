@@ -12,7 +12,7 @@ if (isset($_GET['id'])) {
 
     try {
         $controller->delete($id);
-        header("Location: listar_usuarios.php");
+        header("Location: ../../crud/views/painel_admin.php");
         exit();
     } catch (Exception $e) {
         echo json_encode(["message" => "Erro ao deletar usuário: " . $e->getMessage()]);

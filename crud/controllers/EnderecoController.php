@@ -3,14 +3,17 @@ require_once '../config/DataBase.php';
 require_once '../models/Endereco.php';
 require_once '../models/Usuario.php';
 
-class EnderecoController {
+class EnderecoController
+{
     private $endereco;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->endereco = new Endereco($db);
     }
 
-    public function create($data, $usuario_id) {
+    public function create($data, $usuario_id)
+    {
         try {
             error_log("Dados do endereço: " . json_encode($data) . " | Usuário ID: " . $usuario_id);
             return $this->endereco->create($data, $usuario_id);
@@ -20,7 +23,8 @@ class EnderecoController {
         }
     }
 
-    public function buscarEnderecoPorCep($cep) {
+    public function buscarEnderecoPorCep($cep)
+    {
         try {
             return $this->endereco->buscarEnderecoPorCep($cep);
         } catch (Exception $e) {
@@ -29,7 +33,8 @@ class EnderecoController {
         }
     }
 
-    public function update($usuario_id, $data) {
+    public function update($usuario_id, $data)
+    {
         try {
             $this->endereco->updateEndereco($usuario_id, $data);
             return "Endereço atualizado com sucesso.";
@@ -39,7 +44,8 @@ class EnderecoController {
         }
     }
 
-    public function delete($usuario_id) {
+    public function delete($usuario_id)
+    {
         try {
             $this->endereco->deleteEnderecoPorUsuarioId($usuario_id);
             return "Endereço deletado com sucesso.";
@@ -49,7 +55,8 @@ class EnderecoController {
         }
     }
 
-    public function getEnderecoByUsuarioId($usuario_id) {
+    public function getEnderecoByUsuarioId($usuario_id)
+    {
         try {
             return $this->endereco->buscarEnderecoPorUsuarioId($usuario_id);
         } catch (Exception $e) {

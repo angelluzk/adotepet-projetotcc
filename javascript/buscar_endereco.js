@@ -1,5 +1,5 @@
-$(document).ready(function() {
-    $('#cep').on('input', function() {
+$(document).ready(function () {
+    $('#cep').on('input', function () {
         var cep = $(this).val().replace(/\D/g, '');
         if (cep.length === 8) {
             buscarEnderecoPorCep(cep);
@@ -17,7 +17,7 @@ $(document).ready(function() {
             url: `https://viacep.com.br/ws/${cep}/json/`,
             type: 'GET',
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 if (!data.erro) {
                     $('#logradouro').val(data.logradouro || '');
                     $('#bairro').val(data.bairro || '');
@@ -28,7 +28,7 @@ $(document).ready(function() {
                     alert('Endereço não encontrado para o CEP informado.');
                 }
             },
-            error: function() {
+            error: function () {
                 alert('Erro ao buscar o endereço. Tente novamente.');
             }
         });

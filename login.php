@@ -14,7 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $db = new DataBase();
     $conn = $db->getConnection();
 
-    $sql = "SELECT id, senha, perfil_id FROM usuarios WHERE email = ?";
+    $sql = "SELECT u.id, u.senha, u.perfil_id, u.nome, p.nome AS perfil_nome 
+            FROM usuarios u
+            INNER JOIN perfis p ON u.perfil_id = p.id 
+            WHERE u.email = ?";
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         echo "Erro na preparação da consulta: " . $conn->error;
@@ -27,19 +30,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        
+
         if (password_verify($senha, $user['senha'])) {
             $_SESSION['usuario_id'] = $user['id'];
+            $_SESSION['usuario_nome'] = $user['nome'];
+            $_SESSION['perfil_nome'] = $user['perfil_nome'];
             $_SESSION['perfil_id'] = $user['perfil_id'];
             $_SESSION['logged_in'] = true;
 
-            if ($user['perfil_id'] == 1) {
-                header("Location: crud/views/painel_admin.php");
-            } elseif ($user['perfil_id'] == 2) {
-                header("Location: index.php");
-            } else {
-                echo "Perfil desconhecido.";
-            }
+            header("Location: index.php");
             exit();
         } else {
             echo "Senha incorreta.";

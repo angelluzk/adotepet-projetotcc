@@ -1,149 +1,112 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<?php
+require '../config/DataBase.php';
+require '../controllers/UsuarioController.php';
+require '../helpers/format_util.php';
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adote Pet - Painel Admin</title>
+$database = new DataBase();
+$db = $database->getConnection();
 
-    <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+$usuarioController = new UsuarioController($db);
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="../../css/painel_admin.css" />
-</head>
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+$limit = 8;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
 
-<body>
-    <div class="container">
-        <nav>
-            <div class="navbar">
-                <div class="logo">
-                    <img src="../../img/logo.png" alt="Logo">
-                </div>
-                <ul>
-                    <li><a href="../../crud/views/painel_admin.php">
-                            <i class="fas fa-home"></i>
-                            <span class="nav-item">HOME</span>
-                        </a></li>
-                    <li><a href="listar_usuarios.php">
-                            <i class="fas fa-user"></i>
-                            <span class="nav-item">Usuários</span>
-                        </a></li>
-                    <li><a href="#">
-                            <i class="fas fa-tasks"></i>
-                            <span class="nav-item">Aprovar Doações</span>
-                        </a></li>
-                    <li><a href="listar_doacoes.php">
-                            <i class="fas fa-paw"></i>
-                            <span class="nav-item">Pets Cadastrados</span>
-                        </a></li>
-                    <li><a href="#">
-                            <i class="fas fa-cog"></i>
-                            <span class="nav-item">Configurações</span>
-                        </a></li>
-                    <li><a href="#">
-                            <i class="fas fa-question-circle"></i>
-                            <span class="nav-item">Help</span>
-                        </a></li>
-                    <li><a href="../../index.php" target="blank_">
-                            <i class="fas fa-globe"></i>
-                            <span class="nav-item">Página Index</span>
-                        </a></li>
-                    <li><a href="../../logout.php" class="logout">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span class="nav-item">Sair</span>
-                        </a></li>
-                </ul>
-            </div>
-        </nav>
-        <section class="main">
-            <div class="main-top">
-                <p>Painel Administrativo</p>
-            </div>
+$resultado = $usuarioController->listar($searchTerm, $limit, $offset);
+$usuarios = $resultado['usuarios'];
+$totalUsuarios = $resultado['total'];
+$totalPages = ceil($totalUsuarios / $limit);
+?>
 
-            <div class="list-container">
-                <h2>Lista de Usuários</h2>
+<div class="form-container">
+    <h2>Lista de Usuários</h2>
 
-                <form method="GET" action="listar_usuarios.php">
-                    <input type="text" name="search" placeholder="Pesquisar por ID, Nome ou CPF"
-                        value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" />
-                    <button type="submit">Buscar</button>
-                </form>
-
-                <a href="../../crud/views/cadastro_usuario.php" class="btn-cadastrar" target="_blank">Cadastrar Novo Usuário</a>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome Completo</th>
-                            <th>Data de Nascimento</th>
-                            <th>CPF</th>
-                            <th>Telefone</th>
-                            <th>Email</th>
-                            <th>Data de Criação</th>
-                            <th>Perfil</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        require '../config/DataBase.php';
-                        require '../controllers/UsuarioController.php';
-                        require '../helpers/format_util.php';
-
-                        $database = new DataBase();
-                        $db = $database->getConnection();
-
-                        $usuarioController = new UsuarioController($db);
-
-                        $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
-                        $limit = 8;
-                        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                        $offset = ($page - 1) * $limit;
-
-                        $resultado = $usuarioController->listar($searchTerm, $limit, $offset);
-                        $usuarios = $resultado['usuarios'];
-                        $totalUsuarios = $resultado['total'];
-                        $totalPages = ceil($totalUsuarios / $limit);
-
-                        if ($usuarios) {
-                            foreach ($usuarios as $usuario): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($usuario['id']) ?></td>
-                                    <td><?= htmlspecialchars($usuario['nome_completo']) ?></td>
-                                    <td><?= htmlspecialchars((new DateTime($usuario['data_nascimento']))->format('d/m/Y')) ?></td>
-                                    <td><?= htmlspecialchars(formatCPF($usuario['cpf'])) ?></td>
-                                    <td><?= htmlspecialchars(formatTelefone($usuario['telefone'])) ?></td>
-                                    <td><?= htmlspecialchars($usuario['email']) ?></td>
-                                    <td><?= (new DateTime($usuario['criado_em']))->format('d/m/Y') ?></td>
-                                    <td><?= htmlspecialchars($usuario['perfil_nome']) ?></td>
-                                    <td>
-                                        <a href="../public/visualizar_usuario.php?id=<?= $usuario['id'] ?>" class="btn-acoes">Visualizar</a>
-                                        <a href="../public/editar_usuario.php?id=<?= $usuario['id'] ?>" class="btn-acoes">Editar</a>
-                                        <a href="../public/deletar_usuario.php?id=<?= $usuario['id'] ?>" class="btn-acoes" onclick="return confirm('Tem certeza que deseja deletar este usuário?');">Deletar</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach;
-                        } else {
-                            echo "<tr><td colspan='9'>Nenhum usuário encontrado.</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-
-                <div class="pagination">
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <a href="?page=<?= $i ?>&search=<?= urlencode($searchTerm) ?>" class="<?= ($i == $page) ? 'active' : '' ?>"><?= $i ?></a>
-                    <?php endfor; ?>
-                </div>
-            </div>
-        </section>
+    <div class="form-buttons">
+        <a href="../../crud/views/cadastro_usuario.php" class="btn-cadastrar-list" target="_blank">Cadastrar Novo
+            Usuário</a>
     </div>
-</body>
+    <form method="GET" action="listar_usuarios.php">
+        <input type="text" name="search" placeholder="Pesquisar por ID, Nome ou CPF"
+            value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" />
+        <button class="btn-cadastrar-list" type="submit">Buscar</button>
+    </form>
+</div>
 
-</html>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome Completo</th>
+            <th>Data de Nascimento</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th>E-mail</th>
+            <th>Data de Criação</th>
+            <th>Perfil</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if ($usuarios) {
+            foreach ($usuarios as $usuario): ?>
+                <tr>
+                    <td><?= htmlspecialchars($usuario['id']) ?></td>
+                    <td><?= htmlspecialchars($usuario['nome_completo']) ?></td>
+                    <td><?= htmlspecialchars((new DateTime($usuario['data_nascimento']))->format('d/m/Y')) ?></td>
+                    <td><?= htmlspecialchars(formatCPF($usuario['cpf'])) ?></td>
+                    <td><?= htmlspecialchars(formatTelefone($usuario['telefone'])) ?></td>
+                    <td><?= htmlspecialchars($usuario['email']) ?></td>
+                    <td><?= (new DateTime($usuario['criado_em']))->format('d/m/Y') ?></td>
+                    <td><?= htmlspecialchars($usuario['perfil_nome']) ?></td>
+                    <td>
+                        <a href="../public/visualizar_usuario.php?id=<?= $usuario['id'] ?>" class="btn-icone"
+                            title="Visualizar">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="../public/editar_usuario.php?id=<?= $usuario['id'] ?>" class="btn-icone" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="../public/deletar_usuario.php?id=<?= $usuario['id'] ?>" class="btn-icone" title="Deletar"
+                            onclick="return confirm('Tem certeza que deseja deletar este usuário?');">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach;
+        } else {
+            echo "<tr><td colspan='9'>Nenhum usuário encontrado.</td></tr>";
+        }
+        ?>
+    </tbody>
+</table>
+
+<div class="pagination">
+    <?php 
+    $start = max(1, $page - 2);
+    $end = min($totalPages, $page + 2);
+
+    if ($page > 1): ?>
+        <a href="?page=1&search=<?= urlencode($searchTerm) ?>"><<</a>
+    <?php endif; ?>
+
+    <?php if ($page > 1): ?>
+        <a href="?page=<?= $page - 1 ?>&search=<?= urlencode($searchTerm) ?>">Anterior</a>
+    <?php endif; ?>
+
+    <?php for ($i = $start; $i <= $end; $i++): ?>
+        <a href="?page=<?= $i ?>&search=<?= urlencode($searchTerm) ?>"
+           class="<?= ($i == $page) ? 'active' : '' ?>">
+           <?= $i ?>
+        </a>
+    <?php endfor; ?>
+
+    <?php if ($page < $totalPages): ?>
+        <a href="?page=<?= $page + 1 ?>&search=<?= urlencode($searchTerm) ?>">Próximo</a>
+    <?php endif; ?>
+
+    <?php if ($page < $totalPages): ?>
+        <a href="?page=<?= $totalPages ?>&search=<?= urlencode($searchTerm) ?>">>></a>
+    <?php endif; ?>
+</div>

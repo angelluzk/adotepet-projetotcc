@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = $petController->editarDoacao($_GET['id'], $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $files);
 
     if ($result === "Doação editada com sucesso!") {
-        header("Location: listar_doacoes.php");
+        header("Location: ../../crud/views/painel_admin.php");
         exit();
     } else {
         echo "<div class='error'>Erro: " . htmlspecialchars($result) . "</div>";
@@ -168,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="file" name="foto[]" multiple>
 
             <button type="submit">Salvar</button>
-            <a href="listar_doacoes.php">Voltar à lista</a>
+            <a href="../../crud/views/painel_admin.php">Voltar à lista</a>
         </form>
     </div>
 </body>

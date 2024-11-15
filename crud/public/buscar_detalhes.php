@@ -10,7 +10,7 @@ if ($id) {
     $query = "
     SELECT 
         p.nome, p.porte, p.idade, p.sexo, p.descricao, p.raca, p.cor,
-        (SELECT MIN(f.url) FROM fotos f WHERE f.pet_id = p.id) AS url_principal, -- Foto principal
+        (SELECT MIN(f.url) FROM fotos f WHERE f.pet_id = p.id) AS url_principal,
         GROUP_CONCAT(f.url) AS urls,
         es.nome AS especie,
         u.nome AS protetor_nome, u.sobrenome AS protetor_sobrenome, u.email AS protetor_email, u.telefone AS protetor_telefone,

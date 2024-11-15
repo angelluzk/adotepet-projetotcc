@@ -191,8 +191,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label>Senha: <input type="password" name="senha" placeholder="Nova Senha (opcional)"></label>
             <label>Perfil:
                 <select name="perfil_id">
-                    <option value="1" <?php echo $usuario['perfil_id'] == 1 ? 'selected' : ''; ?>>Funcionário</option>
-                    <option value="2" <?php echo $usuario['perfil_id'] == 2 ? 'selected' : ''; ?>>Usuário Comum</option>
+                    <option value="1" <?php echo $usuario['perfil_id'] == 1 ? 'selected' : ''; ?>>Colaborador</option> <!--Valor 1 é Funcionário, valor 2 é Usuário-->
+                    <option value="2" <?php echo $usuario['perfil_id'] == 2 ? 'selected' : ''; ?>>Tutor</option>
                 </select>
             </label>
 
@@ -216,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         value="<?php echo htmlspecialchars($endereco['estado'] ?? ''); ?>" required></label>
             </div>
             <button type="submit">Salvar</button>
-            <a href="listar_usuarios.php">Voltar à lista</a>
+            <a href="../../crud/views/painel_admin.php">Voltar à lista</a>
         </form>
     </div>
 

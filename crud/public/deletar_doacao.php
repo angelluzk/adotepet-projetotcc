@@ -7,7 +7,7 @@ $petController = new PetController($db);
 
 if (isset($_GET['id'])) {
     if ($petController->deletarPet($_GET['id'])) {
-        header("Location: listar_doacoes.php");
+        header("Location: ../../crud/views/painel_admin.php");
     } else {
         echo "Erro ao deletar o pet.";
     }
