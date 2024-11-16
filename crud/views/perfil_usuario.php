@@ -1,40 +1,5 @@
 <?php
-session_start();
-
-require_once '../../crud/config/DataBase.php';
-
-$isLoggedIn = isset($_SESSION['usuario_id']);
-$userName = $isLoggedIn ? $_SESSION['usuario_nome'] : 'Visitante';
-$userPhoto = '../../img/default-photo.png';
-$userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
-
-if ($isLoggedIn) {
-    $usuarioId = $_SESSION['usuario_id'];
-
-    $db = new DataBase();
-    $conn = $db->getConnection();
-
-    $query = "
-    SELECT u.nome, u.sobrenome, u.email, u.data_nascimento, u.telefone, e.cep, e.logradouro, e.bairro, e.localidade, e.uf, e.estado
-    FROM usuarios u
-    LEFT JOIN enderecos e ON u.id = e.usuario_id
-    WHERE u.id = ?
-    ";
-
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $usuarioId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $userData = $result->fetch_assoc();
-    } else {
-        echo "Usuário não encontrado!";
-        exit();
-    }
-
-    $db->closeConnection();
-}
+require_once '../../crud/public/atualizar_perfil.php';
 ?>
 
 <!DOCTYPE html>
@@ -131,20 +96,25 @@ if ($isLoggedIn) {
             <section id="minhas-doacoes" class="content-section">
                 <h2>Minhas Doações</h2>
                 <div class="donation-cards">
-                    <div class="donation-card">
-                        <img src="../../img/gato1.png" alt="Pet">
-                        <div class="card-content">
-                            <h3>Pet 1</h3>
-                            <p>Status: Disponível</p>
-                            <div class="action-buttons">
-                                <button class="edit-btn">Editar</button>
-                                <button class="delete-btn">Excluir</button>
+                    <?php foreach ($petsDoacoes as $pet): ?>
+                        <div class="donation-card">
+                            <a href="pet_detalhes.php?id=<?php echo $pet['pet_id']; ?>" class="donation-card-link" target="_blank">
+                                <img src="<?php echo htmlspecialchars($pet['url_principal']); ?>" alt="Pet">
+                            </a>
+                            <div class="card-content">
+                                <h3><?php echo htmlspecialchars($pet['pet_nome']); ?></h3>
+                                <p>Status: <?php echo htmlspecialchars($pet['status_nome']); ?></p>
+                                <div class="action-buttons">
+                                    <button class="edit-btn"
+                                        onclick="editPet(<?php echo $pet['pet_id']; ?>)">Editar</button>
+                                    <button class="delete-btn"
+                                        onclick="deletePet(<?php echo $pet['pet_id']; ?>)">Excluir</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </section>
-
             <section id="pets-adotados" class="content-section">
                 <h2>Pets que Adotei</h2>
                 <div class="adopted-cards">
@@ -177,7 +147,6 @@ if ($isLoggedIn) {
                     </div>
                 </div>
             </section>
-
             <section id="editar-perfil" class="content-section">
                 <h2>Editar Perfil</h2>
                 <?php

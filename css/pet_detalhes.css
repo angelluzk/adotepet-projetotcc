@@ -472,6 +472,140 @@ nav {
     border-color: var(--primary-color);
 }
 
+/* Estilos do Modal */
+.modal.hidden {
+    display: none;
+}
+
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+    transition: opacity 0.3s ease;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+.modal-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 8px 4px rgb(255, 255, 255);
+    filter: brightness(1.05);
+}
+
+.close-modal {
+    color: #100f47;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #4A90E2;
+    transform: scale(1.1);
+}
+
+.close-modal:active {
+    transform: scale(0.9);
+}
+
+hr{
+    border: 0;
+    height: 3px;
+    background: linear-gradient(to right, transparent, #50E3C2, transparent);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;    
+}
+
+.modal-content h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #4A90E2;
+    text-align: center;
+    margin-top: 0;
+}
+
+p {
+    font-size: 16px;
+    color: #100f47;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-size: 16px;
+    color: #100f47;
+    font-weight: 500;
+}
+
+input {
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+    border-color: #3bc4a1;
+    box-shadow: 0 0 8px #2fa789;
+}
+
+.g-recaptcha {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-enviar {
+    background-color: #3bc4a1;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button-enviar:hover {
+    background-color: #34b494;
+    transform: scale(1.05);
+}
+
+.button-enviar:active {
+    transform: scale(0.95);
+}
+
 /* Estilos do rodapé */
 footer {
     background-color: #100f47;

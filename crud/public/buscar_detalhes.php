@@ -1,5 +1,6 @@
 <?php
 require_once '../config/DataBase.php';
+require_once '../helpers/format_util.php';
 
 $id = $_GET['id'] ?? null;
 
@@ -32,7 +33,11 @@ if ($id) {
 
     if ($result->num_rows > 0) {
         $pet = $result->fetch_assoc();
+
+        $pet['protetor_telefone'] = formatTelefone($pet['protetor_telefone']);
+
         $pet['urls'] = explode(',', $pet['urls']);
+
         echo json_encode($pet);
     } else {
         echo json_encode(['error' => 'Pet não encontrado.']);

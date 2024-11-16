@@ -149,6 +149,58 @@ function sharePet(nome, imgSrc) {
     }
 }
 
-function adoptPet() {
-    window.location.href = "../../login.html";
+function toggleMenu() {
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    dropdownMenu.classList.toggle('show');
 }
+
+function closeModal() {
+    const modal = document.getElementById('adoption-modal');
+    modal.classList.add('hidden');
+}
+
+function adoptPet() {
+    const modal = document.getElementById('adoption-modal');
+    modal.classList.remove('hidden');
+}
+
+document.getElementById('adoption-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const petId = new URLSearchParams(window.location.search).get('id');
+
+    formData.append('pet_id', petId);
+
+    const recaptchaResponse = grecaptcha.getResponse();
+    if (!recaptchaResponse) {
+        alert('Por favor, confirme o reCAPTCHA.');
+        return;
+    }
+    formData.append('g-recaptcha-response', recaptchaResponse);
+
+    try {
+        const response = await fetch('../../crud/public/salvar_adocao.php', {
+            method: 'POST',
+            body: formData,
+        });
+
+        const text = await response.text();
+        console.log('Resposta do servidor:', text);
+
+        try {
+            const result = JSON.parse(text);
+            if (result.success) {
+                alert('Sua solicitação foi enviada com sucesso!');
+                closeModal();
+            } else {
+                alert(result.error || 'Ocorreu um erro. Tente novamente.');
+            }
+        } catch (error) {
+            console.error('Erro ao processar JSON:', error);
+            alert('Erro ao processar a resposta do servidor');
+        }
+    } catch (error) {
+        console.error('Erro ao enviar a adoção:', error);
+        alert('Erro ao enviar a solicitação. Tente novamente.');
+    }
+});

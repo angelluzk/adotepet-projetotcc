@@ -1,14 +1,15 @@
 <?php
+const IMG_BASE_PATH = 'http://localhost/adotepet-projetotcc/';
 require_once '../../crud/config/DataBase.php';
 session_start();
 
 $errors = [];
+$userData = [];
 
 $isLoggedIn = isset($_SESSION['usuario_id']);
 $userName = $isLoggedIn ? $_SESSION['usuario_nome'] : 'Visitante';
 $userPhoto = '../../img/default-photo.png';
 $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
-$userData = [];
 
 if ($isLoggedIn) {
     $usuarioId = $_SESSION['usuario_id'];
@@ -34,6 +35,43 @@ if ($isLoggedIn) {
         $errors[] = "Usuário não encontrado!";
     }
 
+    $petsDoacoes = [];
+    $queryPets = "
+    SELECT 
+        p.id AS pet_id, 
+        p.nome AS pet_nome, 
+        s.nome AS status_nome, 
+        MIN(f.url) AS url_principal,
+        GROUP_CONCAT(f.url) AS urls
+    FROM pets p
+    LEFT JOIN status s ON p.status_id = s.id
+    LEFT JOIN doacoes d ON d.pet_id = p.id
+    LEFT JOIN fotos f ON f.pet_id = p.id
+    WHERE d.usuario_id = ?
+    GROUP BY p.id, p.nome, s.nome
+    ";
+
+    $stmt = $conn->prepare($queryPets);
+    $stmt->bind_param("i", $usuarioId);
+    $stmt->execute();
+    $resultPets = $stmt->get_result();
+
+    while ($row = $resultPets->fetch_assoc()) {
+        $row['url_principal'] = $row['url_principal'] ? IMG_BASE_PATH . $row['url_principal'] : IMG_BASE_PATH . 'default.jpg';
+
+        if (!empty($row['urls'])) {
+            $urls = explode(',', $row['urls']);
+            $row['urls'] = array_map(function ($url) {
+                return IMG_BASE_PATH . $url;
+            }, $urls);
+        } else {
+            $row['urls'] = [IMG_BASE_PATH . 'default.jpg'];
+        }
+
+        $petsDoacoes[] = $row;
+    }
+
+    $stmt->close();
     $db->closeConnection();
 }
 

@@ -16,15 +16,11 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
     <title>Detalhes do Pet - Adote Pet</title>
 
     <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
     <link rel="stylesheet" href="../../css/pet_detalhes.css">
-
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -81,12 +77,36 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
         <?php endif; ?>
     </header>
 
-    <section class="banner">
-        <img src="../../img/banner-adotepet.jpg" alt="Banner" class="banner-image">
-    </section>
-
     <section id="pet-details" class="pet-details">
         <!-- Os detalhes dos pets serão preenchidos dinamicamente pelo JavaScript -->
+    </section>
+
+    <!-- Modal de Adoção -->
+    <div id="adoption-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3>Quero Adotar</h3>
+            <hr>
+            <p>Caso você tenha interesse em adotar este animalzinho, preencha seus dados abaixo e clique em Enviar:</p>
+            <form id="adoption-form">
+                <label for="adopter-name">Nome:</label>
+                <input type="text" id="adopter-name" name="nome" required>
+
+                <label for="adopter-phone">WhatsApp/Telefone:</label>
+                <input type="text" id="adopter-phone" name="telefone" required>
+
+                <label for="adopter-email">E-mail:</label>
+                <input type="email" id="adopter-email" name="email" required>
+
+                <div class="g-recaptcha" data-sitekey="6Lf1h4AqAAAAADjFcNqXaMr6kbT-oqIw-RvIe32x"></div>
+
+                <button type="submit" class="button-enviar">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <section class="banner">
+        <img src="../../img/banner-adotepet.jpg" alt="Banner" class="banner-image">
     </section>
 
     <footer>
@@ -128,21 +148,7 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
 
     <script src="../../javascript/mobile-navbar.js"></script>
     <script src="../../javascript/pet_detalhes.js" defer></script>
-    <script>
-        function toggleMenu() {
-            const dropdownMenu = document.getElementById('dropdown-menu');
-            dropdownMenu.classList.toggle('show');
-        }
 
-        window.onclick = function (event) {
-            if (!event.target.closest('.profile-section')) {
-                const dropdownMenu = document.getElementById('dropdown-menu');
-                if (dropdownMenu.classList.contains('show')) {
-                    dropdownMenu.classList.remove('show');
-                }
-            }
-        };
-    </script>
 </body>
 
 </html>

@@ -394,8 +394,8 @@ h2 {
     font-size: 26px;
     color: #100f47;
     text-transform: uppercase;
-    margin-bottom: 15px;
-    margin-top: 1px;
+    margin-bottom: 35px;
+    margin-top: 25px;
 }
 
 h3 {
@@ -477,6 +477,7 @@ h3 {
     display: block;
     max-width: 100%;
     height: auto;
+    
 }
 
 .donation-cards,
@@ -484,7 +485,8 @@ h3 {
 .favorites-cards {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 5px;
+    justify-content: space-around;
 }
 
 /* Estilos dos cards */

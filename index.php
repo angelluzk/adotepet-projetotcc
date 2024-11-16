@@ -1,10 +1,5 @@
 <?php
-session_start();
-
-$isLoggedIn = isset($_SESSION['usuario_id']);
-$userName = $isLoggedIn ? $_SESSION['usuario_nome'] : 'Visitante';
-$userPhoto = 'img/default-photo.png';
-$userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
+require_once 'process_index.php';
 ?>
 
 <!DOCTYPE html>
@@ -89,42 +84,20 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
             <h2>Veja pets para adoção</h2>
             <p>Pets anunciados em Brasília.</p>
             <div class="adoption-cards">
-                <a href="#" class="adoption-card">
-                    <img src="img/gato1.png" alt="Marley">
-                    <div class="card-content">
-                        <h3>Marley</h3>
-                        <p>Recanto das Emas, Distrito Federal</p>
-                        <span class="time">19 horas atrás</span>
-                    </div>
-                    <div class="favorite-icon"><i class="fas fa-star"></i></div>
-                </a>
-                <a href="#" class="adoption-card">
-                    <img src="img/gato2.png" alt="Pingo">
-                    <div class="card-content">
-                        <h3>Milo</h3>
-                        <p>Taguatinga, Distrito Federal</p>
-                        <span class="time">4 dias atrás</span>
-                    </div>
-                    <div class="favorite-icon"><i class="fas fa-star"></i></div>
-                </a>
-                <a href="#" class="adoption-card">
-                    <img src="img/cachorro1.png" alt="Djerry">
-                    <div class="card-content">
-                        <h3>Cleitinho</h3>
-                        <p>Samambaia, Distrito Federal</p>
-                        <span class="time">6 dias atrás</span>
-                    </div>
-                    <div class="favorite-icon"><i class="fas fa-star"></i></div>
-                </a>
-                <a href="#" class="adoption-card">
-                    <img src="img/cachorro2.png" alt="Sem Nome">
-                    <div class="card-content">
-                        <h3>Não possui nome</h3>
-                        <p>Ceilândia, Distrito Federal</p>
-                        <span class="time">28 minutos atrás</span>
-                    </div>
-                    <div class="favorite-icon"><i class="fas fa-star"></i></div>
-                </a>
+                <?php foreach ($pets as $pet): ?>
+                    <a href="crud/views/pet_detalhes.php?id=<?php echo $pet['pet_id']; ?>" class="adoption-card"
+                        target="_blank">
+                        <img src="<?php echo $baseUrl . htmlspecialchars($pet['foto_url']); ?>"
+                            alt="<?php echo htmlspecialchars($pet['pet_nome']); ?>">
+
+                        <div class="card-content">
+                            <h3><?php echo htmlspecialchars($pet['pet_nome']); ?></h3>
+                            <p><?php echo htmlspecialchars($pet['bairro']) . ', ' . htmlspecialchars($pet['estado']); ?></p>
+                            <span class="time"><?php echo time_ago($pet['criado_em']); ?></span>
+                        </div>
+                        <div class="favorite-icon"><i class="fas fa-star"></i></div>
+                    </a>
+                <?php endforeach; ?>
             </div>
             <a href="crud/views/pets_adocao.php" class="view-more-button">Ver mais</a>
         </section>

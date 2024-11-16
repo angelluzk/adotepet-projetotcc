@@ -34,7 +34,11 @@ document.getElementById('edit-btn').addEventListener('click', function () {
         input.disabled = !input.disabled;
     });
 
-    this.textContent = this.textContent === 'Editar' ? 'Cancelar Edição' : 'Editar';
+    if (this.textContent === 'Editar Perfil') {
+        this.textContent = 'Cancelar Edição';
+    } else {
+        this.textContent = 'Editar Perfil';
+    }
 });
 
 document.querySelector('form').addEventListener('submit', function (event) {
