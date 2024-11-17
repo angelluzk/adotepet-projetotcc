@@ -1,5 +1,6 @@
 <?php
 require_once '../../crud/public/atualizar_perfil.php';
+require_once '../../crud/helpers/format_util.php';
 ?>
 
 <!DOCTYPE html>
@@ -86,8 +87,11 @@ require_once '../../crud/public/atualizar_perfil.php';
                 <ul>
                     <li><a href="#" data-section="editar-perfil" onclick="switchSection(event)">Editar Perfil</a></li>
                     <li><a href="#" data-section="minhas-doacoes" onclick="switchSection(event)">Minhas Doações</a></li>
-                    <li><a href="#" data-section="pets-adotados" onclick="switchSection(event)">Pets Adotados</a></li>
-                    <li><a href="#" data-section="pets-favoritos" onclick="switchSection(event)">Pets Favoritos</a></li>
+                    <li><a href="#" data-section="solicitacoes-adocao" onclick="switchSection(event)">Solicitações de
+                            Adoção</a></li>
+                    <li><a href="#" data-section="pets-favoritos" onclick="switchSection(event)">Meus pets Favoritos</a>
+                    </li>
+                    <li><a href="#" data-section="pets-adotados" onclick="switchSection(event)">Pets que Adotei</a></li>
                 </ul>
             </nav>
         </aside>
@@ -96,25 +100,63 @@ require_once '../../crud/public/atualizar_perfil.php';
             <section id="minhas-doacoes" class="content-section">
                 <h2>Minhas Doações</h2>
                 <div class="donation-cards">
-                    <?php foreach ($petsDoacoes as $pet): ?>
-                        <div class="donation-card">
-                            <a href="pet_detalhes.php?id=<?php echo $pet['pet_id']; ?>" class="donation-card-link" target="_blank">
-                                <img src="<?php echo htmlspecialchars($pet['url_principal']); ?>" alt="Pet">
-                            </a>
-                            <div class="card-content">
-                                <h3><?php echo htmlspecialchars($pet['pet_nome']); ?></h3>
-                                <p>Status: <?php echo htmlspecialchars($pet['status_nome']); ?></p>
-                                <div class="action-buttons">
-                                    <button class="edit-btn"
-                                        onclick="editPet(<?php echo $pet['pet_id']; ?>)">Editar</button>
-                                    <button class="delete-btn"
-                                        onclick="deletePet(<?php echo $pet['pet_id']; ?>)">Excluir</button>
+                    <?php if (!empty($petsDoacoes)): ?>
+                        <?php foreach ($petsDoacoes as $pet): ?>
+                            <div class="donation-card">
+                                <a href="pet_detalhes.php?id=<?php echo $pet['pet_id']; ?>" class="donation-card-link"
+                                    target="_blank">
+                                    <img src="<?php echo htmlspecialchars($pet['url_principal']); ?>" alt="Pet">
+                                </a>
+                                <div class="card-content">
+                                    <h3><?php echo htmlspecialchars($pet['pet_nome']); ?></h3>
+                                    <p>Status: <?php echo htmlspecialchars($pet['status_nome']); ?></p>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn"
+                                            onclick="editPet(<?php echo $pet['pet_id']; ?>)">Editar</button>
+                                        <button class="delete-btn"
+                                            onclick="deletePet(<?php echo $pet['pet_id']; ?>)">Excluir</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>Não há pets cadastrados para doação no momento.</p>
+                    <?php endif; ?>
                 </div>
             </section>
+
+            <section id="solicitacoes-adocao" class="content-section">
+                <h2>Solicitações de Adoção</h2>
+                <h3>Pessoas Interessadas na Adoção</h3>
+                <div class="adoption-requests">
+                    <?php if (!empty($adocoes)): ?>
+                        <?php foreach ($adocoes as $adocao): ?>
+                            <div class="request-card">
+                                <a href="pet_detalhes.php?id=<?php echo htmlspecialchars($adocao['pet_id']); ?>"
+                                    class="solicitacoes-card-link" target="_blank">
+                                    <img src="<?php echo !empty($adocao['url_principal']) ? IMG_BASE_PATH . htmlspecialchars($adocao['url_principal']) : IMG_BASE_PATH . 'default.jpg'; ?>"
+                                        alt="Foto do Pet">
+                                </a>
+                                <h3><?php echo htmlspecialchars($adocao['nome']); ?></h3>
+                                <p><i class="fas fa-paw"></i> Pet Interessado:
+                                    <?php echo htmlspecialchars($adocao['pet_nome']); ?>
+                                </p>
+                                <p>Email: <a
+                                        href="mailto:<?php echo htmlspecialchars($adocao['email']); ?>"><?php echo htmlspecialchars($adocao['email']); ?></a>
+                                </p>
+                                <p>Telefone: <a
+                                        href="tel:<?php echo htmlspecialchars($adocao['telefone']); ?>"><?php echo formatTelefone(htmlspecialchars($adocao['telefone'])); ?></a>
+                                </p>
+                                <a href="pet_detalhes.php?id=<?php echo $adocao['pet_id']; ?>" target="_blank">Ver detalhes do
+                                    Pet</a>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>Não há solicitações de adoção no momento.</p>
+                    <?php endif; ?>
+                </div>
+            </section>
+
             <section id="pets-adotados" class="content-section">
                 <h2>Pets que Adotei</h2>
                 <div class="adopted-cards">
@@ -147,6 +189,7 @@ require_once '../../crud/public/atualizar_perfil.php';
                     </div>
                 </div>
             </section>
+
             <section id="editar-perfil" class="content-section">
                 <h2>Editar Perfil</h2>
                 <?php
@@ -269,7 +312,6 @@ require_once '../../crud/public/atualizar_perfil.php';
                             </div>
                         </div>
                     </div>
-
                     <div class="section-container senha">
                         <h3>Senha</h3>
                         <div class="input-row">
@@ -343,7 +385,6 @@ require_once '../../crud/public/atualizar_perfil.php';
     </footer>
 
     <script src="../../javascript/perfil_usuario.js"></script>
-
     <script src="../../javascript/mobile-navbar.js"></script>
 
 </body>
