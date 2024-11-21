@@ -472,23 +472,61 @@ nav {
     border-color: var(--primary-color);
 }
 
+/* Estilos do botão favorito */
+.favorite-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.favorite-btn i {
+    font-size: 18px;
+}
+
+.favorite-btn.favorited {
+    background-color: #333;
+    color: white;
+}
+
+.favorite-btn:hover {
+    background-color: #ff3b2f;
+}
+
+.favorite-btn.favorited:hover {
+    background-color: #555;
+}
+
+.loading {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: wait;
+}
+
 /* Estilos do Modal */
 .modal.hidden {
     display: none;
 }
 
 .modal {
-    display: block;
+    display: none;
     position: fixed;
-    z-index: 1;
-    left: 0;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
-    transition: opacity 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {

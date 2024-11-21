@@ -9,7 +9,7 @@ require_once '../../crud/helpers/format_util.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Usuário</title>
+    <title>Adote Pet - Perfil Usuário</title>
 
     <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
@@ -28,9 +28,9 @@ require_once '../../crud/helpers/format_util.php';
         </div>
         <nav>
             <ul class="nav-list">
-                <li class="nav-item"><a href="#">Início</a></li>
-                <li class="nav-item"><a href="#">Doe</a></li>
-                <li class="nav-item"><a href="#">Adote</a></li>
+                <li class="nav-item"><a href="../../index.php" target="_blank">Início</a></li>
+                <li class="nav-item"><a href="../../crud/views/cadastro_doacoes.php" target="_blank">Doe</a></li>
+                <li class="nav-item"><a href="../../crud/views/pets_adocao.php" target="_blank">Adote</a></li>
                 <li class="nav-item"><a href="#">Sobre nós</a></li>
 
                 <?php if ($isLoggedIn): ?>
@@ -112,7 +112,7 @@ require_once '../../crud/helpers/format_util.php';
                                     <p>Status: <?php echo htmlspecialchars($pet['status_nome']); ?></p>
                                     <div class="action-buttons">
                                         <button class="edit-btn"
-                                            onclick="editPet(<?php echo $pet['pet_id']; ?>)">Editar</button>
+                                            onclick="openModal(<?php echo $pet['pet_id']; ?>)">Editar</button>
                                         <button class="delete-btn"
                                             onclick="deletePet(<?php echo $pet['pet_id']; ?>)">Excluir</button>
                                     </div>
@@ -125,9 +125,65 @@ require_once '../../crud/helpers/format_util.php';
                 </div>
             </section>
 
+            <!-- Modal para editar pet -->
+            <div class="modal-overlay"></div>
+            <div id="editModal" class="modal d-none">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h2>Editar Pet</h2>
+                    <form id="edit-pet-form" method="POST" action="../../crud/public/editar_pet.php"
+                        enctype="multipart/form-data">
+                        <div class="modal-columns">
+                            <div class="modal-left">
+                                <input type="hidden" id="pet_id" name="pet_id">
+
+                                <label for="pet_nome">Nome:</label>
+                                <input type="text" id="pet_nome" name="nome" required>
+
+                                <label for="pet_raca">Raça:</label>
+                                <input type="text" id="pet_raca" name="raca" required>
+
+                                <label for="pet_porte">Porte:</label>
+                                <input type="text" id="pet_porte" name="porte" required>
+
+                                <label for="pet_sexo">Sexo:</label>
+                                <select id="pet_sexo" name="sexo">
+                                    <option value="Macho">Macho</option>
+                                    <option value="Fêmea">Fêmea</option>
+                                </select>
+
+                                <label for="pet_foto">Foto do Pet:</label>
+                                <input type="file" id="pet_foto" name="foto" accept="image/*">
+                            </div>
+
+                            <div class="modal-right">
+                                <label for="pet_cor">Cor:</label>
+                                <input type="text" id="pet_cor" name="cor" required>
+
+                                <label for="pet_idade">Idade:</label>
+                                <input type="number" id="pet_idade" name="idade" min="0" required>
+
+                                <label for="pet_status">Status:</label>
+                                <select id="pet_status" name="status_id">
+                                    <option value="1">Disponível</option>
+                                    <option value="2">Em adoção</option>
+                                    <option value="3">Adotado</option>
+                                    <option value="4">Em análise</option>
+                                </select>
+
+                                <label for="pet_descricao">Descrição:</label>
+                                <textarea id="pet_descricao" name="descricao"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <section id="solicitacoes-adocao" class="content-section">
                 <h2>Solicitações de Adoção</h2>
-                <h3>Pessoas Interessadas na Adoção</h3>
                 <div class="adoption-requests">
                     <?php if (!empty($adocoes)): ?>
                         <?php foreach ($adocoes as $adocao): ?>
@@ -171,22 +227,9 @@ require_once '../../crud/helpers/format_util.php';
             </section>
 
             <section id="pets-favoritos" class="content-section">
-                <h2>Pets Adicionados aos Favoritos</h2>
+                <h2>Meus Pets Favoritos</h2>
                 <div class="favorites-cards">
-                    <div class="favorite-card">
-                        <img src="../../img/cachorro1.png" alt="Pet Favorito">
-                        <div class="card-content">
-                            <h3>Pet Favorito 1</h3>
-                            <p>Status: Disponível</p>
-                        </div>
-                    </div>
-                    <div class="favorite-card">
-                        <img src="../../img/cachorro2.png" alt="Pet Favorito">
-                        <div class="card-content">
-                            <h3>Pet Favorito 2</h3>
-                            <p>Status: Em Adoção</p>
-                        </div>
-                    </div>
+                    <!-- Os cards serão carregados aqui dinamicamente -->
                 </div>
             </section>
 
@@ -361,10 +404,10 @@ require_once '../../crud/helpers/format_util.php';
             <div class="footer-section links">
                 <h2>Links Úteis</h2>
                 <ul>
-                    <li><a href="#">Início</a></li>
+                    <li><a href="../../index.php">Início</a></li>
                     <li><a href="#">Sobre Nós</a></li>
-                    <li><a href="#">Adotar</a></li>
-                    <li><a href="#">Doar</a></li>
+                    <li><a href="../../crud/views/pets_adocao.php">Adotar</a></li>
+                    <li><a href="../../crud/views/cadastro_doacoes.php">Doar</a></li>
                     <li><a href="#">Contato</a></li>
                 </ul>
             </div>
@@ -386,7 +429,6 @@ require_once '../../crud/helpers/format_util.php';
 
     <script src="../../javascript/perfil_usuario.js"></script>
     <script src="../../javascript/mobile-navbar.js"></script>
-
 </body>
 
 </html>

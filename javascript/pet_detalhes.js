@@ -69,6 +69,9 @@ function renderizarDetalhesPet(pet) {
                     <a href="https://www.instagram.com/yourprofile" target="_blank"><i class="fab fa-instagram"></i></a>
                     <a href="javascript:void(0)" onclick="sharePet('${pet.nome}', '${imgSrc}')"><i class="fas fa-share-alt"></i></a>
                 </div>
+                    <button id="favorite-btn" class="favorite-btn" onclick="toggleFavorite()">
+                    <i class="fas fa-heart"></i> <span id="favorite-text">Favoritar</span>
+                </button>
             </div>
         </div>
         <div class="pet-description">
@@ -203,4 +206,84 @@ document.getElementById('adoption-form').addEventListener('submit', async functi
         console.error('Erro ao enviar a adoção:', error);
         alert('Erro ao enviar a solicitação. Tente novamente.');
     }
+});
+
+async function toggleFavorite() {
+    const petId = new URLSearchParams(window.location.search).get('id');
+    const favoriteBtn = document.getElementById('favorite-btn');
+    const favoriteText = document.getElementById('favorite-text');
+    const favoriteIcon = favoriteBtn.querySelector('i');
+
+    if (!petId) {
+        alert('Pet não encontrado.');
+        return;
+    }
+
+    try {
+        favoriteBtn.classList.add('loading');
+
+        const response = await fetch('../../crud/public/favoritar_pet.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `pet_id=${petId}`,
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            if (result.favoritado) {
+                favoriteText.textContent = 'Remover dos Favoritos';
+                favoriteIcon.classList.replace('fa-heart', 'fa-heart-broken');
+                favoriteBtn.classList.add('favorited');
+                alert('Pet adicionado aos favoritos!');
+            } else {
+                favoriteText.textContent = 'Favoritar';
+                favoriteIcon.classList.replace('fa-heart-broken', 'fa-heart');
+                favoriteBtn.classList.remove('favorited');
+                alert('Pet removido dos favoritos!');
+            }
+
+            const event = new CustomEvent('favoritoAtualizado', { detail: result.pet });
+            window.dispatchEvent(event);
+        } else {
+            alert(result.error || 'Erro ao processar solicitação.');
+        }
+    } catch (error) {
+        console.error('Erro ao favoritar/desfavoritar:', error);
+        alert('Erro ao favoritar/desfavoritar. Tente novamente.');
+    } finally {
+        favoriteBtn.classList.remove('loading');
+    }
+}
+
+async function verificarFavorito(petId) {
+    try {
+        const response = await fetch(`../../crud/public/verificar_favorito.php?pet_id=${petId}`);
+        const result = await response.json();
+        const favoriteBtn = document.getElementById('favorite-btn');
+        const favoriteIcon = favoriteBtn.querySelector('i');
+        const favoriteText = document.getElementById('favorite-text');
+
+        if (result.favoritado) {
+            favoriteText.textContent = 'Remover dos Favoritos';
+            favoriteIcon.classList.replace('fa-heart', 'fa-heart-broken');
+            favoriteBtn.classList.add('favorited');
+        } else {
+            favoriteText.textContent = 'Favoritar';
+            favoriteIcon.classList.replace('fa-heart-broken', 'fa-heart');
+            favoriteBtn.classList.remove('favorited');
+        }
+    } catch (error) {
+        console.error('Erro ao verificar favoritos:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const petId = new URLSearchParams(window.location.search).get('id');
+    if (petId) {
+        verificarFavorito(petId);
+    }
+});
+
+window.addEventListener('favoritoAtualizado', (e) => {
+    console.log('Favorito atualizado para o pet:', e.detail);
 });

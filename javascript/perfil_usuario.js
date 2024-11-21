@@ -60,24 +60,99 @@ window.onload = function () {
     }
 };
 
-function editPet(petId) {
-    window.location.href = `editar_pet.php?pet_id=${petId}`;
+function openModal(petId) {
+    fetch(`../../crud/public/get_pet_info.php?pet_id=${petId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(pet => {
+            if (pet.error) {
+                alert(pet.error);
+                return;
+            }
+            
+            document.getElementById('pet_id').value = pet.pet_id;
+            document.getElementById('pet_nome').value = pet.pet_nome;
+            document.getElementById('pet_raca').value = pet.pet_raca;
+            document.getElementById('pet_porte').value = pet.pet_porte;
+            document.getElementById('pet_sexo').value = pet.pet_sexo;
+            document.getElementById('pet_cor').value = pet.pet_cor;
+            document.getElementById('pet_idade').value = pet.pet_idade;
+            document.getElementById('pet_status').value = pet.status_id;
+            document.getElementById('pet_descricao').value = pet.pet_descricao;
+
+            document.querySelector(".modal-overlay").classList.add("show");
+            document.getElementById('editModal').classList.remove('d-none');
+        })
+        .catch(error => {
+            console.error('Erro ao carregar os dados do pet:', error);
+            alert('Não foi possível carregar os dados do pet.');
+        });
+}
+
+function closeModal() {
+    document.querySelector(".modal-overlay").classList.remove("show");
+    document.getElementById('editModal').classList.add('d-none');
 }
 
 function deletePet(petId) {
-    if (confirm("Tem certeza de que deseja excluir este pet?")) {
-        fetch(`deletar_pet.php?pet_id=${petId}`, { method: 'GET' })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Pet excluído com sucesso!");
-                    location.reload();
-                } else {
-                    alert("Erro ao excluir o pet: " + data.error);
-                }
-            })
-            .catch(error => {
-                console.error("Erro na requisição:", error);
-            });
+    const confirmation = confirm("Tem certeza de que deseja excluir este pet?");
+    
+    if (confirmation) {
+        fetch(`delete_pet.php?pet_id=${petId}`, {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Pet excluído com sucesso!');
+                location.reload();
+            } else {
+                alert('Erro ao excluir pet.');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao excluir pet:', error);
+            alert('Erro ao excluir pet. Tente novamente.');
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    carregarFavoritos();
+    
+    window.addEventListener('favoritoAtualizado', (event) => {
+        carregarFavoritos();
+    });
+});
+
+async function carregarFavoritos() {
+    try {
+        const response = await fetch('../../crud/public/obter_favoritos.php');
+        if (!response.ok) throw new Error('Erro ao buscar os favoritos.');
+
+        const favoritos = await response.json();
+        const favoritesContainer = document.querySelector('.favorites-cards');
+
+        if (favoritos.error) {
+            favoritesContainer.innerHTML = `<p>${favoritos.error}</p>`;
+            return;
+        }
+
+        favoritesContainer.innerHTML = favoritos.map(fav => `
+            <div class="favorite-card">
+                <img src="${fav.imagem || '../../img/default-pet.png'}" alt="${fav.nome}">
+                <div class="card-content">
+                    <h3>${fav.nome}</h3>
+                    <p>Status: ${fav.status}</p>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Erro ao carregar favoritos:', error);
+        document.querySelector('.favorites-cards').innerHTML = '<p>Erro ao carregar favoritos.</p>';
     }
 }

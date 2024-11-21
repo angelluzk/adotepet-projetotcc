@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 16/11/2024 às 02:02
+-- Tempo de geração: 21/11/2024 às 16:36
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -41,7 +41,9 @@ CREATE TABLE `adocoes` (
 --
 
 INSERT INTO `adocoes` (`id`, `nome`, `telefone`, `email`, `pet_id`, `criado_em`) VALUES
-(1, 'Carlos', '61999111604', 'carlos@gmail.com', 24, '2024-11-15 21:18:17');
+(1, 'Carlos', '61999777456', 'carlos@gmail.com', 24, '2024-11-15 21:18:17'),
+(2, 'Angel', '61999888546', 'angel@gmail.com', 23, '2024-11-17 18:20:41'),
+(3, 'André Santos', '61789654123', 'andre@gmail.com', 25, '2024-11-17 18:24:17');
 
 -- --------------------------------------------------------
 
@@ -121,6 +123,30 @@ CREATE TABLE `especie` (
 INSERT INTO `especie` (`id`, `nome`) VALUES
 (1, 'Cachorro'),
 (2, 'Gato');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `favoritos`
+--
+
+CREATE TABLE `favoritos` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `pet_id` int(11) NOT NULL,
+  `criado_em` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `favoritos`
+--
+
+INSERT INTO `favoritos` (`id`, `usuario_id`, `pet_id`, `criado_em`) VALUES
+(8, 25, 23, '2024-11-18 14:09:39'),
+(21, 25, 22, '2024-11-20 00:08:40'),
+(22, 25, 24, '2024-11-20 00:09:07'),
+(23, 25, 25, '2024-11-20 00:09:48'),
+(24, 25, 21, '2024-11-20 01:19:49');
 
 -- --------------------------------------------------------
 
@@ -217,9 +243,9 @@ INSERT INTO `pets` (`id`, `nome`, `especie_id`, `raca`, `porte`, `sexo`, `cor`, 
 (19, 'Pompi', 2, 'Siamês', 'Pequeno', 'Macho', 'Cinza com Preto', 10, 'Vacinado', NULL, '2024-11-05 21:35:50', 1),
 (21, 'Salem', 2, 'Vira-lata', 'Pequeno', 'Macho', 'Preto', 2, 'Vacinado; Vermifugado; Dócil; Amigável; Independente;', NULL, '2024-11-06 00:17:55', 1),
 (22, 'Vermifugado', 2, 'Sphynx', 'Pequeno', 'Macho', 'Preto', 5, 'Vacinado.', NULL, '2024-11-09 23:04:59', 1),
-(23, 'Luli', 2, 'Persa', 'Pequeno', 'Fêmea', 'Tricolor', 2, 'Vacinada.. ', NULL, '2024-11-15 15:23:42', 1),
+(23, 'Luli', 2, 'Persa', 'Pequeno', 'Fêmea', 'Tricolor', 5, 'Vacinada e Vermifugada', NULL, '2024-11-15 15:23:42', 2),
 (24, 'PimPim', 1, 'Vira-lata', 'Médio', 'Macho', 'Laranja', 5, 'Vacinado', NULL, '2024-11-15 17:03:58', 2),
-(25, 'Pumpi', 1, 'Poddle', 'Médio', 'Macho', 'Branco', 2, 'Vacinado', NULL, '2024-11-15 18:05:22', 1);
+(25, 'Pumpi', 1, 'Poddle', 'Médio', 'Macho', 'Branco', 2, 'Vacinado', NULL, '2024-11-15 18:05:22', 2);
 
 -- --------------------------------------------------------
 
@@ -318,6 +344,14 @@ ALTER TABLE `especie`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices de tabela `favoritos`
+--
+ALTER TABLE `favoritos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id` (`usuario_id`),
+  ADD KEY `pet_id` (`pet_id`);
+
+--
 -- Índices de tabela `fotos`
 --
 ALTER TABLE `fotos`
@@ -362,7 +396,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `adocoes`
 --
 ALTER TABLE `adocoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `doacoes`
@@ -381,6 +415,12 @@ ALTER TABLE `enderecos`
 --
 ALTER TABLE `especie`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de tabela `favoritos`
+--
+ALTER TABLE `favoritos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de tabela `fotos`
@@ -440,6 +480,13 @@ ALTER TABLE `doacoes`
 ALTER TABLE `enderecos`
   ADD CONSTRAINT `fk_endereco_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_usuario_endereco` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
+
+--
+-- Restrições para tabelas `favoritos`
+--
+ALTER TABLE `favoritos`
+  ADD CONSTRAINT `favoritos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`),
+  ADD CONSTRAINT `favoritos_ibfk_2` FOREIGN KEY (`pet_id`) REFERENCES `pets` (`id`);
 
 --
 -- Restrições para tabelas `fotos`

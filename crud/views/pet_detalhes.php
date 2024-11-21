@@ -148,7 +148,5 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
 
     <script src="../../javascript/mobile-navbar.js"></script>
     <script src="../../javascript/pet_detalhes.js" defer></script>
-
 </body>
-
 </html>
