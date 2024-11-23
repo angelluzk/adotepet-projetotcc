@@ -73,7 +73,7 @@ function openModal(petId) {
                 alert(pet.error);
                 return;
             }
-            
+
             document.getElementById('pet_id').value = pet.pet_id;
             document.getElementById('pet_nome').value = pet.pet_nome;
             document.getElementById('pet_raca').value = pet.pet_raca;
@@ -88,8 +88,8 @@ function openModal(petId) {
             document.getElementById('editModal').classList.remove('d-none');
         })
         .catch(error => {
-            console.error('Erro ao carregar os dados do pet:', error);
-            alert('Não foi possível carregar os dados do pet.');
+            console.error('Erro ao carregar os dados do animal:', error);
+            alert('Não foi possível carregar os dados do animal.');
         });
 }
 
@@ -99,31 +99,31 @@ function closeModal() {
 }
 
 function deletePet(petId) {
-    const confirmation = confirm("Tem certeza de que deseja excluir este pet?");
-    
+    const confirmation = confirm("Tem certeza de que deseja excluir este o animal?");
+
     if (confirmation) {
         fetch(`delete_pet.php?pet_id=${petId}`, {
             method: 'GET'
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Pet excluído com sucesso!');
-                location.reload();
-            } else {
-                alert('Erro ao excluir pet.');
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao excluir pet:', error);
-            alert('Erro ao excluir pet. Tente novamente.');
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Animal excluído com sucesso!');
+                    location.reload();
+                } else {
+                    alert('Erro ao excluir o animal.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao excluir o animal:', error);
+                alert('Erro ao excluir o animal. Tente novamente.');
+            });
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarFavoritos();
-    
+
     window.addEventListener('favoritoAtualizado', (event) => {
         carregarFavoritos();
     });
@@ -148,6 +148,9 @@ async function carregarFavoritos() {
                 <div class="card-content">
                     <h3>${fav.nome}</h3>
                     <p>Status: ${fav.status}</p>
+                    <button class="remove-favorite-btn" data-id="${fav.id}" title="Remover dos Favoritos">
+                        <i class="fas fa-heart-broken"></i> Remover dos Favoritos
+                    </button>
                 </div>
             </div>
         `).join('');
@@ -155,4 +158,51 @@ async function carregarFavoritos() {
         console.error('Erro ao carregar favoritos:', error);
         document.querySelector('.favorites-cards').innerHTML = '<p>Erro ao carregar favoritos.</p>';
     }
+}
+
+document.querySelector('.favorites-cards').addEventListener('click', event => {
+    if (event.target.closest('.remove-favorite-btn')) {
+        handleRemoveFavorite(event);
+    }
+});
+
+async function handleRemoveFavorite(event) {
+    const button = event.target.closest('.remove-favorite-btn');
+    const petId = button.getAttribute('data-id');
+
+    if (!petId) {
+        alert('ID do pet não encontrado.');
+        return;
+    }
+
+    const confirmation = confirm('Deseja realmente remover este animal dos favoritos?');
+    if (!confirmation) return;
+
+    try {
+        const response = await fetch('../../crud/public/remover_favorito.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pet_id: petId })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert('Animal removido dos favoritos com sucesso!');
+            carregarFavoritos();
+        } else {
+            alert(result.error || 'Erro ao remover o animal dos favoritos.');
+        }
+    } catch (error) {
+        console.error('Erro ao remover favorito:', error);
+        alert('Erro ao remover o animal dos favoritos.');
+    }
+}
+
+function confirmDeletion(event, form) {
+    const confirmation = confirm("Deseja mesmo remover a solicitação de adoção?");
+    if (!confirmation) {
+        event.preventDefault();
+    }
+    return confirmation;
 }

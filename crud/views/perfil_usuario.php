@@ -10,7 +10,6 @@ require_once '../../crud/helpers/format_util.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adote Pet - Perfil Usuário</title>
-
     <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -20,7 +19,6 @@ require_once '../../crud/helpers/format_util.php';
 
 <body>
     <div class="wave"></div>
-
     <header>
         <div class="logo">
             <img src="../../img/logo.png" alt="Logo">
@@ -32,13 +30,11 @@ require_once '../../crud/helpers/format_util.php';
                 <li class="nav-item"><a href="../../crud/views/cadastro_doacoes.php" target="_blank">Doe</a></li>
                 <li class="nav-item"><a href="../../crud/views/pets_adocao.php" target="_blank">Adote</a></li>
                 <li class="nav-item"><a href="#">Sobre nós</a></li>
-
                 <?php if ($isLoggedIn): ?>
                     <li class="profile-section">
                         <div class="profile-perfil" onclick="toggleMenu()">
                             <img src="<?php echo $userPhoto; ?>" alt="Foto de <?php echo $userName; ?>" class="user-photo">
                         </div>
-
                         <div class="dropdown-menu" id="dropdown-menu">
                             <?php if ($_SESSION['perfil_id'] == 1): ?>
                                 <a href="painel_admin.php">Perfil</a>
@@ -53,14 +49,12 @@ require_once '../../crud/helpers/format_util.php';
                     <li><a href="../../crud/views/cadastro_usuario.php" class="btn-cadastrar ">Cadastre-se!</a></li>
                 <?php endif; ?>
             </ul>
-
             <div class="mobile-menu">
                 <div class="line1"></div>
                 <div class="line2"></div>
                 <div class="line3"></div>
             </div>
         </nav>
-
         <?php if ($isLoggedIn): ?>
             <div id="dropdown-menu" class="dropdown-menu">
                 <ul>
@@ -81,7 +75,6 @@ require_once '../../crud/helpers/format_util.php';
                 <img src="<?php echo $userPhoto; ?>" alt="Foto do usuário" class="profile-pic">
                 <h2><?php echo htmlspecialchars($userData['nome'] . ' ' . $userData['sobrenome']); ?></h2>
                 <p class="email"><?php echo htmlspecialchars($userData['email']); ?></p>
-
             </div>
             <nav class="profile-menu">
                 <ul>
@@ -130,28 +123,23 @@ require_once '../../crud/helpers/format_util.php';
             <div id="editModal" class="modal d-none">
                 <div class="modal-content">
                     <span class="close" onclick="closeModal()">&times;</span>
-                    <h2>Editar Pet</h2>
+                    <h2>Editar Informações do animal</h2>
                     <form id="edit-pet-form" method="POST" action="../../crud/public/editar_pet.php"
                         enctype="multipart/form-data">
                         <div class="modal-columns">
                             <div class="modal-left">
                                 <input type="hidden" id="pet_id" name="pet_id">
-
                                 <label for="pet_nome">Nome:</label>
                                 <input type="text" id="pet_nome" name="nome" required>
-
                                 <label for="pet_raca">Raça:</label>
                                 <input type="text" id="pet_raca" name="raca" required>
-
                                 <label for="pet_porte">Porte:</label>
                                 <input type="text" id="pet_porte" name="porte" required>
-
                                 <label for="pet_sexo">Sexo:</label>
                                 <select id="pet_sexo" name="sexo">
                                     <option value="Macho">Macho</option>
                                     <option value="Fêmea">Fêmea</option>
                                 </select>
-
                                 <label for="pet_foto">Foto do Pet:</label>
                                 <input type="file" id="pet_foto" name="foto" accept="image/*">
                             </div>
@@ -159,42 +147,48 @@ require_once '../../crud/helpers/format_util.php';
                             <div class="modal-right">
                                 <label for="pet_cor">Cor:</label>
                                 <input type="text" id="pet_cor" name="cor" required>
-
                                 <label for="pet_idade">Idade:</label>
                                 <input type="number" id="pet_idade" name="idade" min="0" required>
-
                                 <label for="pet_status">Status:</label>
                                 <select id="pet_status" name="status_id">
                                     <option value="1">Disponível</option>
                                     <option value="2">Em adoção</option>
                                     <option value="3">Adotado</option>
-                                    <option value="4">Em análise</option>
                                 </select>
-
                                 <label for="pet_descricao">Descrição:</label>
                                 <textarea id="pet_descricao" name="descricao"></textarea>
                             </div>
                         </div>
-
                         <div class="modal-footer">
                             <button type="submit">Salvar</button>
                         </div>
                     </form>
                 </div>
             </div>
+
             <section id="solicitacoes-adocao" class="content-section">
                 <h2>Solicitações de Adoção</h2>
                 <div class="adoption-requests">
                     <?php if (!empty($adocoes)): ?>
                         <?php foreach ($adocoes as $adocao): ?>
                             <div class="request-card">
+                                <form action="../../crud/public/remover_adocao.php" method="POST" class="remove-form"
+                                    onsubmit="return confirmDeletion(event, this);">
+                                    <input type="hidden" name="adocao_id" value="<?php echo $adocao['id']; ?>">
+                                    <input type="hidden" name="pet_id" value="<?php echo $adocao['pet_id']; ?>">
+                                    <button type="submit" class="remove-btn" title="Remover Solicitação">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
                                 <a href="pet_detalhes.php?id=<?php echo htmlspecialchars($adocao['pet_id']); ?>"
                                     class="solicitacoes-card-link" target="_blank">
-                                    <img src="<?php echo !empty($adocao['url_principal']) ? IMG_BASE_PATH . htmlspecialchars($adocao['url_principal']) : IMG_BASE_PATH . 'default.jpg'; ?>"
-                                        alt="Foto do Pet">
+                                    <div class="image-container">
+                                        <img src="<?php echo !empty($adocao['url_principal']) ? IMG_BASE_PATH . htmlspecialchars($adocao['url_principal']) : IMG_BASE_PATH . 'default.jpg'; ?>"
+                                            alt="Foto do Pet">
+                                    </div>
                                 </a>
                                 <h3><?php echo htmlspecialchars($adocao['nome']); ?></h3>
-                                <p><i class="fas fa-paw"></i> Pet Interessado:
+                                <p><i class="fas fa-paw"></i> Animal Interessado:
                                     <?php echo htmlspecialchars($adocao['pet_nome']); ?>
                                 </p>
                                 <p>Email: <a
@@ -204,7 +198,7 @@ require_once '../../crud/helpers/format_util.php';
                                         href="tel:<?php echo htmlspecialchars($adocao['telefone']); ?>"><?php echo formatTelefone(htmlspecialchars($adocao['telefone'])); ?></a>
                                 </p>
                                 <a href="pet_detalhes.php?id=<?php echo $adocao['pet_id']; ?>" target="_blank">Ver detalhes do
-                                    Pet</a>
+                                    Animal</a>
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -296,7 +290,6 @@ require_once '../../crud/helpers/format_util.php';
                                 </div>
                             </div>
                         </div>
-
                         <div class="section-container endereco">
                             <h3>Endereço</h3>
                             <div class="input-row">
@@ -376,14 +369,12 @@ require_once '../../crud/helpers/format_util.php';
                             </div>
                         </div>
                     </div>
-
                     <div class="button-container">
                         <button type="submit" class="save-btn">Salvar Alterações</button>
                         <button type="button" class="edit-btn" id="edit-btn">Editar Perfil</button>
                     </div>
                 </form>
             </section>
-
         </main>
     </div>
 
@@ -400,7 +391,6 @@ require_once '../../crud/helpers/format_util.php';
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-
             <div class="footer-section links">
                 <h2>Links Úteis</h2>
                 <ul>
@@ -411,7 +401,6 @@ require_once '../../crud/helpers/format_util.php';
                     <li><a href="#">Contato</a></li>
                 </ul>
             </div>
-
             <div class="footer-section contact">
                 <h2>Contato</h2>
                 <ul>
@@ -421,7 +410,6 @@ require_once '../../crud/helpers/format_util.php';
                 </ul>
             </div>
         </div>
-
         <div class="footer-bottom">
             <p>&copy; 2024 ADOTE PET | Todos os direitos reservados</p>
         </div>
@@ -430,5 +418,4 @@ require_once '../../crud/helpers/format_util.php';
     <script src="../../javascript/perfil_usuario.js"></script>
     <script src="../../javascript/mobile-navbar.js"></script>
 </body>
-
 </html>
