@@ -14,7 +14,6 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adote Pet - Painel Admin</title>
-
     <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -23,7 +22,6 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
 </head>
 
 <body>
-
     <header>
         <div class="logo">
             <img src="../../img/logo.png" alt="Logo">
@@ -35,13 +33,11 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
                 <li class="nav-item"><a href="../../crud/views/cadastro_doacoes.php" target="_blank">Doe</a></li>
                 <li class="nav-item"><a href="../../crud/views/pets_adocao.php" target="_blank">Adote</a></li>
                 <li class="nav-item"><a href="#">Sobre nós</a></li>
-
                 <?php if ($isLoggedIn): ?>
                     <li class="profile-section">
                         <div class="profile-perfil" onclick="toggleMenu()">
                             <img src="<?php echo $userPhoto; ?>" alt="Foto de <?php echo $userName; ?>" class="user-photo">
                         </div>
-
                         <div class="dropdown-menu" id="dropdown-menu">
                             <?php if ($_SESSION['perfil_id'] == 1): ?>
                                 <a href="painel_admin.php">Perfil</a>
@@ -56,36 +52,22 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
                     <li><a href="../../crud/views/cadastro_usuario.php" class="btn-cadastrar ">Cadastre-se!</a></li>
                 <?php endif; ?>
             </ul>
-
             <div class="mobile-menu">
                 <div class="line1"></div>
                 <div class="line2"></div>
                 <div class="line3"></div>
             </div>
         </nav>
-
-        <?php if ($isLoggedIn): ?>
-            <div id="dropdown-menu" class="dropdown-menu">
-                <ul>
-                    <?php if ($_SESSION['perfil_id'] == 1): ?>
-                        <li><a href="painel_admin.php">Perfil</a></li>
-                    <?php else: ?>
-                        <li><a href="perfil_usuario.php">Perfil</a></li>
-                    <?php endif; ?>
-                    <li><a href="logout.php">Sair</a></li>
-                </ul>
-            </div>
-        <?php endif; ?>
     </header>
 
     <div class="admin-container">
-        <nav>
+        <nav class="admin-sidebar">
             <div class="admin-barra-nav">
                 <ul>
                     <li><a href="#" onclick="loadSection('home')"><i class="fas fa-home"></i> HOME</a></li>
-                    <li><a href="#" onclick="loadSection('listar_usuarios')"><i class="fas fa-user"></i> Usuários</a>
+                    <li><a href="#" onclick="loadSection('listar_usuarios')"><i class="fas fa-user"></i> Usuários Cadastrados</a>
                     </li>
-                    <li><a href="#" onclick="loadSection('listar_doacoes')"><i class="fas fa-paw"></i> Pets
+                    <li><a href="#" onclick="loadSection('listar_doacoes')"><i class="fas fa-paw"></i> Animais
                             Cadastrados</a></li>
                     <li><a href="#" onclick="loadSection('aprovar_pets')"><i class="fas fa-check-circle"></i> Aprovar
                             Doações</a></li>
@@ -98,18 +80,41 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
             </div>
         </nav>
 
+        <!-- Conteúdo Principal -->
         <section class="admin-main">
             <div class="admin-main-top">
                 <p>Painel Administrativo</p>
             </div>
-        </section>
-
-        <section id="content" class="admin-main-content">
+            <section id="content" class="admin-main-content">
+                <!-- Aqui será carregado o conteúdo dinâmico -->
+            </section>
         </section>
     </div>
 
     <script src="../../javascript/mobile-navbar.js"></script>
     <script src="../../javascript/painel_admin.js"></script>
+    <script>
+function loadSection(section) {
+    const content = document.getElementById('content');
+    content.innerHTML = '<p>Carregando...</p>';
+
+    const baseUrl = '../../crud/views/';
+
+    fetch(`${baseUrl}${section}.php`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao carregar a seção: ' + response.statusText);
+            }
+            return response.text();
+        })
+        .then(html => {
+            content.innerHTML = html;
+        })
+        .catch(error => {
+            content.innerHTML = `<p>Erro ao carregar o conteúdo: ${error.message}</p>`;
+        });
+}
+    </script>
 </body>
 
 </html>

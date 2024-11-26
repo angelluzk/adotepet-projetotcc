@@ -243,7 +243,7 @@ nav {
     flex-direction: column;
     padding-top: 70px;
     position: fixed;
-    top:120px;
+    top: 120px;
     left: 0;
     height: calc(100vh - 80px);
     overflow-y: auto;
@@ -316,40 +316,56 @@ nav {
 }
 
 /* Estilos gerais para a tabela */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+}
+
 table {
-    width: calc(90% - 270px);
-    margin-left: 355px;
+    width: 100%;
+    max-width: 100%;
     border-collapse: collapse;
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
+    table-layout: auto;
+    margin-top: -15px;
 }
 
 /* Cabeçalhos da tabela */
 table th {
     background-color: #100f47;
     color: white;
-    padding: 10px;
-    text-align: left;
+    padding: 10px 5px;
+    text-align: center;
     font-size: 16px;
     font-weight: 500;
     border-bottom: 1px solid #ddd;
+    white-space: nowrap;
 }
 
 /* Estilo das células da tabela */
 table td {
     padding: 10px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #ddd;
     color: #555;
     font-size: 14px;
+    white-space: nowrap;
 }
 
 /* Estilo da última célula (ações) */
 table td:last-child {
-    display: flex;
-    gap: 5px;
+    text-align: center;
+    vertical-align: middle;
 }
 
 /* Efeito hover nas linhas da tabela */
@@ -366,10 +382,8 @@ table th:focus {
 /* Paginação */
 .pagination {
     display: flex;
-    align-items: center;
     justify-content: center;
     margin-top: 20px;
-    margin-left: 200px;
 }
 
 .pagination a {
@@ -380,8 +394,8 @@ table th:focus {
     border-radius: 5px;
     background-color: #fff;
     border: 1px solid #ddd;
-    transition: background-color 0.3s, color 0.3s;
     text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .pagination a:hover {
@@ -396,7 +410,7 @@ table th:focus {
 
 /* Formulário de busca */
 .form-container {
-    margin-left: 270px;
+    margin-left: 50px;
     padding: 20px;
     max-width: calc(100% - 270px);
     box-sizing: border-box;
@@ -404,7 +418,8 @@ table th:focus {
 
 .form-container h2 {
     margin-left: 25px;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding: 10px 0;
     font-size: 24px;
     color: #333;
@@ -412,7 +427,6 @@ table th:focus {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
-
 
 form input[type="text"] {
     padding: 8px;
@@ -429,7 +443,7 @@ form input[type="text"] {
     align-items: center;
     width: 100%;
     max-width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     gap: 20px;
 }
 
@@ -463,8 +477,6 @@ form input[type="text"] {
 
 /* Estilo do botão de ação */
 .btn-acoes {
-    display: inline-flex;
-    align-items: center;
     background-color: #100f47;
     color: white;
     padding: 8px 15px;
@@ -472,6 +484,8 @@ form input[type="text"] {
     font-size: 14px;
     text-align: center;
     transition: background-color 0.3s, transform 0.3s;
+    display: inline-block;
+    margin: 0 5px;
 }
 
 .btn-acoes:hover {
@@ -487,7 +501,7 @@ form input[type="text"] {
     color: white;
     text-decoration: none;
     border-radius: 4px;
-    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .btn-cadastrar-list:hover {
@@ -503,6 +517,7 @@ form input[type="text"] {
     padding: 5px;
     border-radius: 4px;
     transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
 }
 
 .btn-icone:hover {
@@ -549,7 +564,13 @@ form input[type="text"] {
     }
 }
 
-/* Responsividade para telas pequenas (celulares) */
+@media (max-width: 768px) {
+    table th, table td {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
 @media (max-width: 600px) {
     /* Estilo do Header em telas menores */
     header {
@@ -619,6 +640,7 @@ form input[type="text"] {
         opacity: 0;
         transform: translateX(50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -627,12 +649,12 @@ form input[type="text"] {
 
 .mobile-menu.active .line1 {
     transform: rotate(-45deg) translate(-8px, 8px);
-  }
-  
-  .mobile-menu.active .line2 {
+}
+
+.mobile-menu.active .line2 {
     opacity: 0;
-  }
-  
-  .mobile-menu.active .line3 {
+}
+
+.mobile-menu.active .line3 {
     transform: rotate(45deg) translate(-5px, -7px);
-  }
+}

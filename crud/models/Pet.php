@@ -29,7 +29,6 @@ class Pet
             WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("sissssssi", $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $pet_id);
-
         return $stmt->execute();
     }
 
@@ -46,7 +45,6 @@ class Pet
             if ($fotos['error'][$i] === UPLOAD_ERR_OK) {
                 $target_file = $target_dir . basename($fotos['name'][$i]);
                 $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
 
                 if (in_array($file_type, ['jpg', 'jpeg', 'png', 'gif'])) {
 
@@ -72,7 +70,6 @@ class Pet
                 return false;
             }
         }
-
         return count($uploadedFiles) > 0;
     }
 
@@ -87,24 +84,25 @@ class Pet
     public function listarDoacoes($searchTerm = '', $limit = 8, $offset = 0)
     {
         $sql = "SELECT d.id, 
-                       p.id AS pet_id, 
-                       p.nome AS nome_pet, 
-                       p.raca, 
-                       p.porte, 
-                       p.sexo, 
-                       p.cor, 
-                       p.idade, 
-                       d.data, 
-                       e.nome AS especie_nome, 
-                       u.nome AS usuario_nome, 
-                       u.sobrenome AS usuario_sobrenome
-                FROM doacoes d 
-                JOIN pets p ON d.pet_id = p.id
-                JOIN especie e ON p.especie_id = e.id
-                JOIN usuarios u ON d.usuario_id = u.id
-                WHERE (p.raca LIKE ? OR p.cor LIKE ? OR p.id LIKE ? OR u.nome LIKE ? OR e.nome LIKE ? OR p.nome LIKE ?)
-                ORDER BY d.data DESC
-                LIMIT ? OFFSET ?";
+                    p.id AS pet_id, 
+                    p.nome AS nome_pet, 
+                    p.raca, 
+                    p.porte, 
+                    p.sexo, 
+                    p.cor, 
+                    p.idade, 
+                    s.nome AS status_nome, 
+                    e.nome AS especie_nome, 
+                    u.nome AS usuario_nome, 
+                    u.sobrenome AS usuario_sobrenome
+            FROM doacoes d 
+            JOIN pets p ON d.pet_id = p.id
+            JOIN especie e ON p.especie_id = e.id
+            JOIN usuarios u ON d.usuario_id = u.id
+            JOIN status s ON p.status_id = s.id
+            WHERE (p.raca LIKE ? OR p.cor LIKE ? OR p.id LIKE ? OR u.nome LIKE ? OR e.nome LIKE ? OR p.nome LIKE ?)
+            ORDER BY d.data DESC
+            LIMIT ? OFFSET ?";
 
         $stmt = $this->conn->prepare($sql);
 
