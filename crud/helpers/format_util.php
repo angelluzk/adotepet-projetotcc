@@ -11,4 +11,12 @@ function formatTelefone($telefone): array|string|null {
     }
     return preg_replace(pattern: '/(\d{2})(\d{4})(\d{4})/', replacement: '($1) $2-$3', subject: $telefone);
 }
+
+function formatDateTime($dateTime): string {
+    if (!$dateTime) {
+        return '';
+    }
+    $date = new DateTime($dateTime);
+    return $date->format('d/m/Y H:i:s');
+}
 ?>

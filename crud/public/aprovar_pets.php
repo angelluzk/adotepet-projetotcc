@@ -65,7 +65,7 @@ $result = $stmt->get_result();
             <tr>
                 <th>ID</th>
                 <th>Nome do Animal</th>
-                <th>Nome do Dono</th>
+                <th>Nome do Tutor</th>
                 <th>Espécie</th>
                 <th>Foto</th>
                 <th>Ações</th>

@@ -65,12 +65,13 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
             <div class="admin-barra-nav">
                 <ul>
                     <li><a href="#" onclick="loadSection('home')"><i class="fas fa-home"></i> HOME</a></li>
-                    <li><a href="#" onclick="loadSection('listar_usuarios')"><i class="fas fa-user"></i> Usuários Cadastrados</a>
+                    <li><a href="#" onclick="loadSection('aprovar_pets')"><i class="fas fa-check-circle"></i> Aprovar
+                            Doações</a></li>
+                    <li><a href="#" onclick="loadSection('listar_usuarios')"><i class="fas fa-user"></i> Usuários
+                            Cadastrados</a>
                     </li>
                     <li><a href="#" onclick="loadSection('listar_doacoes')"><i class="fas fa-paw"></i> Animais
                             Cadastrados</a></li>
-                    <li><a href="#" onclick="loadSection('aprovar_pets')"><i class="fas fa-check-circle"></i> Aprovar
-                            Doações</a></li>
                     <li><a href="#" onclick="loadSection('config')"><i class="fas fa-cog"></i> Configurações</a></li>
                     <li><a href="#" onclick="loadSection('help')"><i class="fas fa-question-circle"></i> Help</a></li>
                     <li><a href="../../index.php" target="_blank"><i class="fas fa-globe"></i> Página Index</a></li>
@@ -94,26 +95,26 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
     <script src="../../javascript/mobile-navbar.js"></script>
     <script src="../../javascript/painel_admin.js"></script>
     <script>
-function loadSection(section) {
-    const content = document.getElementById('content');
-    content.innerHTML = '<p>Carregando...</p>';
+        function loadSection(section) {
+            const content = document.getElementById('content');
+            content.innerHTML = '<p>Carregando...</p>';
 
-    const baseUrl = '../../crud/views/';
+            const baseUrl = '../../crud/views/';
 
-    fetch(`${baseUrl}${section}.php`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao carregar a seção: ' + response.statusText);
-            }
-            return response.text();
-        })
-        .then(html => {
-            content.innerHTML = html;
-        })
-        .catch(error => {
-            content.innerHTML = `<p>Erro ao carregar o conteúdo: ${error.message}</p>`;
-        });
-}
+            fetch(`${baseUrl}${section}.php`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao carregar a seção: ' + response.statusText);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    content.innerHTML = html;
+                })
+                .catch(error => {
+                    content.innerHTML = `<p>Erro ao carregar o conteúdo: ${error.message}</p>`;
+                });
+        }
     </script>
 </body>
 
