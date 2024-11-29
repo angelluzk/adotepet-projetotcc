@@ -37,6 +37,7 @@ if (isset($_GET['id'])) {
 
         <div class="info-container">
             <div class="text-info">
+                <p><strong>Status:</strong> <?= htmlspecialchars($doacao['status_nome']) ?></p>
                 <p><strong>Nome do Protetor:</strong>
                     <?= htmlspecialchars($doacao['usuario_nome'] . ' ' . $doacao['usuario_sobrenome']) ?></p>
                 <p><strong>Espécie:</strong> <?= htmlspecialchars($doacao['especie_nome']) ?></p>

@@ -4,6 +4,8 @@ $baseUrl = 'http://localhost/adotepet-projetotcc/';
 require_once 'crud/config/DataBase.php';
 session_start();
 
+date_default_timezone_set('America/Sao_Paulo');
+
 $isLoggedIn = isset($_SESSION['usuario_id']);
 $userName = $isLoggedIn ? $_SESSION['usuario_nome'] : 'Visitante';
 $userPhoto = 'img/default-photo.png';
@@ -26,7 +28,7 @@ $sql = "
     INNER JOIN enderecos e ON d.endereco_id = e.id
     INNER JOIN fotos f ON p.id = f.pet_id
     INNER JOIN status s ON p.status_id = s.id
-    WHERE s.nome = 'Disponível'
+    WHERE s.nome IN ('Disponível', 'Em adoção', 'Adotado')
     GROUP BY p.id
     ORDER BY p.criado_em DESC
     LIMIT 4";

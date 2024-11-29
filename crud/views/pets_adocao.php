@@ -77,14 +77,14 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
         <?php endif; ?>
     </header>
     <main>
-    <h1 class="titulo-banner">Por que adotar?</h1>
-    <div class="banner">
-        <img src="../../img/banner1.png" class="banner-image" alt="Banner 1">
-        <img src="../../img/banner2.png" class="banner-image" alt="Banner 2">
-        <img src="../../img/banner3.png" class="banner-image" alt="Banner 3">
-    </div>
-    <hr class="banner-separator">
-</main>
+        <h1 class="titulo-banner">Por que adotar?</h1>
+        <div class="banner">
+            <img src="../../img/banner1.png" class="banner-image" alt="Banner 1">
+            <img src="../../img/banner2.png" class="banner-image" alt="Banner 2">
+            <img src="../../img/banner3.png" class="banner-image" alt="Banner 3">
+        </div>
+        <hr class="banner-separator">
+    </main>
     <section class="filter">
         <label><i class="fas fa-filter"></i> Filtrar por:</label>
         <div class="form-group">

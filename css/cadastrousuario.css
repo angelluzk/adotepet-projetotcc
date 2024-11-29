@@ -1,11 +1,11 @@
 /* Importação da fonte */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-/* Reset básico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -251,7 +251,13 @@ nav {
     background-size: cover;
     z-index: -1;
     margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%); 
+}
+
+.header .logo {
+    display: block;
+    margin: -20px auto -30px;
+    max-width: 180px;
 }
 
 .link-voltar {
@@ -266,7 +272,7 @@ nav {
     margin-right: 8px;
 }
 
-.container h2 {
+h2 {
     text-align: center;
     margin-top: -10px;
     margin-bottom: 20px;
@@ -407,7 +413,6 @@ select option {
 .form-step {
     display: none;
 }
-
 .form-step-active {
     display: block;
 }

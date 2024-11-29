@@ -13,17 +13,20 @@ class PetConsulta
     public function buscarPets($especie = null, $sexo = null, $porte = null, $idade = null)
     {
         $query = "
-            SELECT 
-                p.id, p.nome, p.porte, p.idade, 
-                (SELECT f.url FROM fotos f WHERE f.pet_id = p.id LIMIT 1) AS url,
-                IFNULL(e.bairro, 'N/A') AS bairro,
-                IFNULL(e.estado, 'N/A') AS estado,
-                es.nome AS especie_nome
-            FROM pets p
-            LEFT JOIN doacoes d ON p.id = d.pet_id
-            LEFT JOIN enderecos e ON d.endereco_id = e.id
-            LEFT JOIN especie es ON p.especie_id = es.id
-        ";
+        SELECT 
+            p.id, p.nome, p.porte, p.idade, 
+            (SELECT f.url FROM fotos f WHERE f.pet_id = p.id LIMIT 1) AS url,
+            IFNULL(e.bairro, 'N/A') AS bairro,
+            IFNULL(e.estado, 'N/A') AS estado,
+            es.nome AS especie_nome,
+            s.nome AS status_nome
+        FROM pets p
+        LEFT JOIN doacoes d ON p.id = d.pet_id
+        LEFT JOIN enderecos e ON d.endereco_id = e.id
+        LEFT JOIN especie es ON p.especie_id = es.id
+        LEFT JOIN status s ON p.status_id = s.id
+        WHERE s.nome IN ('Disponível', 'Em adoção', 'Adotado')
+    ";
 
         $params = [];
         $types = [];

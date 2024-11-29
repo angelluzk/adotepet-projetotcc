@@ -472,6 +472,32 @@ nav {
     border-color: var(--primary-color);
 }
 
+/* Estilos para os status do pet nos cards */
+.pet-details .status {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #f39c12;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-align: center;
+    max-width: fit-content;
+}
+
+.pet-details .status.adotado {
+    background-color: #2ecc71;
+}
+
+.pet-details .status.em-adocao {
+    background-color: #e74c3c;
+}
+
+.pet-details .status.disponivel {
+    background-color: #3498db;
+}
+
 /* Estilos do botão favorito */
 .favorite-btn {
     display: inline-flex;

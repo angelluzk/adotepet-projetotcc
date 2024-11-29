@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 21/11/2024 às 16:36
+-- Tempo de geração: 29/11/2024 às 05:12
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -41,9 +41,8 @@ CREATE TABLE `adocoes` (
 --
 
 INSERT INTO `adocoes` (`id`, `nome`, `telefone`, `email`, `pet_id`, `criado_em`) VALUES
-(1, 'Carlos', '61999777456', 'carlos@gmail.com', 24, '2024-11-15 21:18:17'),
-(2, 'Angel', '61999888546', 'angel@gmail.com', 23, '2024-11-17 18:20:41'),
-(3, 'André Santos', '61789654123', 'andre@gmail.com', 25, '2024-11-17 18:24:17');
+(7, 'Antonio Carlos', '61888666333', 'antoniocarlos@gmail.com', 24, '2024-11-22 21:19:40'),
+(8, 'Carlos Andrade', '61999777666', 'carlosandrade@gmail.com', 23, '2024-11-28 11:41:16');
 
 -- --------------------------------------------------------
 
@@ -69,7 +68,8 @@ INSERT INTO `doacoes` (`id`, `pet_id`, `usuario_id`, `data`, `criado_em`, `ender
 (22, 22, 52, '2024-11-10', '2024-11-09 23:04:59', 41),
 (23, 23, 25, '2024-11-15', '2024-11-15 15:23:42', 24),
 (24, 24, 25, '2024-11-15', '2024-11-15 17:03:58', 24),
-(25, 25, 25, '2024-11-15', '2024-11-15 18:05:22', 24);
+(25, 25, 25, '2024-11-15', '2024-11-15 18:05:22', 24),
+(26, 26, 25, '2024-11-28', '2024-11-28 22:19:29', 24);
 
 -- --------------------------------------------------------
 
@@ -144,9 +144,8 @@ CREATE TABLE `favoritos` (
 INSERT INTO `favoritos` (`id`, `usuario_id`, `pet_id`, `criado_em`) VALUES
 (8, 25, 23, '2024-11-18 14:09:39'),
 (21, 25, 22, '2024-11-20 00:08:40'),
-(22, 25, 24, '2024-11-20 00:09:07'),
 (23, 25, 25, '2024-11-20 00:09:48'),
-(24, 25, 21, '2024-11-20 01:19:49');
+(26, 25, 24, '2024-11-23 00:27:47');
 
 -- --------------------------------------------------------
 
@@ -166,28 +165,22 @@ CREATE TABLE `fotos` (
 --
 
 INSERT INTO `fotos` (`id`, `nome`, `url`, `pet_id`) VALUES
-(1, 'Golden Laranja.png', 'uploads/Golden Laranja.png', 1),
-(5, 'Sphynx.png', 'uploads/Sphynx.png', 2),
-(7, 'salsichapreto.png', 'uploads/salsichapreto.png', 3),
-(8, 'Balinês - branco com preto.jpeg', 'uploads/Balinês - branco com preto.jpeg', 5),
-(15, 'Border collie laranja com branco.jpg', 'uploads/Border collie laranja com branco.jpg', 12),
-(36, 'Gato-laranja-filhote-1.jpg', 'uploads/Gato-laranja-filhote-1.jpg', 18),
-(37, 'Gato-laranja-filhote-2.jpg', 'uploads/Gato-laranja-filhote-2.jpg', 18),
-(38, 'Gato-laranja-filhote-3.jpg', 'uploads/Gato-laranja-filhote-3.jpg', 18),
-(39, 'siames-p1.jpg', 'uploads/siames-p1.jpg', 19),
-(40, 'siames-p2.jpg', 'uploads/siames-p2.jpg', 19),
-(41, 'siames-p3.jpg', 'uploads/siames-p3.jpg', 19),
-(45, 'gatopreto1.jpg', 'uploads/gatopreto1.jpg', 21),
-(46, 'gatopreto2.png', 'uploads/gatopreto2.png', 21),
-(47, 'gatopreto3.png', 'uploads/gatopreto3.png', 21),
-(48, 'Sphynx 1.jpg', 'uploads/Sphynx 1.jpg', 22),
-(49, 'Sphynx 2.jpg', 'uploads/Sphynx 2.jpg', 22),
-(50, 'Sphynx 3.jpg', 'uploads/Sphynx 3.jpg', 22),
 (51, 'Gato-persa-tricolor3.jpg', 'uploads/Gato-persa-tricolor3.jpg', 23),
 (52, 'Gato-persa-tricolor2.jpg', 'uploads/Gato-persa-tricolor2.jpg', 23),
 (53, 'Gato-persa-tricolor1.jpg', 'uploads/Gato-persa-tricolor1.jpg', 23),
-(54, 'cachorro caramelo piado de manga 1.png', 'uploads/cachorro caramelo piado de manga 1.png', 24),
-(55, 'podle medio.jpg', 'uploads/podle medio.jpg', 25);
+(55, 'podle medio.jpg', 'uploads/podle medio.jpg', 25),
+(74, 'Sphynx 1.jpg', 'uploads/Sphynx 1.jpg', 22),
+(75, 'Sphynx 2.jpg', 'uploads/Sphynx 2.jpg', 22),
+(76, 'Sphynx 3.jpg', 'uploads/Sphynx 3.jpg', 22),
+(77, 'Cachorro caramelo fiapo de manda 1.png', 'uploads/Cachorro caramelo fiapo de manda 1.png', 24),
+(78, 'Cachorro caramelo fiapo de manda 2.png', 'uploads/Cachorro caramelo fiapo de manda 2.png', 24),
+(79, 'Cachorro caramelo fiapo de manda 3.png', 'uploads/Cachorro caramelo fiapo de manda 3.png', 24),
+(80, 'gatopreto1.jpg', 'uploads/gatopreto1.jpg', 21),
+(81, 'gatopreto2.png', 'uploads/gatopreto2.png', 21),
+(82, 'gatopreto3.png', 'uploads/gatopreto3.png', 21),
+(83, 'cachorro filhote 1.png', 'uploads/cachorro filhote 1.png', 26),
+(84, 'cachorro filhote 2.png', 'uploads/cachorro filhote 2.png', 26),
+(85, 'cachorro filhote 3.png', 'uploads/cachorro filhote 3.png', 26);
 
 -- --------------------------------------------------------
 
@@ -234,18 +227,12 @@ CREATE TABLE `pets` (
 --
 
 INSERT INTO `pets` (`id`, `nome`, `especie_id`, `raca`, `porte`, `sexo`, `cor`, `idade`, `descricao`, `foto`, `criado_em`, `status_id`) VALUES
-(1, 'Meg', 1, ' Golden retriever', 'Grande', 'Fêmea', 'Laranja', 5, 'Vacina, Vermifugado, Docil.', NULL, '2024-10-09 02:30:23', 1),
-(2, 'Lili', 2, 'Sphynx', 'Médio', 'Macho', 'Tricolor', 2, 'Vacinas em dia.', NULL, '2024-10-09 02:34:15', 1),
-(3, 'Baco', 1, ' Dachshund', 'Pequeno', 'Macho', 'Preto', 11, 'Vacinado', NULL, '2024-10-09 02:35:04', 1),
-(5, 'Marie', 2, 'Balinês', 'Pequeno', 'Fêmea', 'Branco com Preto', 6, 'Vacinado.', NULL, '2024-10-09 03:09:29', 1),
-(12, 'Zuzu', 1, 'Border Collie', 'Grande', 'Fêmea', 'Laranja com Branco', 5, 'Vacinada', NULL, '2024-11-01 13:49:50', 1),
-(18, 'Pipi', 2, 'Vira-lata', 'Pequeno', 'Fêmea', 'Laranja', 3, 'Vacina', NULL, '2024-11-05 21:32:40', 1),
-(19, 'Pompi', 2, 'Siamês', 'Pequeno', 'Macho', 'Cinza com Preto', 10, 'Vacinado', NULL, '2024-11-05 21:35:50', 1),
 (21, 'Salem', 2, 'Vira-lata', 'Pequeno', 'Macho', 'Preto', 2, 'Vacinado; Vermifugado; Dócil; Amigável; Independente;', NULL, '2024-11-06 00:17:55', 1),
 (22, 'Vermifugado', 2, 'Sphynx', 'Pequeno', 'Macho', 'Preto', 5, 'Vacinado.', NULL, '2024-11-09 23:04:59', 1),
 (23, 'Luli', 2, 'Persa', 'Pequeno', 'Fêmea', 'Tricolor', 5, 'Vacinada e Vermifugada', NULL, '2024-11-15 15:23:42', 2),
-(24, 'PimPim', 1, 'Vira-lata', 'Médio', 'Macho', 'Laranja', 5, 'Vacinado', NULL, '2024-11-15 17:03:58', 2),
-(25, 'Pumpi', 1, 'Poddle', 'Médio', 'Macho', 'Branco', 2, 'Vacinado', NULL, '2024-11-15 18:05:22', 2);
+(24, 'PimPim', 1, 'Vira-lata', 'Médio', 'Macho', 'Laranja', 12, 'Vacinado, Vermifugado, Castrado.', NULL, '2024-11-15 17:03:58', 2),
+(25, 'Pumpi', 1, 'Poddle', 'Médio', 'Macho', 'Branco', 2, 'Vacinado', NULL, '2024-11-15 18:05:22', 3),
+(26, 'Biscoito', 1, 'Vira-Lata', 'Pequeno', 'Macho', 'Marrom', 1, 'Vacinado; Vermifugado; Castrado;', NULL, '2024-11-28 22:19:29', 1);
 
 -- --------------------------------------------------------
 
@@ -292,7 +279,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nome`, `sobrenome`, `cpf`, `telefone`, `email`, `senha`, `criado_em`, `perfil_id`, `data_nascimento`) VALUES
-(4, 'Gustavo', 'Junior', '66666666666', '61896458745', 'gustavo@gmail.com', '$2y$10$.mXfTTy/.cCmQ9s053vXQ.jCy.s1meXd/op.CCRuNoTvGytmP9Kcu', '2024-10-12 12:35:32', 1, '2000-12-05'),
+(4, 'Gustavo', 'Junior', '66666666666', '61896458745', 'gustavo@gmail.com', '$2y$10$vIDg19flz/2j0HQKpVnQhudHDeDU9Sh7gkioWDAdtRLoO0dtFibX.', '2024-10-12 12:35:32', 1, '1982-12-25'),
 (6, 'André', 'Felipe', '44455566611', '61987456321', 'andre@gmail.com', '$2y$10$Z5672VN7Zx.hhuObacYM0.eYHtQoaeHg0nIwUWPN7.O76AhdDKP8G', '2024-10-12 15:22:05', 1, '1982-10-05'),
 (8, 'João', 'Robert', '00052314562', '6199913151', 'joao@gmail.com', '123456', '2024-10-12 17:58:14', 1, '1992-02-15'),
 (10, 'Aline', 'Lima', '96325874112', '61999666333', 'alinelima@gmail.com', '123456', '2024-10-12 18:35:32', 2, '2005-11-15'),
@@ -396,13 +383,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `adocoes`
 --
 ALTER TABLE `adocoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de tabela `doacoes`
 --
 ALTER TABLE `doacoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de tabela `enderecos`
@@ -420,13 +407,13 @@ ALTER TABLE `especie`
 -- AUTO_INCREMENT de tabela `favoritos`
 --
 ALTER TABLE `favoritos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de tabela `fotos`
 --
 ALTER TABLE `fotos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT de tabela `perfis`
@@ -438,7 +425,7 @@ ALTER TABLE `perfis`
 -- AUTO_INCREMENT de tabela `pets`
 --
 ALTER TABLE `pets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de tabela `status`

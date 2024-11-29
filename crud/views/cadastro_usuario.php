@@ -102,6 +102,7 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
                     <div class="input-icon">
                         <i class="fas fa-user-tag"></i>
                         <select id="perfil_id" name="perfil_id" required>
+                            <option value="" disabled selected>Selecione</option>
                             <option value="1">Colaborador</option> <!--Valor 1 é Funcionário, valor 2 é Usuário-->
                             <option value="2">Tutor</option>
                         </select>

@@ -16,7 +16,12 @@ class PetController
             return "Endereço do usuário não encontrado.";
         }
 
-        $pet_id = $this->petModel->insertPet($nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao);
+        $status_id = $this->petModel->getStatusIdByName("Em análise");
+        if (!$status_id) {
+            return "Status 'Em análise' não encontrado.";
+        }
+
+        $pet_id = $this->petModel->insertPet($nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $status_id);
         if (!$pet_id) {
             return "Erro ao cadastrar o pet.";
         }
@@ -47,29 +52,25 @@ class PetController
         return $doacao;
     }
 
-    public function editarDoacao($doacao_id, $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $fotos)
+    public function editarDoacao($id, $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $status_id, $files)
     {
+        $resultado = $this->petModel->editarPet($id, $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $status_id);
 
-        $doacao = $this->petModel->visualizarDoacao($doacao_id);
-        if (!$doacao) {
-            return "Doação não encontrada.";
-        }
-        $pet_id = $doacao['pet_id'];
+        if ($resultado === "Doação editada com sucesso!") {
+            if (isset($files) && !empty($files['name'][0])) {
+                $this->petModel->deletarFotos($id);
 
-        if (!$this->petModel->editarPet($pet_id, $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao)) {
-            return "Erro ao atualizar o pet.";
-        }
-
-        if (!empty($fotos['name'][0])) {
-            if (!$this->petModel->removerFotosPet($pet_id)) {
-                return "Erro ao remover fotos antigas.";
-            }
-
-            if (!$this->petModel->uploadFotos($pet_id, $fotos)) {
-                return "Erro ao fazer upload das novas fotos.";
+                if ($this->petModel->uploadFotos($id, $files)) {
+                    return ["type" => "success", "text" => "Doação e fotos editadas com sucesso!"];
+                } else {
+                    return ["type" => "error", "text" => "Doação editada, mas erro ao carregar as fotos. Verifique os arquivos enviados."];
+                }
+            } else {
+                return ["type" => "success", "text" => "Doação editada com sucesso!"];
             }
         }
-        return "Doação editada com sucesso!";
+
+        return ["type" => "error", "text" => $resultado];
     }
 
     public function deletarPet($pet_id)

@@ -17,8 +17,7 @@ try {
     $usuario = $data['usuario'];
     $endereco = $data['endereco'];
 } catch (Exception $e) {
-    echo "<p style='color: red;'>Erro: " . $e->getMessage() . "</p>";
-    exit;
+    $message = ["type" => "error", "text" => "Erro: " . $e->getMessage()];
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -35,32 +34,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     foreach ($usuarioData as $key => $value) {
         if (empty($value) && $key !== 'senha') {
-            echo "<p style='color: red;'>Erro: O campo $key não pode estar vazio.</p>";
-            exit;
+            $message = ["type" => "error", "text" => "Erro: O campo $key não pode estar vazio."];
+            break;
         }
     }
 
-    try {
-        $usuarioController->update($usuario_id, $usuarioData);
+    if (!isset($message)) {
+        try {
+            $usuarioController->update($usuario_id, $usuarioData);
 
-        $enderecoData = [
-            'cep' => trim($_POST['cep']),
-            'logradouro' => trim($_POST['logradouro']),
-            'bairro' => trim($_POST['bairro']),
-            'localidade' => trim($_POST['localidade']),
-            'uf' => trim($_POST['uf']),
-            'estado' => trim($_POST['estado'])
-        ];
+            $enderecoData = [
+                'cep' => trim($_POST['cep']),
+                'logradouro' => trim($_POST['logradouro']),
+                'bairro' => trim($_POST['bairro']),
+                'localidade' => trim($_POST['localidade']),
+                'uf' => trim($_POST['uf']),
+                'estado' => trim($_POST['estado'])
+            ];
 
-        if (!empty($endereco)) {
-            $usuarioController->updateEndereco($usuario_id, $enderecoData);
-        } else {
-            $usuarioController->createEndereco($enderecoData, $usuario_id);
+            if (!empty($endereco)) {
+                $usuarioController->updateEndereco($usuario_id, $enderecoData);
+            } else {
+                $usuarioController->createEndereco($enderecoData, $usuario_id);
+            }
+
+            $message = ["type" => "success", "text" => "Usuário e endereço atualizados com sucesso!"];
+        } catch (Exception $e) {
+            $message = ["type" => "error", "text" => "Erro ao atualizar: " . $e->getMessage()];
         }
-
-        echo "<p style='color: green;'>Usuário e endereço atualizados com sucesso!</p>";
-    } catch (Exception $e) {
-        echo "<p style='color: red;'>Erro ao atualizar: " . $e->getMessage() . "</p>";
     }
 }
 ?>
@@ -82,6 +83,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <h1>Editar Usuário</h1>
+        <?php if (isset($message)): ?>
+            <div id="message-container" class="message-container <?php echo $message['type']; ?>">
+                <p><?php echo htmlspecialchars($message['text']); ?></p>
+            </div>
+        <?php endif; ?>
         <form action="" method="POST">
             <input type="hidden" name="id" value="<?php echo $usuario['id']; ?>">
             <div class="form-columns">
@@ -173,6 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script src="../../javascript/buscar_endereco.js"></script>
+    <script src="../../javascript/editar_usuario.js"></script>
 </body>
 
 </html>

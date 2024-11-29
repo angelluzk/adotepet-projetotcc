@@ -36,6 +36,8 @@ function renderizarDetalhesPet(pet) {
     const carouselItems = pet.urls.map(url => `${imgBasePath}${url}`);
     const imgSrc = pet.url_principal ? `${imgBasePath}${pet.url_principal}` : `${imgBasePath}uploads/default.jpg`;
 
+    const statusClass = normalizeStatus(pet.status);
+
     container.innerHTML = `
         <div class="pet-details-container">
             <div class="carousel-container">
@@ -56,6 +58,9 @@ function renderizarDetalhesPet(pet) {
                     <p><strong>Espécie:</strong> ${pet.especie}</p>
                     <p><strong>Raça:</strong> ${pet.raca}</p>
                 </div>
+                <div class="info-line">
+                    <p><strong>Status:</strong> <span class="status ${statusClass}">${pet.status}</span></p>
+                </div>
                 <hr>
                 <h3>Contato sobre o animal</h3>
                 <p><strong>Nome do protetor:</strong> ${pet.protetor_nome} ${pet.protetor_sobrenome}</p>
@@ -69,7 +74,7 @@ function renderizarDetalhesPet(pet) {
                     <a href="https://www.instagram.com/yourprofile" target="_blank"><i class="fab fa-instagram"></i></a>
                     <a href="javascript:void(0)" onclick="sharePet('${pet.nome}', '${imgSrc}')"><i class="fas fa-share-alt"></i></a>
                 </div>
-                    <button id="favorite-btn" class="favorite-btn" onclick="toggleFavorite()">
+                <button id="favorite-btn" class="favorite-btn" onclick="toggleFavorite()">
                     <i class="fas fa-heart"></i> <span id="favorite-text">Favoritar</span>
                 </button>
             </div>
@@ -81,6 +86,23 @@ function renderizarDetalhesPet(pet) {
     `;
 
     initCarousel(carouselItems);
+}
+
+function normalizeStatus(status) {
+    const search = ['á', 'à', 'ã', 'â', 'é', 'ê', 'í', 'ó', 'ô', 'õ', 'ú', 'ç', 'Á', 'À', 'Ã', 'Â', 'É', 'Ê', 'Í', 'Ó', 'Ô', 'Õ', 'Ú', 'Ç'];
+    const replace = ['a', 'a', 'a', 'a', 'e', 'e', 'i', 'o', 'o', 'o', 'u', 'c', 'a', 'a', 'a', 'a', 'e', 'e', 'i', 'o', 'o', 'o', 'u', 'c'];
+
+    if (!status) return '';
+
+    const normalizedStatus = status.toLowerCase().replace(/[áàãâéêíóôõúçÁÀÃÂÉÊÍÓÔÕÚÇ]/g, match => replace[search.indexOf(match)]);
+
+    const statusMap = {
+        'Disponível': 'disponivel',
+        'Em adoção': 'em-adocao',
+        'Adotado': 'adotado'
+    };
+
+    return statusMap[status] || 'disponivel';
 }
 
 function initCarousel(images) {

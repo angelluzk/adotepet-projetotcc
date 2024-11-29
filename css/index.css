@@ -446,6 +446,32 @@ section {
     background-color: #7fb9ca;
 }
 
+/* Estilos para os status do pet nos cards */
+.adoption-card .status {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #f39c12;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-align: center;
+    max-width: fit-content;
+}
+
+.adoption-card .status.adotado {
+    background-color: #2ecc71;
+}
+
+.adoption-card .status.em-adocao {
+    background-color: #e74c3c;
+}
+
+.adoption-card .status.disponivel {
+    background-color: #3498db;
+}
+
 /* Estilos do rodapé */
 footer {
     background-color: #100f47;

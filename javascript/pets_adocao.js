@@ -34,6 +34,7 @@ function renderizarCards(pagina) {
 
     petsPagina.forEach(pet => {
         const imgSrc = `${imgBasePath}${pet.url || 'uploads/default.jpg'}`;
+        const statusClass = normalizeStatus(pet.status_nome);
         container.innerHTML += `
             <div class="card" onclick="abrirPaginaPet(${pet.id})">
                 <img src="${imgSrc}" alt="${pet.nome}" onerror="this.onerror=null; this.src='${imgBasePath}uploads/default.jpg';">
@@ -44,10 +45,28 @@ function renderizarCards(pagina) {
                     <hr>
                     <p>${pet.bairro || 'N/A'}, ${pet.estado || 'N/A'}</p>
                     <button class="adopt-btn" onclick="abrirPaginaPet(${pet.id})">Quero Adotar</button>
+                    <span class="status ${statusClass}">${pet.status_nome}</span>
                 </div>
             </div>
         `;
     });
+}
+
+function normalizeStatus(status) {
+    const search = ['á', 'à', 'ã', 'â', 'é', 'ê', 'í', 'ó', 'ô', 'õ', 'ú', 'ç', 'Á', 'À', 'Ã', 'Â', 'É', 'Ê', 'Í', 'Ó', 'Ô', 'Õ', 'Ú', 'Ç'];
+    const replace = ['a', 'a', 'a', 'a', 'e', 'e', 'i', 'o', 'o', 'o', 'u', 'c', 'a', 'a', 'a', 'a', 'e', 'e', 'i', 'o', 'o', 'o', 'u', 'c'];
+
+    if (!status) return '';
+
+    const normalizedStatus = status.toLowerCase().replace(/[áàãâéêíóôõúçÁÀÃÂÉÊÍÓÔÕÚÇ]/g, match => replace[search.indexOf(match)]).trim();
+
+    const statusMap = {
+        'disponivel': 'disponivel',
+        'em adocao': 'em-adocao',
+        'adotado': 'adotado'
+    };
+
+    return statusMap[normalizedStatus] || 'disponivel';
 }
 
 async function filtrarPets() {

@@ -1,5 +1,13 @@
 <?php
 require_once 'process_index.php';
+
+//Função para normalizar os nomes dos status (removendo acentos e transformando em minúsculas)
+function normalizeStatus($status)
+{
+    $search = ['á', 'à', 'ã', 'â', 'é', 'ê', 'í', 'ó', 'ô', 'õ', 'ú', 'ç', 'Á', 'À', 'Ã', 'Â', 'É', 'Ê', 'Í', 'Ó', 'Ô', 'Õ', 'Ú', 'Ç'];
+    $replace = ['a', 'a', 'a', 'a', 'e', 'e', 'i', 'o', 'o', 'o', 'u', 'c', 'a', 'a', 'a', 'a', 'e', 'e', 'i', 'o', 'o', 'o', 'u', 'c'];
+    return strtolower(str_replace($search, $replace, str_replace(' ', '-', $status)));
+}
 ?>
 
 <!DOCTYPE html>
@@ -94,6 +102,9 @@ require_once 'process_index.php';
                             <h3><?php echo htmlspecialchars($pet['pet_nome']); ?></h3>
                             <p><?php echo htmlspecialchars($pet['bairro']) . ', ' . htmlspecialchars($pet['estado']); ?></p>
                             <span class="time"><?php echo time_ago($pet['criado_em']); ?></span>
+                            <span class="status <?php echo normalizeStatus($pet['status_nome']); ?>">
+                                <?php echo htmlspecialchars($pet['status_nome']); ?>
+                            </span>
                         </div>
                         <div class="favorite-icon"><i class="fas fa-star"></i></div>
                     </a>

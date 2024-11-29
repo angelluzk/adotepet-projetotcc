@@ -10,12 +10,12 @@ class Pet
         $this->conn = $db;
     }
 
-    public function insertPet($nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao)
+    public function insertPet($nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $status_id)
     {
-        $sql_pet = "INSERT INTO pets (nome, especie_id, raca, porte, sexo, cor, idade, descricao) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql_pet = "INSERT INTO pets (nome, especie_id, raca, porte, sexo, cor, idade, descricao, status_id) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql_pet);
-        $stmt->bind_param("sissssss", $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao);
+        $stmt->bind_param("sissssssi", $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $status_id);
 
         if ($stmt->execute()) {
             return $stmt->insert_id;
@@ -23,13 +23,87 @@ class Pet
         return false;
     }
 
-    public function editarPet($pet_id, $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao)
+    public function getStatusIdByName($status_name)
     {
-        $sql = "UPDATE pets SET nome = ?, especie_id = ?, raca = ?, porte = ?, sexo = ?, cor = ?, idade = ?, descricao = ? 
-            WHERE id = ?";
+        $sql = "SELECT id FROM status WHERE nome = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("sissssssi", $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $pet_id);
-        return $stmt->execute();
+        $stmt->bind_param("s", $status_name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc()['id'];
+        }
+        return false;
+    }
+
+
+    public function editarPet($pet_id, $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $status_id)
+    {
+        $sqlValidarStatus = "SELECT id FROM status WHERE id = ?";
+        $stmtValidar = $this->conn->prepare($sqlValidarStatus);
+        $stmtValidar->bind_param("i", $status_id);
+        $stmtValidar->execute();
+        $stmtValidar->store_result();
+
+        if ($stmtValidar->num_rows === 0) {
+            return "Status inválido.";
+        }
+
+        $sql = "UPDATE pets 
+            SET nome = ?, especie_id = ?, raca = ?, porte = ?, sexo = ?, cor = ?, idade = ?, descricao = ?, status_id = ? 
+            WHERE id = ?";
+
+        $stmt = $this->conn->prepare($sql);
+        if (!$stmt) {
+            return "Erro na preparação da consulta: " . $this->conn->error;
+        }
+
+        $stmt->bind_param(
+            "sissssissi",
+            $nome,
+            $especie_id,
+            $raca,
+            $porte,
+            $sexo,
+            $cor,
+            $idade,
+            $descricao,
+            $status_id,
+            $pet_id
+        );
+
+        if ($stmt->execute()) {
+            return "Doação editada com sucesso!";
+        } else {
+            return "Erro ao editar pet: " . $stmt->error;
+        }
+    }
+
+    public function deletarFotos($pet_id)
+    {
+        $sql = "SELECT url FROM fotos WHERE pet_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $pet_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $fotosParaDeletar = [];
+        while ($foto = $result->fetch_assoc()) {
+            $fotosParaDeletar[] = $foto['url'];
+        }
+
+        $sqlDelete = "DELETE FROM fotos WHERE pet_id = ?";
+        $stmtDelete = $this->conn->prepare($sqlDelete);
+        $stmtDelete->bind_param("i", $pet_id);
+        $stmtDelete->execute();
+
+        foreach ($fotosParaDeletar as $fotoUrl) {
+            $caminhoFoto = "../../" . $fotoUrl;
+            if (file_exists($caminhoFoto)) {
+                unlink($caminhoFoto);
+            }
+        }
     }
 
     public function uploadFotos($pet_id, $fotos)
@@ -126,6 +200,8 @@ class Pet
                        p.cor, 
                        p.idade, 
                        p.descricao, 
+                       p.status_id, 
+                       s.nome AS status_nome, 
                        d.data, 
                        u.nome AS usuario_nome, 
                        u.sobrenome AS usuario_sobrenome,
@@ -136,6 +212,7 @@ class Pet
                 JOIN usuarios u ON d.usuario_id = u.id 
                 LEFT JOIN fotos f ON p.id = f.pet_id 
                 LEFT JOIN especie e ON p.especie_id = e.id
+                LEFT JOIN status s ON p.status_id = s.id
                 WHERE d.id = ? 
                 LIMIT 1";
 

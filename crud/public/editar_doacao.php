@@ -5,6 +5,11 @@ require '../controllers/PetController.php';
 $db = (new DataBase())->getConnection();
 $petController = new PetController($db);
 
+$sqlStatus = "SELECT id, nome FROM status";
+$stmtStatus = $db->prepare($sqlStatus);
+$stmtStatus->execute();
+$statusList = $stmtStatus->get_result()->fetch_all(MYSQLI_ASSOC);
+
 if (isset($_GET['id'])) {
     $doacao = $petController->visualizarDoacao($_GET['id']);
 } else {
@@ -20,15 +25,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $descricao = $_POST['descricao'];
     $porte = $_POST['porte'];
     $sexo = $_POST['sexo'];
+    $status_id = $_POST['status'];
     $files = $_FILES['foto'];
 
-    $result = $petController->editarDoacao($_GET['id'], $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $files);
+    $statusValido = false;
+    foreach ($statusList as $status) {
+        if ($status['id'] == $status_id) {
+            $statusValido = true;
+            break;
+        }
+    }
 
-    if ($result === "Doação editada com sucesso!") {
-        header("Location: ../../crud/views/painel_admin.php");
-        exit();
+    if (!$statusValido) {
+        $message = ["type" => "error", "text" => "Status inválido selecionado."];
     } else {
-        echo "<div class='error'>Erro: " . htmlspecialchars($result) . "</div>";
+        $atualizarFotos = isset($files) && $files['name'][0] !== "";
+
+        $resultado = $petController->editarDoacao($_GET['id'], $nome, $especie_id, $raca, $porte, $sexo, $cor, $idade, $descricao, $status_id, $atualizarFotos ? $files : null);
+
+        if ($resultado === "Doação editada com sucesso!") {
+            $message = ["type" => "success", "text" => "Doação editada com sucesso!"];
+            header("Location: ../../crud/views/painel_admin.php");
+            exit();
+        } else {
+            $message = ["type" => "error", "text" => "Aviso: " . htmlspecialchars($resultado['text'])];
+        }
     }
 }
 ?>
@@ -50,6 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="container">
         <h1>Editar Doação</h1>
+        <?php if (isset($message)): ?>
+            <div id="message-container" class="message-container <?php echo $message['type']; ?>">
+                <p><?php echo htmlspecialchars($message['text']); ?></p>
+            </div>
+        <?php endif; ?>
+
+
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="form-group left">
                 <label for="especie">Espécie:</label>
@@ -84,21 +112,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <label for="idade">Idade:</label>
                 <input type="number" name="idade" value="<?php echo htmlspecialchars($doacao['idade']); ?>" required>
+
+                <label for="status">Status:</label>
+                <select name="status" id="status">
+                    <?php foreach ($statusList as $status): ?>
+                        <option value="<?= $status['id']; ?>" <?= $doacao['status_id'] == $status['id'] ? 'selected' : ''; ?>>
+                            <?= $status['nome']; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
 
-            <div class="form-group full-width flex-container">
-                <div class="form-left">
-                    <label for="descricao">Descrição:</label>
-                    <textarea name="descricao" required><?php echo htmlspecialchars($doacao['descricao']); ?></textarea>
-                </div>
+            <div class="form-left">
+                <label for="descricao">Descrição:</label>
+                <textarea name="descricao" required><?php echo htmlspecialchars($doacao['descricao']); ?></textarea>
+            </div>
 
-                <div class="form-right">
-                    <label for="foto">Atualizar fotos:</label>
-                    <div class="file-upload">
-                        <input type="file" name="foto[]" id="foto" multiple>
-                        <span class="file-upload-label" onclick="document.getElementById('foto').click()">Selecione
-                            arquivos</span>
+            <div class="form-group full-width">
+                <label for="foto">Atualizar fotos:</label>
+                <div class="file-upload">
+                    <input type="file" name="foto[]" id="foto" multiple onchange="previewImages(event)"
+                        style="display: none;">
+                    <span class="file-upload-label" id="file-upload-label">Selecione arquivos</span>
+                    <div id="fotos-adicionadas" class="foto-preview">
+                        <p>Fotos Adicionadas: 0</p>
                     </div>
+                    <div id="preview-container"></div>
                 </div>
             </div>
 
@@ -108,6 +147,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </form>
     </div>
+
+    <script src="../../javascript/editar_doacao.js"></script>
+
 </body>
 
 </html>
