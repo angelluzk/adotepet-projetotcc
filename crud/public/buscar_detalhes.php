@@ -42,9 +42,9 @@ if ($id) {
 
         echo json_encode($pet);
     } else {
-        echo json_encode(['error' => 'Pet não encontrado.']);
+        echo json_encode(['error' => 'Animal não encontrado.']);
     }
 } else {
-    echo json_encode(['error' => 'ID do pet não fornecido.']);
+    echo json_encode(['error' => 'ID do animal não fornecido.']);
 }
 ?>

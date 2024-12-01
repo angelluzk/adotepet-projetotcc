@@ -22,8 +22,7 @@ if (isset($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes da Doação</title>
-
+    <title>Adote Pet - Detalhes da Doação</title>
     <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -34,14 +33,13 @@ if (isset($_GET['id'])) {
 <body>
     <div class="container">
         <h1>Detalhes da Doação</h1>
-
         <div class="info-container">
             <div class="text-info">
                 <p><strong>Status:</strong> <?= htmlspecialchars($doacao['status_nome']) ?></p>
-                <p><strong>Nome do Protetor:</strong>
+                <p><strong>Nome do Tutor:</strong>
                     <?= htmlspecialchars($doacao['usuario_nome'] . ' ' . $doacao['usuario_sobrenome']) ?></p>
                 <p><strong>Espécie:</strong> <?= htmlspecialchars($doacao['especie_nome']) ?></p>
-                <p><strong>Nome do Pet:</strong> <?= htmlspecialchars($doacao['nome']) ?></p>
+                <p><strong>Nome do Animal:</strong> <?= htmlspecialchars($doacao['nome']) ?></p>
                 <p><strong>Raça:</strong> <?= htmlspecialchars($doacao['raca']) ?></p>
                 <p><strong>Porte:</strong> <?= htmlspecialchars($doacao['porte']) ?></p>
                 <p><strong>Sexo:</strong> <?= htmlspecialchars($doacao['sexo']) ?></p>

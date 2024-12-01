@@ -39,19 +39,19 @@ if ($isLoggedIn) {
     $queryAdocoes = "
     SELECT 
         a.id, 
-    a.nome, 
-    a.email, 
-    a.telefone, 
-    p.nome AS pet_nome, 
-    a.pet_id,
-    MIN(f.url) AS url_principal,
+        a.nome, 
+        a.email, 
+        a.telefone, 
+        p.nome AS pet_nome, 
+        a.pet_id,
+        MIN(f.url) AS url_principal,
     GROUP_CONCAT(f.url) AS urls
     FROM adocoes a
-JOIN doacoes d ON a.pet_id = d.pet_id
-JOIN pets p ON a.pet_id = p.id
-LEFT JOIN fotos f ON f.pet_id = p.id
-WHERE d.usuario_id = ?
-GROUP BY a.id, a.nome, a.email, a.telefone, p.nome, a.pet_id";
+    JOIN doacoes d ON a.pet_id = d.pet_id
+    JOIN pets p ON a.pet_id = p.id
+    LEFT JOIN fotos f ON f.pet_id = p.id
+    WHERE d.usuario_id = ?
+    GROUP BY a.id, a.nome, a.email, a.telefone, p.nome, a.pet_id";
 
 
     $stmt = $conn->prepare($queryAdocoes);

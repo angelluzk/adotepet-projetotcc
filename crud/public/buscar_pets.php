@@ -12,6 +12,7 @@ class PetConsulta
 
     public function buscarPets($especie = null, $sexo = null, $porte = null, $idade = null)
     {
+        header('Content-Type: application/json');
         $query = "
         SELECT 
             p.id, p.nome, p.porte, p.idade, 
@@ -65,10 +66,18 @@ class PetConsulta
         }
 
         if (!empty($filters)) {
-            $query .= " WHERE " . implode(" AND ", $filters);
+            if (strpos($query, 'WHERE') !== false) {
+                $query .= " AND " . implode(" AND ", $filters);
+            } else {
+                $query .= " WHERE " . implode(" AND ", $filters);
+            }
         }
 
         $stmt = $this->db->getConnection()->prepare($query);
+        if (!$stmt) {
+            die(json_encode(['error' => $this->db->getConnection()->error]));
+        }
+
         if (!empty($params)) {
             $stmt->bind_param(implode("", $types), ...$params);
         }
@@ -80,7 +89,12 @@ class PetConsulta
             $pets[] = $row;
         }
 
-        echo json_encode($pets);
+        if (empty($pets)) {
+            echo json_encode(['message' => 'Nenhum animal encontrado.']);
+            return;
+        }
+
+        echo json_encode($pets, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
     }
 }
 

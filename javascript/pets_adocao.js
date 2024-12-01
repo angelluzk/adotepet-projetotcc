@@ -2,6 +2,7 @@ const imgBasePath = 'http://localhost/adotepet-projetotcc/';
 let paginaAtual = 1;
 const petsPorPagina = 20;
 let pets = [];
+let petsFiltrados = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarPets();
@@ -12,27 +13,24 @@ async function carregarPets() {
     try {
         const response = await fetch('../../crud/public/buscar_pets.php');
         pets = await response.json();
+        petsFiltrados = [];
         console.log('Pets carregados:', pets);
-        renderizarCards(paginaAtual);
+        atualizarPagina(paginaAtual);
     } catch (error) {
         console.error('Erro ao carregar os pets:', error);
     }
 }
 
-function renderizarCards(pagina) {
-    const inicio = (pagina - 1) * petsPorPagina;
-    const fim = inicio + petsPorPagina;
-    const petsPagina = pets.slice(inicio, fim);
-
+function renderizarCards(listaPets) {
     const container = document.getElementById('pet-cards-container');
     container.innerHTML = '';
 
-    if (petsPagina.length === 0) {
+    if (!Array.isArray(listaPets) || listaPets.length === 0) {
         container.innerHTML = '<p>Nenhum pet encontrado.</p>';
         return;
     }
 
-    petsPagina.forEach(pet => {
+    listaPets.forEach(pet => {
         const imgSrc = `${imgBasePath}${pet.url || 'uploads/default.jpg'}`;
         const statusClass = normalizeStatus(pet.status_nome);
         container.innerHTML += `
@@ -69,26 +67,34 @@ function normalizeStatus(status) {
     return statusMap[normalizedStatus] || 'disponivel';
 }
 
+function atualizarPagina(pagina) {
+    const inicio = (pagina - 1) * petsPorPagina;
+    const fim = inicio + petsPorPagina;
+    const listaParaRenderizar = petsFiltrados.length > 0 ? petsFiltrados : pets;
+    const petsPagina = listaParaRenderizar.slice(inicio, fim);
+
+    renderizarCards(petsPagina);
+}
+
+document.getElementById('filtrar-btn').addEventListener('click', filtrarPets);
+
 async function filtrarPets() {
     const especie = document.getElementById('especie-filter').value || '';
     const sexo = document.getElementById('sexo-filter').value || '';
     const porte = document.getElementById('porte-filter').value || '';
     const idade = document.getElementById('idade-filter').value || '';
 
-    console.log('Filtros aplicados:', { especie, sexo, porte, idade });
-
     try {
         const url = `../../crud/public/buscar_pets.php?especie=${especie}&sexo=${sexo}&porte=${porte}&idade=${idade}`;
         console.log('URL da requisição:', url);
         const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        pets = await response.json();
-        console.log('Pets filtrados:', pets);
+
+        petsFiltrados = await response.json();
+        console.log('Pets filtrados:', petsFiltrados);
 
         paginaAtual = 1;
-        renderizarCards(paginaAtual);
+        atualizarPagina(paginaAtual);
+
         limparFiltros();
     } catch (error) {
         console.error('Erro ao filtrar os pets:', error);
@@ -102,15 +108,11 @@ function limparFiltros() {
     document.getElementById('idade-filter').value = '';
 }
 
-document.getElementById('filtrar-btn').addEventListener('click', async () => {
-    await filtrarPets();
-});
-
 function proximaPagina() {
-    const totalPaginas = Math.ceil(pets.length / petsPorPagina);
+    const totalPaginas = Math.ceil((petsFiltrados.length > 0 ? petsFiltrados.length : pets.length) / petsPorPagina);
     if (paginaAtual < totalPaginas) {
         paginaAtual++;
-        renderizarCards(paginaAtual);
+        atualizarPagina(paginaAtual);
         document.getElementById('numeracao-pagina').innerText = `Página ${paginaAtual}`;
     }
 }
@@ -118,7 +120,7 @@ function proximaPagina() {
 function paginaAnterior() {
     if (paginaAtual > 1) {
         paginaAtual--;
-        renderizarCards(paginaAtual);
+        atualizarPagina(paginaAtual);
         document.getElementById('numeracao-pagina').innerText = `Página ${paginaAtual}`;
     }
 }

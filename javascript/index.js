@@ -8,7 +8,7 @@ function showTooltipError(message, redirectUrl) {
 
     const buttonRect = divulgarButton.getBoundingClientRect();
     tooltip.style.top = buttonRect.top + window.scrollY - tooltip.offsetHeight + 15 + 'px';
-    tooltip.style.left = buttonRect.left + window.scrollX + (divulgarButton.offsetWidth - tooltip.offsetWidth) / 2 + 'px';
+    tooltip.style.left = buttonRect.left + window.scrollX + (divulgarButton.offsetWidth - tooltip.offsetWidth) / 20 + 'px';
 
     setTimeout(() => {
         tooltip.remove();

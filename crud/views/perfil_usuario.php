@@ -418,4 +418,5 @@ require_once '../../crud/helpers/format_util.php';
     <script src="../../javascript/perfil_usuario.js"></script>
     <script src="../../javascript/mobile-navbar.js"></script>
 </body>
+
 </html>

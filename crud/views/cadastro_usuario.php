@@ -14,24 +14,18 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro Usuário - Adote Pet</title>
-
     <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
     <link rel="stylesheet" href="../../css/cadastrousuario.css">
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
 </head>
 
 <body>
-    <div class="wave"></div>
-
     <header>
+        <div class="wave"></div>
         <div class="logo">
             <img src="../../img/logo.png" alt="Logo">
             <span>ADOTE<i class="fas fa-paw"></i><span class="highlight">PET</span></span>
@@ -89,59 +83,62 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
         <div class="header-logo-formulario">
             <img src="../../img/logo.png" alt="Logo" class="logo-formulario">
         </div>
-        <a href="javascript:void(0);" id="btnVoltar" class="link-voltar"><i class="fas fa-arrow-left"></i> Voltar</a>
+        <a href="../../index.php" id="btnVoltar" class="link-voltar"><i class="fas fa-arrow-left"></i> Voltar</a>
         <h2>Crie seu Cadastro no Adote Pet</h2>
         <p class="descricao">
             É necessário preencher corretamente o formulário abaixo com os respectivos dados cadastrais.
             Os campos com <span class="required">*</span> são de preenchimento obrigatório.
         </p>
         <form id="formCadastro" action="../../crud/public/cadastrar_usuario.php" method="POST">
-            <div class="form-step form-step-active">
-                <div class="input-group">
-                    <label for="perfil_id">Perfil <span class="required">*</span></label>
-                    <div class="input-icon">
-                        <i class="fas fa-user-tag"></i>
-                        <select id="perfil_id" name="perfil_id" required>
-                            <option value="" disabled selected>Selecione</option>
-                            <option value="1">Colaborador</option> <!--Valor 1 é Funcionário, valor 2 é Usuário-->
-                            <option value="2">Tutor</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="input-row">
-                    <div class="input-group">
-                        <label for="nome">Nome <span class="required">*</span></label>
-                        <div class="input-icon">
-                            <i class="fas fa-user"></i>
-                            <input type="text" id="nome" name="nome" placeholder="Nome" required>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label for="sobrenome">Sobrenome <span class="required">*</span></label>
-                        <div class="input-icon">
-                            <i class="fas fa-user"></i>
-                            <input type="text" id="sobrenome" name="sobrenome" placeholder="Sobrenome" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label for="cpf">CPF <span class="required">*</span></label>
-                    <div class="input-icon">
-                        <i class="fas fa-id-card"></i>
-                        <input type="text" id="cpf" name="cpf" placeholder="CPF" required>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label for="data_nascimento">Data de Nascimento <span class="required">*</span></label>
-                    <div class="input-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                        <input type="date" id="data_nascimento" name="data_nascimento" required>
-                    </div>
-                </div>
+            <div class="form-columns">
                 <div class="form-column">
+                    <h3>Dados Pessoais</h3>
+                    <div class="input-group">
+                        <label for="perfil_id">Perfil <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-user-tag"></i>
+                            <select id="perfil_id" name="perfil_id" required>
+                                <option value="" disabled selected>Selecione</option>
+                                <option value="1">Colaborador</option> <!-- Valor 1 é Funcionário, valor 2 é Usuário -->
+                                <option value="2">Tutor</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="nome">Nome <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="nome" name="nome" placeholder="Nome" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="sobrenome">Sobrenome <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="sobrenome" name="sobrenome" placeholder="Sobrenome" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="data_nascimento">Data de Nascimento <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                            <input type="date" id="data_nascimento" name="data_nascimento" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="cpf">CPF <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-id-card"></i>
+                            <input type="text" id="cpf" name="cpf" placeholder="CPF" required>
+                            <div class="error-message" id="error-cpf"></div>
+                        </div>
+                    </div>
+
                     <div class="input-group">
                         <label for="telefone">Telefone <span class="required">*</span></label>
                         <div class="input-icon">
@@ -156,6 +153,7 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
                             <input type="email" id="email" name="email" placeholder="E-mail" required>
                         </div>
                     </div>
+
                     <div class="input-row">
                         <div class="input-group">
                             <label for="senha">Senha <span class="required">*</span></label>
@@ -174,29 +172,25 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
                             </div>
                         </div>
                     </div>
-
-                    <div class="btn-group">
-                        <button type="button" class="btn proximo">Próximo</button>
-                    </div>
                 </div>
 
-                <div class="form-step">
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label for="cep">CEP <span class="required">*</span></label>
-                            <div class="input-icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <input type="text" id="cep" name="cep" placeholder="CEP" autocomplete="postal-code"
-                                    required>
-                            </div>
+                <div class="form-column">
+                    <h3>Endereço</h3>
+                    <div class="input-group">
+                        <label for="cep">CEP <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="cep" name="cep" placeholder="CEP" autocomplete="postal-code"
+                                required>
                         </div>
-                        <div class="input-group">
-                            <label for="logradouro">Logradouro <span class="required">*</span></label>
-                            <div class="input-icon">
-                                <i class="fas fa-road"></i>
-                                <input type="text" id="logradouro" name="logradouro" placeholder="Logradouro"
-                                    autocomplete="address-line1" required>
-                            </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="logradouro">Logradouro <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-road"></i>
+                            <input type="text" id="logradouro" name="logradouro" placeholder="Logradouro"
+                                autocomplete="address-line1" required>
                         </div>
                     </div>
 
@@ -237,12 +231,11 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
                             </div>
                         </div>
                     </div>
-
-                    <div class="btn-group">
-                        <button type="submit" class="btn cadastrar"><i class="fas fa-paper-plane"></i>
-                            Cadastrar</button>
-                    </div>
                 </div>
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn cadastrar"><i class="fas fa-paper-plane"></i> Cadastrar</button>
+            </div>
         </form>
         <p class="termos">
             Ao preencher o formulário você concorda com nossos <a href="#">Termos de uso</a> e nossa <a

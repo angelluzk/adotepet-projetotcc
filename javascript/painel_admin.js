@@ -14,11 +14,16 @@ window.onclick = function (event) {
     }
 };
 
+function toggleSidebarMenu() {
+    const sidebar = document.querySelector('.admin-barra-nav');
+    sidebar.classList.toggle('active');
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const content = document.getElementById('content');
     const toast = document.getElementById('toast');
-    const lastSection = localStorage.getItem('lastSection') || 'home';
 
+    const lastSection = localStorage.getItem('lastSection') || 'home';
     loadSection(lastSection);
 
     function loadSection(section, page = 1, searchTerm = '') {
@@ -26,7 +31,9 @@ document.addEventListener("DOMContentLoaded", function () {
             ? `../../crud/public/${section}.php`
             : section === 'aprovar_pets'
                 ? `../../crud/public/aprovar_pets.php`
-                : `../../crud/views/${section}.php`;
+                : section === 'home'
+                    ? `../../crud/public/dashboard.php`
+                    : `../../crud/views/${section}.php`;
 
         const url = `${baseUrl}?page=${page}&search=${encodeURIComponent(searchTerm)}`;
         localStorage.setItem('lastSection', section);
@@ -36,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 content.innerHTML = xhr.responseText;
-
                 attachPaginationEvents(section);
 
                 if (section === 'aprovar_pets') {
@@ -71,9 +77,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    attachPaginationEvents(lastSection);
+    const menuLinks = document.querySelectorAll('.menu-link');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const section = this.getAttribute('data-section');
+            loadSection(section);
+        });
+    });
 
     window.loadSection = loadSection;
+    const userName = document.body.getAttribute('data-user-name');
+    const welcomeMessage = document.querySelector('.welcome-message h2');
+    if (welcomeMessage) {
+        welcomeMessage.innerHTML = `Bem-vindo(a), ${userName}!`;
+    }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -94,16 +112,16 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ pet_id: petId, status: action })
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showToast(data.message, 'success');
-                setTimeout(() => location.reload(), 2000);
-            } else {
-                showToast(data.message, 'error');
-            }
-        })
-        .catch(() => showToast('Erro ao processar a solicitação.', 'error'));
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    showToast(data.message, 'error');
+                }
+            })
+            .catch(() => showToast('Erro ao processar a solicitação.', 'error'));
     };
 
     const confirmAction = (message, callback) => {

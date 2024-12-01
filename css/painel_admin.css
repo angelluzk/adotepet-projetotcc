@@ -24,10 +24,10 @@ body {
 .container {
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
-    max-width: 100vw;
-    margin: 0 auto;
+    height: calc(100vh - 70px);
+    margin: 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
@@ -41,8 +41,11 @@ header {
     padding: 15px 20px;
     background-color: #fff;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    transition: box-shadow 0.3s ease-in-out;
+    width: calc(100% - 270px);
+    position: fixed;
+    left: 270px;
+    top: 0;
+    z-index: 1001;
 }
 
 header:hover {
@@ -238,15 +241,16 @@ nav {
 .admin-barra-nav {
     width: 270px;
     background-color: #100f47;
-    display: block;
+    display: flex;
     flex-direction: column;
-    padding-top: 70px;
     position: fixed;
-    top: 120px;
+    top: 0;
     left: 0;
-    height: calc(100vh - 80px);
+    height: 100vh;
     overflow-y: auto;
     white-space: nowrap;
+    padding-top: 70px;
+    z-index: 1000;
 }
 
 .admin-barra-nav ul {
@@ -295,14 +299,17 @@ nav {
 /* Seção principal da área administrativa */
 .admin-main {
     flex: 1;
-    margin-left: 250px;
-    padding: 20px;
+    margin-left: 200px;
+    margin-top: 70px;
+    padding: 80px;
     overflow-y: auto;
+    height: calc(100vh - 70px);
+    box-sizing: border-box;
 }
 
 /* Cabeçalho da seção principal da área administrativa */
 .admin-main-top {
-    width: 100%;
+    width: calc(100% - 270px);
     background: #fff;
     padding: 15px;
     text-align: center;
@@ -310,8 +317,182 @@ nav {
     letter-spacing: 1px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     text-transform: uppercase;
-    margin-top: -15px;
-    margin-bottom: -15px;
+    margin: 0;
+    position: fixed;
+    left: 270px;
+    top: 126px;
+}
+
+
+/* Estilos do dashboard */
+.home-dashboard {
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.welcome-message {
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 55px;
+}
+
+.welcome-message h2 {
+    font-size: 24px;
+    color: #100f47;
+    margin-top: 5px;
+}
+
+.welcome-message p {
+    font-size: 16px;
+    color: #100f47;
+    margin-top: 5px;
+}
+
+.dashboard-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    margin-left: 40px;
+}
+
+.stat-item {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 22%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item i {
+    font-size: 30px;
+    color: #100f47;
+    margin-bottom: 10px;
+}
+
+.stat-item p {
+    font-size: 14px;
+    color: #555;
+}
+
+.stat-item h3 {
+    font-size: 22px;
+    color: #100f47;
+    margin-top: 5px;
+}
+
+.quick-actions {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.quick-actions h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #100f47;
+}
+
+.quick-actions .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    background: #100f47;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.quick-actions .btn:hover {
+    background: #100f47;
+}
+
+/* Estilos das sessões pendentes (Notificações, Ultimos Pets, Tarefas pendentes*/
+/* Contêiner para as 3 seções */
+.dashboard-sections {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Cada seção individual */
+.notifications, .recent-pets, .pending-tasks {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    width: 32%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-left: 45px;
+}
+
+.notifications h3, .recent-pets h3, .pending-tasks h3 {
+    font-size: 1.5em;
+    color: #100f47;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+/* Listas */
+.notifications ul, .recent-pets ul, .pending-tasks ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.notifications li, .recent-pets li, .pending-tasks li {
+    font-size: 1.1em;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+    color: #100f47;
+}
+
+.notifications li:last-child, .recent-pets li:last-child, .pending-tasks li:last-child {
+    border-bottom: none;
+}
+
+.notifications li strong, .recent-pets li strong, .pending-tasks li strong {
+    font-weight: bold;
+    color: #100f47;
+}
+
+.pending-tasks li i {
+    color: #3498db;
+}
+
+.pending-tasks li i.fas.fa-check-circle {
+    color: #4caf50;
+}
+
+.pending-tasks li i.fas.fa-exclamation-circle {
+    color: #f39c12;
+}
+
+.pending-tasks li i.fas.fa-info-circle {
+    color: #bdc3c7;
+}
+
+.recent-pets li {
+    display: flex;
+    align-items: center;
+}
+
+.recent-pets li span {
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+.recent-pets li span.status {
+    font-weight: bold;
+}
+
+.recent-pets li span.status.disponivel {
+    color: #2ecc71;
+}
+
+.recent-pets li span.status.em_analise {
+    color: #f39c12;
 }
 
 /* Estilos gerais para a tabela */
@@ -385,6 +566,14 @@ table th:focus {
     margin-top: 20px;
 }
 
+thead {
+    display: table-header-group;
+}
+
+tbody tr {
+    display: table-row;
+}
+
 .pagination a {
     color: #100f47;
     padding: 10px 15px;
@@ -417,7 +606,7 @@ table th:focus {
 
 .form-container h2 {
     margin-left: 25px;
-    margin-top: 10px;
+    margin-top: 25px;
     margin-bottom: 10px;
     padding: 10px 0;
     font-size: 24px;
@@ -564,13 +753,27 @@ form input[type="text"] {
 }
 
 @media (max-width: 768px) {
-    table th, table td {
+
+    table th,
+    table td {
         font-size: 12px;
         padding: 8px;
     }
 }
 
+@media (max-width: 768px) {
+    .dashboard-sections {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .notifications, .recent-pets, .pending-tasks {
+        width: 100%;
+    }
+}
+
 @media (max-width: 600px) {
+
     /* Estilo do Header em telas menores */
     header {
         padding: 20px 0px;
@@ -656,4 +859,32 @@ form input[type="text"] {
 
 .mobile-menu.active .line3 {
     transform: rotate(45deg) translate(-5px, -7px);
+}
+
+@media (max-width: 999px) {
+
+    /* Menu lateral escondido em telas menores */
+    .admin-barra-nav {
+        transform: translateX(-100%);
+    }
+
+    .admin-barra-nav.active {
+        transform: translateX(0);
+    }
+
+    /* Botão para abrir/fechar menu lateral */
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        background-color: #100f47;
+        color: #ffffff;
+        border: none;
+        font-size: 24px;
+        z-index: 2000;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 5px;
+    }
 }

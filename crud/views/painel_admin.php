@@ -18,10 +18,11 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../../css/painel_admin.css" />
 </head>
 
-<body>
+<body data-user-name="<?php echo $userName; ?>">
     <header>
         <div class="logo">
             <img src="../../img/logo.png" alt="Logo">
@@ -61,6 +62,9 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
     </header>
 
     <div class="admin-container">
+        <button class="menu-toggle" onclick="toggleSidebarMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
         <nav class="admin-sidebar">
             <div class="admin-barra-nav">
                 <ul>
@@ -94,28 +98,6 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
 
     <script src="../../javascript/mobile-navbar.js"></script>
     <script src="../../javascript/painel_admin.js"></script>
-    <script>
-        function loadSection(section) {
-            const content = document.getElementById('content');
-            content.innerHTML = '<p>Carregando...</p>';
-
-            const baseUrl = '../../crud/views/';
-
-            fetch(`${baseUrl}${section}.php`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro ao carregar a seção: ' + response.statusText);
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    content.innerHTML = html;
-                })
-                .catch(error => {
-                    content.innerHTML = `<p>Erro ao carregar o conteúdo: ${error.message}</p>`;
-                });
-        }
-    </script>
 </body>
 
 </html>

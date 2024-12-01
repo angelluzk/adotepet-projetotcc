@@ -85,6 +85,7 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
         </div>
         <hr class="banner-separator">
     </main>
+
     <section class="filter">
         <label><i class="fas fa-filter"></i> Filtrar por:</label>
         <div class="form-group">
@@ -134,7 +135,8 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
             </div>
         </div>
 
-        <button onclick="filtrarPets()"><i class="fas fa-search"></i> Filtrar</button>
+        <button id="filtrar-btn"><i class="fas fa-search"></i> Filtrar</button>
+
     </section>
 
     <section class="pet-cards" id="pet-cards-container">

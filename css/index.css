@@ -233,9 +233,23 @@ section {
     box-sizing: border-box;
 }
 
-.wave {
+.tooltip-error {
     position: absolute;
-    bottom: 0;
+    z-index: 9999;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    max-width: 90%;
+    word-wrap: break-word;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.wave {
+    position: fixed;
+    top: 0;
     left: 0;
     width: 180vw;
     height: 970px;

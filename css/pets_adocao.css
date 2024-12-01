@@ -298,8 +298,8 @@ nav {
 }
 
 .wave {
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    top: 0;
     left: 0;
     width: 180vw;
     height: 970px;

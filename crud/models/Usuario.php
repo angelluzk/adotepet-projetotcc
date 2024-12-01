@@ -60,6 +60,7 @@ class Usuario
         $stmt->close();
         return $usuario_id;
     }
+
     public function update($id, $data)
     {
         $sql = "UPDATE " . $this->table_name . " SET 
@@ -326,17 +327,36 @@ class Usuario
 
     private function validateUserData($data)
     {
+        $data['cpf'] = preg_replace('/\D/', '', $data['cpf']);
+        $data['telefone'] = preg_replace('/\D/', '', $data['telefone']);
+
         if (empty($data['nome']) || empty($data['sobrenome']) || empty($data['cpf']) || empty($data['telefone']) || empty($data['email']) || empty($data['senha']) || empty($data['perfil_id']) || empty($data['data_nascimento'])) {
             throw new Exception("Todos os campos devem ser preenchidos.");
         }
 
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("O e-mail fornecido não é válido.");
+        }
+
+        if (!preg_match('/^\d{11}$/', $data['cpf'])) {
+            throw new Exception("O CPF deve conter 11 dígitos numéricos.");
+        }
+
+        if (!preg_match('/^\d{10,11}$/', $data['telefone'])) {
+            throw new Exception("O telefone deve conter 10 ou 11 dígitos numéricos.");
+        }
+
         if ($this->emailExists($data['email'])) {
-            throw new Exception("O email já está cadastrado.");
+            throw new Exception("O e-mail já está cadastrado.");
         }
     }
 
     private function validateAddressData($data)
     {
+        if (empty($data['cep']) || empty($data['logradouro']) || empty($data['bairro']) || empty($data['localidade']) || empty($data['uf']) || empty($data['estado'])) {
+            throw new Exception("Todos os campos do endereço devem ser preenchidos.");
+        }
+
         if (!preg_match('/^\d{8}$/', $data['cep'])) {
             throw new Exception("CEP inválido. Deve conter 8 dígitos numéricos.");
         }

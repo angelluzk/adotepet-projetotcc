@@ -50,15 +50,16 @@ $totalPages = ceil($totalDoacoes / $limit);
             if ($doacoes) {
                 foreach ($doacoes as $doacao): ?>
                     <tr>
-                        <td><?= htmlspecialchars($doacao['pet_id']) ?></td>
-                        <td><?= htmlspecialchars($doacao['nome_pet']) ?></td>
-                        <td><?= htmlspecialchars($doacao['usuario_nome'] . ' ' . $doacao['usuario_sobrenome']) ?></td>
-                        <td><?= htmlspecialchars($doacao['especie_nome']) ?></td>
-                        <td><?= htmlspecialchars($doacao['idade']) ?> anos</td>
-                        <td><?= htmlspecialchars($doacao['porte']) ?></td>
-                        <td><?= htmlspecialchars($doacao['sexo']) ?></td>
-                        <td><?= htmlspecialchars($doacao['status_nome']) ?></td>
-                        <td>
+                        <td data-label="ID"><?= htmlspecialchars($doacao['pet_id']) ?></td>
+                        <td data-label="Nome Animal"><?= htmlspecialchars($doacao['nome_pet']) ?></td>
+                        <td data-label="Nome Protetor">
+                            <?= htmlspecialchars($doacao['usuario_nome'] . ' ' . $doacao['usuario_sobrenome']) ?></td>
+                        <td data-label="Espécie"><?= htmlspecialchars($doacao['especie_nome']) ?></td>
+                        <td data-label="Idade"><?= htmlspecialchars($doacao['idade']) ?> anos</td>
+                        <td data-label="Porte"><?= htmlspecialchars($doacao['porte']) ?></td>
+                        <td data-label="Sexo"><?= htmlspecialchars($doacao['sexo']) ?></td>
+                        <td data-label="Status"><?= htmlspecialchars($doacao['status_nome']) ?></td>
+                        <td data-label="Ações">
                             <a href="../public/visualizar_doacao.php?id=<?= $doacao['id'] ?>" class="btn-icone"
                                 title="Visualizar">
                                 <i class="fas fa-eye"></i>

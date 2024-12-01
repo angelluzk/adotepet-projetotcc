@@ -2,10 +2,12 @@
 session_start();
 require_once '../config/DataBase.php';
 
-class RecuperarSenhaController {
+class RecuperarSenhaController
+{
 
-    public function __construct() {
-        
+    public function __construct()
+    {
+
         $action = $_GET['action'] ?? null;
 
         switch ($action) {
@@ -26,7 +28,8 @@ class RecuperarSenhaController {
         }
     }
 
-    public function verificarNome(){
+    public function verificarNome()
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nome = $_POST["nome"];
             $sobrenome = $_POST["sobrenome"];
@@ -56,7 +59,8 @@ class RecuperarSenhaController {
         }
     }
 
-    public function verificarDataNascimento(){
+    public function verificarDataNascimento()
+    {
         if (!isset($_SESSION["nome"]) || !isset($_SESSION["sobrenome"])) {
             header("Location: RecuperarSenhaController.php?action=verificarNome");
             exit();
@@ -89,22 +93,30 @@ class RecuperarSenhaController {
         }
     }
 
-    public function verificarCpf(){
+    public function verificarCpf()
+    {
         if (!isset($_SESSION["data_nascimento"])) {
             header("Location: RecuperarSenhaController.php?action=verificarDataNascimento");
             exit();
         }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $cpf = $_POST["cpf"];
-
-            $cpf_abreviado = substr($cpf, 0, 6);
+            $cpf_informado = $_POST["cpf"];
 
             $db = new DataBase();
             $conn = $db->getConnection();
 
-            $stmt = $conn->prepare("SELECT * FROM usuarios WHERE nome = ? AND sobrenome = ? AND data_nascimento = ? AND LEFT(cpf, 6) = ?");
-            $stmt->bind_param("ssss", $_SESSION["nome"], $_SESSION["sobrenome"], $_SESSION["data_nascimento"], $cpf_abreviado);
+            $stmt = $conn->prepare(
+                "SELECT * FROM usuarios 
+                WHERE nome = ? AND sobrenome = ? AND data_nascimento = ? AND REPLACE(REPLACE(LEFT(cpf, 7), '.', ''), '-', '') = ?"
+            );
+            $stmt->bind_param(
+                "ssss",
+                $_SESSION["nome"],
+                $_SESSION["sobrenome"],
+                $_SESSION["data_nascimento"],
+                $cpf_informado
+            );
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -112,7 +124,7 @@ class RecuperarSenhaController {
                 header("Location: RecuperarSenhaController.php?action=alterarSenha");
                 exit();
             } else {
-                $error = "CPF incorreto!";
+                $error = "Os primeiros 6 dígitos do CPF estão incorretos!";
                 require_once '../views/verificar_cpf.php';
             }
 
@@ -123,11 +135,12 @@ class RecuperarSenhaController {
         }
     }
 
-    public function alterarSenha(){
+    public function alterarSenha()
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nova_senha = $_POST["nova_senha"];
             $confirma_senha = $_POST["confirma_senha"];
-            
+
             if ($nova_senha === $confirma_senha) {
                 $hash_senha = password_hash($nova_senha, PASSWORD_BCRYPT);
                 $db = new DataBase();

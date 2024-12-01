@@ -85,7 +85,6 @@ function normalizeStatus($status)
             <div class="hero-image">
                 <img src="img/img2.png" alt="Gato e Cães">
             </div>
-            <div class="wave"></div>
         </section>
 
         <section class="adoption-section">
