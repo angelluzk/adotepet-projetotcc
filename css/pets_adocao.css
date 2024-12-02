@@ -395,6 +395,7 @@ nav {
     color: #999;
 }
 
+/* Estilos para os cards */
 .pet-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -410,13 +411,17 @@ nav {
 }
 
 .card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     cursor: pointer;
-    align-items: center;
 }
 
 .card:hover {
@@ -432,7 +437,11 @@ nav {
 }
 
 .card-info {
+    flex: 1;
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     text-align: center;
 }
 
@@ -440,7 +449,7 @@ nav {
     border: 0;
     height: 3px;
     background: linear-gradient(to right, transparent, #50E3C2, transparent);
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 20px;
     border-radius: 10px;
 }
@@ -463,13 +472,14 @@ button.adopt-btn {
     padding: 0.6rem 3.2rem;
     border: none;
     border-radius: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 10px;
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
 }
 
@@ -485,7 +495,7 @@ button.adopt-btn:hover {
     font-weight: bold;
     color: #fff;
     background-color: #f39c12;
-    padding: 2px 5px;
+    padding: 5px 10px;
     border-radius: 3px;
     text-align: center;
     max-width: fit-content;
@@ -689,7 +699,6 @@ footer {
 }
 
 /* Ajustes para responsividade do banner e filtro */
-/* Banner - Colunas em telas pequenas */
 @media (max-width: 768px) {
     .banner {
         flex-direction: column;
@@ -718,7 +727,6 @@ footer {
 
 /* Responsividade para telas pequenas (celulares) */
 @media (max-width: 600px) {
-
     /* Estilo do Header em telas menores */
     header {
         padding: 20px 0px;

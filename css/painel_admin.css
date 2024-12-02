@@ -294,6 +294,7 @@ nav {
 .admin-logout {
     position: absolute;
     bottom: 90px;
+    margin-bottom: -50px;
 }
 
 /* Seção principal da área administrativa */

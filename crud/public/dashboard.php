@@ -140,17 +140,17 @@ foreach ($doacoes_por_mes as $row) {
                         $icon = 'fas fa-paw';
                         $color = '#3498db';
                     } elseif ($row['status_id'] == 2) {
-                        $status = 'Em Análise';
-                        $icon = 'fas fa-hourglass-half';
-                        $color = '#f39c12';
-                    } elseif ($row['status_id'] == 3) {
-                        $status = 'Em Adoção';
+                        $status = 'Em adoção';
                         $icon = 'fas fa-heart';
                         $color = '#e74c3c';
-                    } elseif ($row['status_id'] == 4) {
+                    } elseif ($row['status_id'] == 3) {
                         $status = 'Adotado';
                         $icon = 'fas fa-check-circle';
                         $color = '#2ecc71';
+                    } elseif ($row['status_id'] == 4) {
+                        $status = 'Em análise';
+                        $icon = 'fas fa-hourglass-half';
+                        $color = '#f39c12';
                     }
 
                     echo "<li><i class='$icon' style='color: $color; margin-right: 8px;'></i><strong>{$row['nome']}</strong>  : Status: {$status}</li>";
