@@ -513,6 +513,7 @@ button.adopt-btn:hover {
     background-color: #3498db;
 }
 
+/* Estilos da paginação*/
 .pagination {
     display: flex;
     align-items: center;

@@ -1252,7 +1252,6 @@ footer {
 
 /* Responsividade para telas pequenas (celulares) */
 @media (max-width: 600px) {
-
     /* Estilo do Header em telas menores */
     header {
         padding: 20px 0px;
