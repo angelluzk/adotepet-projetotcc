@@ -197,7 +197,7 @@ nav {
     position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 0; 
+    margin-bottom: 0;
     height: auto;
 }
 
@@ -237,11 +237,11 @@ nav {
 }
 
 .mobile-menu div {
-  width: 32px;
-  height: 2px;
-  background: #100f47;
-  margin: 8px;
-  transition: 0.3s;
+    width: 32px;
+    height: 2px;
+    background: #100f47;
+    margin: 8px;
+    transition: 0.3s;
 }
 
 /* Seção de Detalhes do Pet */
@@ -593,13 +593,13 @@ nav {
     transform: scale(0.9);
 }
 
-hr{
+hr {
     border: 0;
     height: 3px;
     background: linear-gradient(to right, transparent, #50E3C2, transparent);
     margin-top: 20px;
     margin-bottom: 20px;
-    border-radius: 10px;    
+    border-radius: 10px;
 }
 
 .modal-content h3 {
@@ -827,6 +827,7 @@ footer {
 
 /* Responsividade para telas pequenas (celulares) */
 @media (max-width: 600px) {
+
     /* Estilo do Header em telas menores */
     header {
         padding: 20px 0px;
@@ -900,6 +901,7 @@ footer {
         opacity: 0;
         transform: translateX(50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -908,46 +910,12 @@ footer {
 
 .mobile-menu.active .line1 {
     transform: rotate(-45deg) translate(-8px, 8px);
-  }
-  
-  .mobile-menu.active .line2 {
-    opacity: 0;
-  }
-  
-  .mobile-menu.active .line3 {
-    transform: rotate(45deg) translate(-5px, -7px);
-  }
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .pet-details-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .pet-image,
-    .pet-info {
-        max-width: 100%;
-    }
-
-    .pet-info {
-        text-align: center;
-    }
-
-    /* Melhorias no botão de adoção */
-    .adopt-btn {
-        padding: 0.8rem 6rem;
-    }
-
-    .carousel-prev,
-    .carousel-next {
-        font-size: 20px;
-    }
 }
 
-@media (max-width: 768px) {
-    .pet-description {
-        padding: 1.5rem;
-        max-width: 100%;
-    }
+.mobile-menu.active .line2 {
+    opacity: 0;
+}
+
+.mobile-menu.active .line3 {
+    transform: rotate(45deg) translate(-5px, -7px);
 }

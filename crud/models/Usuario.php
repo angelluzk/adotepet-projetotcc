@@ -40,8 +40,12 @@ class Usuario
     {
         $this->validateUserData($data);
 
-        $query = "INSERT INTO " . $this->table_name . " (nome, sobrenome, cpf, telefone, email, senha, perfil_id, data_nascimento) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $status_id = ($data['perfil_id'] == 1) ? 4 : 5;
+
+        $query = "INSERT INTO " . $this->table_name . " 
+                  (nome, sobrenome, cpf, telefone, email, senha, perfil_id, data_nascimento, status_id) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         $stmt = $this->conn->prepare($query);
 
         if (!$stmt) {
@@ -50,7 +54,18 @@ class Usuario
 
         $senhaHash = password_hash($data['senha'], PASSWORD_DEFAULT);
 
-        $stmt->bind_param('ssssssss', $data['nome'], $data['sobrenome'], $data['cpf'], $data['telefone'], $data['email'], $senhaHash, $data['perfil_id'], $data['data_nascimento']);
+        $stmt->bind_param(
+            'ssssssssi',
+            $data['nome'],
+            $data['sobrenome'],
+            $data['cpf'],
+            $data['telefone'],
+            $data['email'],
+            $senhaHash,
+            $data['perfil_id'],
+            $data['data_nascimento'],
+            $status_id
+        );
 
         if (!$stmt->execute()) {
             throw new Exception("Erro ao cadastrar usuário: " . $stmt->error);
@@ -58,6 +73,7 @@ class Usuario
 
         $usuario_id = $this->conn->insert_id;
         $stmt->close();
+
         return $usuario_id;
     }
 

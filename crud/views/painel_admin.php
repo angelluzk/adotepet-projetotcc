@@ -71,6 +71,8 @@ $userType = $isLoggedIn ? $_SESSION['perfil_nome'] : null;
                     <li><a href="#" onclick="loadSection('home')"><i class="fas fa-home"></i> HOME</a></li>
                     <li><a href="#" onclick="loadSection('aprovar_pets')"><i class="fas fa-check-circle"></i> Aprovar
                             Doações</a></li>
+                    <li><a href="#" onclick="loadSection('aprovar_colaboradores')"><i class="fas fa-user-check"></i>
+                            Aprovar Colaboradores</a></li>
                     <li><a href="#" onclick="loadSection('listar_usuarios')"><i class="fas fa-user"></i> Usuários
                             Cadastrados</a>
                     </li>

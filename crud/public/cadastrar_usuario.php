@@ -3,7 +3,6 @@ require_once '../config/DataBase.php';
 require_once '../controllers/UsuarioController.php';
 require_once '../controllers/EnderecoController.php';
 
-
 $db = new DataBase();
 $conn = $db->getConnection();
 
@@ -11,6 +10,8 @@ if ($conn->connect_error) {
     error_log("Conexão falhou: " . $conn->connect_error);
     die("Conexão falhou: " . $conn->connect_error);
 }
+
+$status_id = ($_POST['perfil_id'] == 1) ? 4 : 5;
 
 $dadosUsuario = [
     'nome' => $_POST['nome'] ?? '',
@@ -20,7 +21,8 @@ $dadosUsuario = [
     'email' => $_POST['email'] ?? '',
     'senha' => $_POST['senha'] ?? '',
     'perfil_id' => $_POST['perfil_id'] ?? '',
-    'data_nascimento' => $_POST['data_nascimento'] ?? ''
+    'data_nascimento' => $_POST['data_nascimento'] ?? '',
+    'status_id' => $status_id
 ];
 
 $dadosEndereco = [

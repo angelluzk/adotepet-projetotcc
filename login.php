@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $db = new DataBase();
     $conn = $db->getConnection();
 
-    $sql = "SELECT u.id, u.senha, u.perfil_id, u.nome, p.nome AS perfil_nome 
+    $sql = "SELECT u.id, u.senha, u.perfil_id, u.nome, u.status_id, p.nome AS perfil_nome 
             FROM usuarios u
             INNER JOIN perfis p ON u.perfil_id = p.id 
             WHERE u.email = ?";
@@ -30,6 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
+
+        if ($user['status_id'] == 4) {
+            echo "Seu cadastro está em análise. Aguarde a aprovação para acessar o sistema!";
+            exit();
+        }
 
         if (password_verify($senha, $user['senha'])) {
             $_SESSION['usuario_id'] = $user['id'];

@@ -9,23 +9,26 @@ $userPhoto = '../../img/default-photo.png';
 $database = new DataBase();
 $conn = $database->getConnection();
 
+//Contagem de usuários
 $query = "SELECT COUNT(*) FROM usuarios";
 $result = $conn->query($query);
 $usuarios_count = $result->fetch_row()[0];
 
+//Contagem de pets
 $query = "SELECT COUNT(*) FROM pets";
 $result = $conn->query($query);
 $pets_count = $result->fetch_row()[0];
 
+//Contagem de doações
 $query = "
     SELECT COUNT(*) 
     FROM pets
-    WHERE status_id = (SELECT id FROM status WHERE
-    nome = 'Adotado')
-    ";
+    WHERE status_id = (SELECT id FROM status WHERE nome = 'Adotado')
+";
 $result = $conn->query($query);
 $doacoes_count = $result->fetch_row()[0];
 
+//Pendências de pets
 $query = "
     SELECT COUNT(*) 
     FROM pets 
@@ -34,6 +37,7 @@ $query = "
 $result = $conn->query($query);
 $pendencias_count = $result->fetch_row()[0];
 
+//Últimos registros
 $query = "SELECT nome FROM usuarios ORDER BY id DESC LIMIT 1";
 $result = $conn->query($query);
 $ultimo_usuario = $result->num_rows > 0 ? $result->fetch_assoc()['nome'] : 'Nenhum usuário cadastrado';
@@ -51,6 +55,7 @@ $query = "
 $result = $conn->query($query);
 $ultimo_pet_adotado = $result->num_rows > 0 ? $result->fetch_assoc()['nome'] : 'Nenhum animal adotado';
 
+//Estatísticas de doações por mês
 $query = "
     SELECT MONTH(d.data) AS mes, COUNT(*) AS total
     FROM doacoes d
@@ -70,6 +75,19 @@ foreach ($doacoes_por_mes as $row) {
     $labels[] = date('M', strtotime("$currentYear-$row[mes]-01"));
     $dados[] = $row['total'];
 }
+
+//Estatísticas de colaboradores
+$query = "SELECT COUNT(*) FROM usuarios WHERE status_id IS NOT NULL";
+$result = $conn->query($query);
+$colaboradores_count = $result->fetch_row()[0];
+
+$query = "SELECT COUNT(*) FROM usuarios WHERE status_id = 5"; //Status 'Aprovado'
+$result = $conn->query($query);
+$colaboradores_aprovados = $result->fetch_row()[0];
+
+$query = "SELECT COUNT(*) FROM usuarios WHERE status_id = 4"; //Status 'Em análise'
+$result = $conn->query($query);
+$colaboradores_em_analise = $result->fetch_row()[0];
 ?>
 
 <!-- Dashboard -->
@@ -98,8 +116,27 @@ foreach ($doacoes_por_mes as $row) {
         </div>
         <div class="stat-item">
             <i class="fas fa-exclamation-circle"></i>
-            <p>Pendências</p>
+            <p>Pendências de Animais</p>
             <h3 id="stat-pendencias"><?php echo $pendencias_count; ?></h3>
+        </div>
+    </div>
+
+    <!-- Estatísticas de Colaboradores -->
+    <div class="dashboard-stats">
+        <div class="stat-item">
+            <i class="fas fa-users"></i>
+            <p>Total de Colaboradores</p>
+            <h3 id="stat-colaboradores"><?php echo $colaboradores_count; ?></h3>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-user-check"></i>
+            <p>Colaboradores Aprovados</p>
+            <h3 id="stat-colaboradores-aprovados"><?php echo $colaboradores_aprovados; ?></h3>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-hourglass-start"></i>
+            <p>Colaboradores em Análise</p>
+            <h3 id="stat-colaboradores-em-analise"><?php echo $colaboradores_em_analise; ?></h3>
         </div>
     </div>
 
@@ -108,6 +145,7 @@ foreach ($doacoes_por_mes as $row) {
         <h3>Atalhos Rápidos</h3>
         <a href="#" onclick="loadSection('aprovar_pets')" class="btn"><i class="fas fa-check-circle"></i> Aprovar
             Doações</a>
+        <a href="#" onclick="loadSection('aprovar_colaboradores')" class="btn"><i class="fas fa-users"></i> Aprovar Colaboradores</a>
         <a href="#" onclick="loadSection('listar_usuarios')" class="btn"><i class="fas fa-user"></i> Gerenciar
             Usuários</a>
         <a href="#" onclick="loadSection('listar_doacoes')" class="btn"><i class="fas fa-paw"></i> Gerenciar Pets</a>
@@ -202,5 +240,30 @@ foreach ($doacoes_por_mes as $row) {
                 ?>
             </ul>
         </div>
+
+        <!-- Tarefas Pendentes -->
+    <div class="pending-tasks">
+        <h3>Pendências de Colaboradores</h3>
+        <ul>
+            <?php
+            $query = "
+                SELECT nome, sobrenome 
+                FROM usuarios 
+                WHERE status_id = 4 
+                ORDER BY id DESC 
+                LIMIT 5
+            ";
+            $result = $conn->query($query);
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<li><i class='fas fa-exclamation-circle'></i> Aprovar cadastro do colaborador <strong>{$row['nome']} {$row['sobrenome']}</strong></li>";
+                }
+            } else {
+                echo "<li><i class='fas fa-info-circle'></i> Não há colaboradores pendentes para aprovação.</li>";
+            }
+            ?>
+        </ul>
+    </div>
     </div>
 </div>

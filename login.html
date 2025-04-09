@@ -28,7 +28,7 @@
                 <h2>Entre no Nosso Site</h2>
                 <hr>
                 <p>Para divulgar ou adotar um animalzinho, você precisa ter um cadastro!</p>
-                <form action="login.php" method="post">
+                <form id="loginForm" action="login.php" method="post">
                     <div class="input-group">
                         <i class="fas fa-envelope"></i>
                         <input type="email" id="email" placeholder="E-mail" name="email" required>
@@ -44,11 +44,55 @@
                     </div>
                     <button type="submit">ENTRAR</button>
                 </form>
+                <div id="errorModal" class="modal hidden">
+                    <div class="modal-content">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p id="errorMessage"></p>
+                        <button onclick="closeModal()">Fechar</button>
+                    </div>
+                </div>
                 <p class="register-link">Não tem uma conta? <a href="crud/views/cadastro_usuario.php">Cadastre-se</a>
                 </p>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Impede o recarregamento da página
+        
+            const formData = new FormData(this);
+        
+            fetch('login.php', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === "success") {
+                    // Redireciona para a página inicial em caso de sucesso
+                    window.location.href = 'index.php';
+                } else {
+                    // Exibe o modal com a mensagem de erro retornada pelo PHP
+                    showModal(data);
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        });
+        
+        function showModal(message) {
+            const modal = document.getElementById('errorModal');
+            const messageElement = document.getElementById('errorMessage');
+        
+            messageElement.innerText = message;
+            modal.classList.remove('hidden');
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('errorModal');
+            modal.classList.add('hidden');
+        }
+        </script>              
 </body>
 
 </html>
