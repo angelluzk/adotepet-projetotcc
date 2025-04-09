@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/badge/Feito_com-PHP-blue?style=for-the-badge&logo=php" />
   <img src="https://img.shields.io/badge/Responsivo-Sim-ff69b4?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Projeto-TCC-8A2BE2?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Impacto%20Social-%F0%9F%92%96-FFD700?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Impacto%20Social-%F0%9F%92%96-7fb9ca?style=for-the-badge" />
 </p>
 
 ---
