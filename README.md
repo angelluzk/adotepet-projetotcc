@@ -1,8 +1,11 @@
-<img align="center" alt="" src="./img/tela-principal.png">
-
 <h1 align="center">
   🐾 Adote Pet
 </h1>
+<p align="center">
+  <img src="./img/tela-principal.png" alt="Reconhecimento Facial" width="800"/>
+  <br/>
+  🐱<em>Tela principal do sistema Adote Pet</em>🐶
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Feito_com-PHP-blue?style=for-the-badge&logo=php" />
