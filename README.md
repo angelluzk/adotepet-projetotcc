@@ -1,11 +1,7 @@
 <h1 align="center">
   🐾 Adote Pet
 </h1>
-<p align="center">
-  <img src="./img/tela-principal.png" alt="Reconhecimento Facial" width="800"/>
-  <br/>
-  🐱<em>Tela principal do sistema Adote Pet</em>🐶
-</p>
+
 <p align="center">
   <img src="./img/tela-principal.png" alt="Reconhecimento Facial" width="800"/>
   <br/>
@@ -88,13 +84,6 @@
 - 🎓 **Projeto de Conclusão de Curso - TCC**
 - 📘 Curso: **Técnico Informática**
 - 🏫 Instituição: **ETB - Escola Técnica de Brasília**
-
-Se quiser conversar, colaborar ou oferecer uma oportunidade:
-
-📬 E-mail: [contatoangelluz@gmail.com](mailto:contatoangelluz@gmail.com)  
-🐙 GitHub: [@angelluzk](https://github.com/angelluzk)  
-💼 LinkedIn: [linkedin.com/in/angelitaluz](https://www.linkedin.com/in/angelitaluz/)  
-🗂️Website / Portfólio: [meu_portfolio/](https://angelluzk.github.io/meu_portfolio/) 
 
 Se quiser conversar, colaborar ou oferecer uma oportunidade:
 
