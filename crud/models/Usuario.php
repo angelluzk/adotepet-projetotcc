@@ -40,14 +40,16 @@ class Usuario
     {
         $this->validateUserData($data);
 
-        $status_id = ($data['perfil_id'] == 1) ? 4 : 5;
+        // Regras de status:
+        // perfil_id 1 = Tutor (Usuário)  -> aprovado (5)
+        // perfil_id 2 = Colaborador (Funcionário)  -> em análise (4)
+        $status_id = ($data['perfil_id'] == 2) ? 4 : 5;
 
         $query = "INSERT INTO " . $this->table_name . " 
-                  (nome, sobrenome, cpf, telefone, email, senha, perfil_id, data_nascimento, status_id) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                (nome, sobrenome, cpf, telefone, email, senha, perfil_id, data_nascimento, status_id) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->conn->prepare($query);
-
         if (!$stmt) {
             throw new Exception("Erro ao preparar a consulta: " . $this->conn->error);
         }
@@ -76,6 +78,7 @@ class Usuario
 
         return $usuario_id;
     }
+
 
     public function update($id, $data)
     {

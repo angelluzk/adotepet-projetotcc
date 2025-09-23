@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <script>
+     <script>
         document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault(); // Impede o recarregamento da página
         
@@ -69,15 +69,28 @@
             })
             .then(response => response.text())
             .then(data => {
-                if (data === "success") {
+                // Adicionamos .trim() para remover possíveis espaços em branco da resposta
+                const responseData = data.trim();
+
+                if (responseData === "success") {
                     // Redireciona para a página inicial em caso de sucesso
                     window.location.href = 'index.php';
+                
+                } else if (responseData === "analysis") {
+                    // Mostra a mensagem específica para cadastros em análise
+                    const analysisMessage = "Seu cadastro está em análise. Aguarde a aprovação para acessar o sistema!";
+                    showModal(analysisMessage);
+
                 } else {
-                    // Exibe o modal com a mensagem de erro retornada pelo PHP
-                    showModal(data);
+                    // Exibe o modal com outras mensagens de erro retornadas pelo PHP
+                    // (Ex: "E-mail ou senha inválidos!")
+                    showModal(responseData);
                 }
             })
-            .catch(error => console.error('Erro:', error));
+            .catch(error => {
+                console.error('Erro:', error)
+                showModal('Ocorreu um erro de conexão. Tente novamente.');
+            });
         });
         
         function showModal(message) {
@@ -92,7 +105,7 @@
             const modal = document.getElementById('errorModal');
             modal.classList.add('hidden');
         }
-        </script>              
+    </script>           
 </body>
 
 </html>

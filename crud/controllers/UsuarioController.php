@@ -33,11 +33,6 @@ class UsuarioController
                 throw new Exception("E-mail já cadastrado.");
             }
 
-            if ($data['perfil_id'] == 2) {
-                $data['status_id'] = 5;
-                $data['status_id'] = 4;
-            }
-
             error_log("Dados do usuário: " . json_encode($data));
 
             $this->usuario->create($data);
@@ -52,6 +47,7 @@ class UsuarioController
             throw new Exception("Falha ao criar o usuário: " . $e->getMessage());
         }
     }
+
 
     public function createEndereco($data, $usuario_id)
     {
