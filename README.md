@@ -6,11 +6,17 @@
   <br/>
   🐱<em>Tela principal do sistema Adote Pet</em>🐶
 </p>
+<p align="center">
+  <img src="./img/tela-principal.png" alt="Reconhecimento Facial" width="800"/>
+  <br/>
+  🐱<em>Tela principal do sistema Adote Pet</em>🐶
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Feito_com-PHP-blue?style=for-the-badge&logo=php" />
   <img src="https://img.shields.io/badge/Responsivo-Sim-ff69b4?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Projeto-TCC-8A2BE2?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Impacto%20Social-%F0%9F%92%96-7fb9ca?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Impacto%20Social-%F0%9F%92%96-7fb9ca?style=for-the-badge" />
 </p>
 
@@ -82,6 +88,13 @@
 - 🎓 **Projeto de Conclusão de Curso - TCC**
 - 📘 Curso: **Técnico Informática**
 - 🏫 Instituição: **ETB - Escola Técnica de Brasília**
+
+Se quiser conversar, colaborar ou oferecer uma oportunidade:
+
+📬 E-mail: [contatoangelluz@gmail.com](mailto:contatoangelluz@gmail.com)  
+🐙 GitHub: [@angelluzk](https://github.com/angelluzk)  
+💼 LinkedIn: [linkedin.com/in/angelitaluz](https://www.linkedin.com/in/angelitaluz/)  
+🗂️Website / Portfólio: [meu_portfolio/](https://angelluzk.github.io/meu_portfolio/) 
 
 Se quiser conversar, colaborar ou oferecer uma oportunidade:
 
