@@ -42,12 +42,24 @@
 <details>
   <summary>🖼️ Clique aqui para visualizar as telas do sistema..</summary>
 
-  ![Tela ]()
-  ![Tela ]()
-  ![Tela ]()
-  ![Tela ]()
-  ![Tela ]()
-  ![Tela ]()
+  ![Tela ](img/tela-principal2.png)
+  ![Tela ](img/tela-login.png)
+  ![Tela ](img/tela-login-status-analise.png)
+  ![Tela ](img/tela-recuperar-senha.png)
+  ![Tela ](img/tela-cadastro-tutor-colaborador.png)
+  ![Tela ](img/tela-doacao.png)
+  ![Tela ](img/tela-catalogo-adocao.png)
+  ![Tela ](img/tela-catalogo-adocao2.png)
+  ![Tela ](img/tela-dados-animal.png)
+  ![Tela ](img/tela-dados-animal2.png)
+  ![Tela ](img/tela-perfil-tutor.png)
+  ![Tela ](img/tela-minhas-doacoes.png)
+  ![Tela ](img/tela-pets-favoritos.png)
+  ![Tela ](img/tela-pets-que-adotei.png)
+  ![Tela ](img/tela-dashboard.png)
+  ![Tela ](img/tela-aprovacao-colaboradores.png)
+  ![Tela ](img/tela-lista-aprovacao.png)
+  ![Tela ](img/tela-lista-animais-cadastrados.png)
 
 </details>
 
